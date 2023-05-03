@@ -1,6 +1,6 @@
 {
-    "name": "aman5537jains/report-manager",
-    "description": "Blocks for Abno Laravel CMS",
+    "name": "readerstacks/reportmanager",
+    "description": "Create Any report easily with laravel report builder same as metabase",
     "type": "library", 
     "license": "MIT",
     "keywords":["dynamic blocks"],
@@ -22,5 +22,7 @@
             ]
         }
     },
-    "require": {}
+    "require": {
+        "paquettg/php-html-parser": "^2.2"
+    }
 }
