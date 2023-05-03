@@ -1,0 +1,43 @@
+<?php 
+
+return [
+  "layouts"=>[
+        "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
+        "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
+        "Number"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
+        'Chart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\ChartLayout","settings"=>["type"=>"pie","chart_label"=>"Users","label_column"=>"labels","data_column"=>"data","colors_column"=>"colors"]],
+        'CanvasChart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\CanvasChartLayout","settings"=>["type"=>"pie","chart_label"=>"Users","label_column"=>"labels","data_column"=>"data","colors_column"=>"colors"]],
+        
+         
+        
+    ],
+    "filter_inputs"=>[
+        "Input"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"text"]],
+        "Number"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"number"]],
+        "Date Range"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,"settings"=>["column"=>"created_at"]],
+        "Select 2 Picker"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\Select2PickerFilterInput::class,"settings"=>["url"=>"https://api.github.com/search/repositories?term=sel&_type=query&q=sel"]]
+        
+    ],
+    
+    'scripts'=>[
+        'jquery'=>[
+            'src'=>'https://cdn.jsdelivr.net/jquery/latest/jquery.min.js'
+        ],
+        'moment'=>[
+            'src'=>'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js'
+        ],
+        'daterangepicker'=>[
+            'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
+        ],
+        'daterangepicker'=>[
+            'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
+        ],
+        
+    ],
+    "styles"=>[
+        'daterangepicker'=>[
+            'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css'
+        ]
+    ]
+    
+];

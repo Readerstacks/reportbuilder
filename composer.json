@@ -1,0 +1,26 @@
+{
+    "name": "aman5537jains/report-manager",
+    "description": "Blocks for Abno Laravel CMS",
+    "type": "library", 
+    "license": "MIT",
+    "keywords":["dynamic blocks"],
+    "authors": [
+        {
+            "name": "aman",
+            "email": "ajain@abnosoftwares.co.ke"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Aman5537jains\\ReportBuilder\\": "/src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Aman5537jains\\ReportBuilder\\ReportBuilderServiceProvider"
+            ]
+        }
+    },
+    "require": {}
+}
