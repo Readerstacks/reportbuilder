@@ -16,13 +16,13 @@ class CreateReportBuilderQuestions extends Migration
         Schema::create('report_builder_questions', function (Blueprint $table) {
             $table->increments('id');
             $table->string("title");
-            $table->text("sql_query");
-            $table->text("layout");
-            $table->text("filters");
-            $table->string("visibility");
-            $table->string("token");
-            $table->string("uuid_token");
-            $table->string("connection");
+            $table->text("sql_query")->nullable();
+            $table->text("layout")->nullable();
+            $table->text("filters")->nullable();
+            $table->string("visibility")->nullable();
+            $table->string("token")->nullable();
+            $table->string("uuid_token")->nullable();
+            $table->string("connection")->nullable();
             $table->enum("status",['1','0']);
             $table->timestamps();
         });
