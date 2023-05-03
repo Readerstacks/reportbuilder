@@ -2,6 +2,8 @@
  
 Route::group(['namespace' => 'Aman5537jains\ReportBuilder\Http\Controllers',"prefix"=>"report-manager"], function(){
     
+    Route::get('builder', 'ReportManagerController@builder');
+    
     Route::get('report/{id}', 'ReportManagerController@showReport');
     
     Route::get('get-report-detail', 'ReportManagerController@getReportDetail');

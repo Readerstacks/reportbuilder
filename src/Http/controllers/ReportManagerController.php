@@ -17,6 +17,9 @@ class ReportManagerController extends Controller
        
         
     }
+    function builder(){
+        return (new \Aman5537jains\ReportBuilder\ReportGenerator())->render();
+   }
     function showReport($id){
         $report=  ReportBuilderQuestion::where("uuid_token",$id)->first();
         
