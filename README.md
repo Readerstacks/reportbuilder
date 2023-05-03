@@ -8,6 +8,9 @@
 
 <img width="1673" alt="Screenshot 2023-05-03 at 1 05 34 PM" src="https://user-images.githubusercontent.com/94598275/235857594-4d97ac94-e3d8-4563-9b6c-c9f4ce9998a3.png">
 
+<img width="1666" alt="Screenshot 2023-05-03 at 1 07 41 PM" src="https://user-images.githubusercontent.com/94598275/235857995-60adbf9a-9f81-41df-bf52-ad280164f61e.png">
+
+
 
 Create Any report easily with laravel report builder same as metabase.
 
