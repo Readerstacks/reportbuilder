@@ -6,6 +6,9 @@
     <br>
 </p>
 
+<img width="1673" alt="Screenshot 2023-05-03 at 1 05 34 PM" src="https://user-images.githubusercontent.com/94598275/235857594-4d97ac94-e3d8-4563-9b6c-c9f4ce9998a3.png">
+
+
 Create Any report easily with laravel report builder same as metabase.
 
  
