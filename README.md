@@ -6,6 +6,12 @@
     <br>
 </p>
 
+<img width="1673" alt="Screenshot 2023-05-03 at 1 05 34 PM" src="https://user-images.githubusercontent.com/94598275/235857594-4d97ac94-e3d8-4563-9b6c-c9f4ce9998a3.png">
+
+<img width="1666" alt="Screenshot 2023-05-03 at 1 07 41 PM" src="https://user-images.githubusercontent.com/94598275/235857995-60adbf9a-9f81-41df-bf52-ad280164f61e.png">
+
+
+
 Create Any report easily with laravel report builder same as metabase.
 
  
@@ -98,87 +104,14 @@ Usage
 
 ### Laravel Usage
 
+Access directly 
+http://localhost/report-manager/builder
 
-Add Query 
+if you want to use in code anywhere then 
 
-```shell
+```php
 
-php artisan QueryMigrate add --run
+  (new \Aman5537jains\ReportBuilder\ReportGenerator())->render();
 
-```
-
-This will ask to enter the query to update the migration file and also run the query in database
-
-If you want to update the migration and not wanted to run in database then remove --run option as below
-
-```shell
-
-php artisan QueryMigrate add 
-
-```
-
-
-#### Check pending migrations
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate pending
 ```
  
-#### Run migrations
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate migrate
-```
-
-#### List all migration
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate list 
-```
-
-#### Remove all migration queries
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate removeAll 
-```
-
-#### Remove single migration queries
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate remove --uid=id
-```
-
-#### Check pending migration queries
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate pedding
-```
-
-#### Run single migration only
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate migrate --uid=uid_of_migration 
-```
-
- 
-#### Run single migration again
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate migrate --uid=uid_of_migration  --f
-``` 
