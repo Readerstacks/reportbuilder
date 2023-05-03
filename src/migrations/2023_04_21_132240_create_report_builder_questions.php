@@ -14,7 +14,7 @@ class CreateReportBuilderQuestions extends Migration
     public function up()
     {
         Schema::create('report_builder_questions', function (Blueprint $table) {
-            $table->id();
+            $table->increments('id');
             $table->string("title");
             $table->text("sql_query");
             $table->text("layout");
