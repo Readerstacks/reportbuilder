@@ -456,7 +456,7 @@ setTimeout(()=>{
                     // this.share.visibility = data.visibility || "Public";
                     // this.share.url      = "report-manager/report/"+data.id;
                     // this.share.token    = data.token || "";
-                   
+                    this.report_id      =   data.data.id;
                     this.share.url      = '<?php echo url("report-manager/report/"); ?>/'+data.data.uuid_token;
                    
              console.log("data",data)
