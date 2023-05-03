@@ -98,87 +98,14 @@ Usage
 
 ### Laravel Usage
 
+Access directly 
+http://localhost/report-manager/builder
 
-Add Query 
+if you want to use in code anywhere then 
 
-```shell
+```php
 
-php artisan QueryMigrate add --run
+  (new \Aman5537jains\ReportBuilder\ReportGenerator())->render();
 
-```
-
-This will ask to enter the query to update the migration file and also run the query in database
-
-If you want to update the migration and not wanted to run in database then remove --run option as below
-
-```shell
-
-php artisan QueryMigrate add 
-
-```
-
-
-#### Check pending migrations
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate pending
 ```
  
-#### Run migrations
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate migrate
-```
-
-#### List all migration
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate list 
-```
-
-#### Remove all migration queries
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate removeAll 
-```
-
-#### Remove single migration queries
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate remove --uid=id
-```
-
-#### Check pending migration queries
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate pedding
-```
-
-#### Run single migration only
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate migrate --uid=uid_of_migration 
-```
-
- 
-#### Run single migration again
-
-In your terminal type
-
-```shell
-php artisan QueryMigrate migrate --uid=uid_of_migration  --f
-``` 
