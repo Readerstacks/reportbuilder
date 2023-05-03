@@ -84,10 +84,17 @@ class ReportBuilder
     }
 
     public function setBindings($paramsValue){
-        $this->bindingCounter++;
-        $key="param_$this->bindingCounter";
-        $this->bindings[$key]=$paramsValue;
-        return ":".$key;
+        
+        if(is_array($paramsValue)){
+            $paramsValue['sql'];
+            $paramsValue['params'];
+            foreach($paramsValue['params'] as $val)
+                $this->bindings[]=$val;
+            return $paramsValue['sql'];
+        }
+        
+        $this->bindings[]=$paramsValue;
+        return "?";
 
     }
     function getchilds($sql, &$query = '')

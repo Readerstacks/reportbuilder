@@ -11,6 +11,12 @@ class DateFilterInput extends ReportInputs
             $value = explode(" - ",$this->value);
             $start= trim($value[0])." 00:00:00";
             $end= trim($value[1])." 23:59:59";
+            return [
+              "sql"=>"{$this->settings['column']} >= ? and  {$this->settings['column']} <= ?  ",
+              "params"=>[
+                $start,$end
+              ]
+            ];
             return "{$this->settings['column']} >= '{$start}' and  {$this->settings['column']} <= '{$end}'  ";
 
           }

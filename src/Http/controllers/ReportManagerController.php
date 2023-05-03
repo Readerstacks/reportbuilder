@@ -17,7 +17,7 @@ class ReportManagerController extends Controller
        
         
     }
-    function builder(){
+    function builder(){ 
         return (new \Aman5537jains\ReportBuilder\ReportGenerator())->render(); 
    }
     function showReport($id){
