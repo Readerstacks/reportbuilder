@@ -234,4 +234,133 @@ class TableLayout extends BaseLayout
 
 }
 ```
+## Add New Input Filter
+
+You can create any filter input layout by registering the class in `reportconfig.php` file
+
+```php
+ 
+return [
+ "filter_inputs"=>[
+        "Input"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"text"]],
+        "Number"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"number"]],
+        "Date Range"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,"settings"=>["column"=>"created_at"]],
+        "Select 2 Picker"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\Select2PickerFilterInput::class,"settings"=>["url"=>"https://api.github.com/search/repositories?term=sel&_type=query&q=sel"]]
+        
+    ],
+    
+    ],
+...
+
+```
+### and class
+
+if you look at class `\Aman5537jains\ReportBuilder\Inputs\TextInput::class` then you customize it or you can register your class as below
+
+```php 
+
+<?php
+namespace Aman5537jains\ReportBuilder\Inputs;
+ 
+use Illuminate\Support\Facades\Log;
+
+class TextInput extends ReportInputs
+{
+
+     
+       function render(){
+ 
+           return  "  <span>{$this->config['title']} :</span><input type='{$this->settings['type']}' name='{$this->name}' value='{$this->value}'   />";
+       } 
+
+} 
+
+
+?>
+
+
+```
+
+and   more complex datefilter
+
+
+```php 
+
+<?php
+namespace Aman5537jains\ReportBuilder\Inputs;
+ 
+use Illuminate\Support\Facades\Log;
+
+class DateFilterInput extends ReportInputs
+{ 
+
+      function queryValue(){
+          if($this->value!=''){
+            $value = explode(" - ",$this->value);
+            $start= trim($value[0])." 00:00:00";
+            $end= trim($value[1])." 23:59:59";
+            return "{$this->settings['column']} >= '{$start}' and  {$this->settings['column']} <= '{$end}'  ";
+
+          }
+          return  $this->value;
+      }
+       function scripts(){
+        return [
+          
+          'moment'=>[
+              'src'=>'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js'
+          ],
+          'daterangepicker'=>[
+              'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
+          ],
+          'daterangepicker'=>[
+              'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
+          ],
+          'script'=>[
+            'text'=>"  
+            
+              $('.datefilter_{$this->name}').daterangepicker({
+                autoUpdateInput: false,   
+                showDropdowns: true,
+                ranges: {
+                  'Today': [moment(), moment()],
+                  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
+                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
+                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                  'This Month': [moment().startOf('month'), moment().endOf('month')],
+                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+               },       
+                locale: {
+                  'format': 'YYYY-MM-DD',
+                },
+                opens: 'left'
+              }, function(start, end, label) {
+                $('.datefilter_{$this->name}').val(start.format('YYYY-MM-DD')+' - '+ end.format('YYYY-MM-DD'))
+                console.log( start.format('YYYY-MM-DD')  , end.format('YYYY-MM-DD'));
+              });
+            "
+          ]
+          
+        ];
+      
+       }
+
+       function styles(){
+         return [
+            'daterangepicker'=>[
+                'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.css'
+            ]
+            ];
+       }
+     
+       function html(){
+           $html ="<span>{$this->config['title']} </span>:<input type='text' class='datefilter_{$this->name}' name='{$this->name}' value='{$this->value}' />";
+           return  $html;
+       } 
+
+} 
+
+
+?>
+``` 
  
