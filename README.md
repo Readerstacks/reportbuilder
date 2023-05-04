@@ -23,6 +23,15 @@ Features
 --------
 
 - Generate any report in chart, table format easily like metabase.
+- Share URL.
+- Share password protected URL of Report.
+- Create run time varibales for conditional statement
+- Add custom layouts according to need.
+- Add custom input filters.
+- Run query before save to database.
+- Save Report for external or future use.
+- Customize inbuild filters and layout.
+- Use multiple database for reports.
 
 
 Installation
