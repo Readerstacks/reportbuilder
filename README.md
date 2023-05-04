@@ -124,7 +124,7 @@ Customization
 You can create any custom layout by registering the class in `reportconfig.php` file
 
 ```php
-<?php 
+ 
 return [
   "layouts"=>[
         "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
@@ -138,7 +138,8 @@ return [
     ],
 ...
 
-    ```
+```
+### and class
 
 if you look at class `\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout` then you customize it or you can register your class as below
 
