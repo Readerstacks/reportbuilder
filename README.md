@@ -1,8 +1,8 @@
 <p align="center">
     <a href="https://github.com/readerstacks" target="_blank">
-        <img src="https://i0.wp.com/readerstacks.com/wp-content/uploads/2021/10/Screenshot_2021-10-30_at_11.21.33_AM-removebg-preview-5-1.png?w=500&ssl=1" height="100px">
+        <img src="https://abnosoftwares.com/assets/frontend/img/theme/logo.png" height="100px">
     </a>
-    <h1 align="center">Laravel Report Generator as Metabase By readerstacks.com</h1>
+    <h1 align="center">Laravel Report Generator as Metabase By abnosoftwares.com</h1>
     <br>
 </p>
 
