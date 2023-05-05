@@ -108,7 +108,14 @@ foreach($connections as $name=>$connection)
                                     <br>
                                     <div  v-for="(setting,sname) of settings.layouts[layout]['settings']">
                                     <span> {{sname}} : </span>
-                                    <input v-model="settings.layouts[layout]['settings'][sname]"  type='text' />
+                                    <template v-if='typeof setting==="string"'>
+                                       <input v-model="settings.layouts[layout]['settings'][sname]"  type='text' />
+                                    </template>
+                                    <template v-if='typeof setting!=="string"'>
+                                       <select v-model="setting.value"   >
+                                       <option v-for="item of setting.options" >{{item}}</option>
+                                       </select>
+                                    </template>
                                     </div>
 
 
@@ -141,7 +148,15 @@ foreach($connections as $name=>$connection)
                                         <br>
                                         <div  v-for='(setting,sname) of k.settings'>
                                         <span> {{sname}} : </span>
+                                      
+                                        <template v-if='typeof setting==="string"'>
                                         <input v-model='k.settings[sname]'  type='text' />
+                                        </template>
+                                        <template v-if='typeof setting!=="string"'>
+                                            <select v-model="setting.value"   >
+                                            <option v-for="item of setting.options" >{{item}}</option>
+                                            </select>
+                                        </template>
                                         </div>
 
 

@@ -23,19 +23,23 @@ class CanvasChartLayout extends BaseLayout
         $data_column=[];
         $colors_column=[];
         
-        // foreach($this->reportBuilder->rows as $row){
-           
-        //     if(isset($row->row->{$this->layoutSettings['label_column']})){
-        //       $labels[]=$row->row->{$this->layoutSettings['label_column']};
-        //     }
-        //     if(isset($row->row->{$this->layoutSettings['data_column']})){
-        //       $data_column[]=$row->row->{$this->layoutSettings['data_column']};
-        //     }
-        //     if(isset($row->row->{$this->layoutSettings['colors_column']})){
-        //       $colors_column[]=$row->row->{$this->layoutSettings['colors_column']};
-        //     }
-        // }
-        // $labels=json_encode( $labels);
+        foreach($this->reportBuilder->rows as $row){
+           $col=[];
+            if(isset($row->row->{$this->layoutSettings['label_column']})){
+            //   $labels[]=$row->row->{$this->layoutSettings['label_column']};
+              $col['label']= $row->row->{$this->layoutSettings['label_column']};
+            }
+            if(isset($row->row->{$this->layoutSettings['data_column']})){
+                $col['y'] =$row->row->{$this->layoutSettings['data_column']};
+            //   $data_column[]=$row->row->{$this->layoutSettings['data_column']};
+            }
+            if(isset($col['y']))
+            $labels[]=$col;
+            // if(isset($row->row->{$this->layoutSettings['colors_column']})){
+            //   $colors_column[]=$row->row->{$this->layoutSettings['colors_column']};
+            // }
+        }
+        $labels=json_encode( $labels);
         // $data_column=json_encode( $data_column);
         // $colors_column=json_encode( $colors_column);
         $script=<<<script
@@ -43,19 +47,13 @@ class CanvasChartLayout extends BaseLayout
                   
         var chart = new CanvasJS.Chart("chartContainer", {
             title:{
-                text: "My First Chart in CanvasJS"              
+                text: '{$this->layoutSettings['chart_label']}'            
             },
             data: [              
             {
                 // Change type to "doughnut", "line", "splineArea", etc.
-                type: "column",
-                dataPoints: [
-                    { label: "apple",  y: 10  },
-                    { label: "orange", y: 15  },
-                    { label: "banana", y: 25  },
-                    { label: "mango",  y: 30  },
-                    { label: "grape",  y: 28  }
-                ]
+                type:'{$this->layoutSettings['type']['value']}',
+                dataPoints:  $labels
             }
             ]
         });

@@ -7,10 +7,16 @@ class DateFilterInput extends ReportInputs
 { 
 
       function queryValue(){
+      
           if($this->value!=''){
             $value = explode(" - ",$this->value);
-            $start= trim($value[0])." 00:00:00";
-            $end= trim($value[1])." 23:59:59";
+            $v1=trim($value[0]);
+            $v2=trim($value[1]);
+            $timeS=($this->settings['timepicker']=='true')?"":" 00:00:00";
+            $timeE=($this->settings['timepicker']=='true')?"":" 23:59:59";
+              $start= $v1.$timeS;
+             $end=  $v2.$timeE;
+
             return [
               "sql"=>"{$this->settings['column']} >= ? and  {$this->settings['column']} <= ?  ",
               "params"=>[
@@ -23,6 +29,7 @@ class DateFilterInput extends ReportInputs
           return  $this->value;
       }
        function scripts(){
+         
         return [
           
           'moment'=>[
@@ -36,9 +43,10 @@ class DateFilterInput extends ReportInputs
           ],
           'script'=>[
             'text'=>"  
-            
+              var timepicker= {$this->settings['timepicker']};
               $('.datefilter_{$this->name}').daterangepicker({
-                autoUpdateInput: false,   
+                autoUpdateInput: false, 
+                timePicker: timepicker,  
                 showDropdowns: true,
                 ranges: {
                   'Today': [moment(), moment()],
@@ -53,7 +61,11 @@ class DateFilterInput extends ReportInputs
                 },
                 opens: 'left'
               }, function(start, end, label) {
+                if(timepicker)
+                $('.datefilter_{$this->name}').val(start.format('YYYY-MM-DD HH:mm:ss')+' - '+ end.format('YYYY-MM-DD HH:mm:ss'))
+                else
                 $('.datefilter_{$this->name}').val(start.format('YYYY-MM-DD')+' - '+ end.format('YYYY-MM-DD'))
+                
                 console.log( start.format('YYYY-MM-DD')  , end.format('YYYY-MM-DD'));
               });
             "
@@ -72,7 +84,7 @@ class DateFilterInput extends ReportInputs
        }
      
        function html(){
-           $html ="<span>{$this->config['title']} </span>:<input type='text' class='datefilter_{$this->name}' name='{$this->name}' value='{$this->value}' />";
+           $html ="<span>{$this->config['title']} </span>:<input type='text' readonly class='datefilter_{$this->name}' name='{$this->name}' value='{$this->value}' />";
            return  $html;
        } 
 

@@ -121,11 +121,12 @@ class ReportBuilder
                     // getchilds( );
                 } else if ($s->getTag()->name() == "variable") {
                     //  echo ( );
-                    if (!$this->requestC($s->getChildren()[0]->text())) {
+                    $output=$this->requestC($s->getChildren()[0]->text());
+                    if (!$output) {
                         $include = false;
                     } else {
                         
-                        $binding=$this->setBindings($this->requestC($s->getChildren()[0]->text()));
+                        $binding=$this->setBindings($output);
 
                         $queryInner .= $binding;
                     }
