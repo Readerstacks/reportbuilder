@@ -21,6 +21,8 @@ class ReportBuilder
     public $connection='';
     public $bindingCounter=0;
     public $bindings=[];
+    public $renderedColumns=[];
+    public $renderedRows=[];
     
     public function __construct()
     {
@@ -152,6 +154,7 @@ class ReportBuilder
                 $this->report->variables[$name]["value"] = $filter->value;
                 $this->report->variables[$name]["rendered"] = $filter->render();
             }
+            
             $this->sql = $this->createQuery($this->report->query);
             try{
                 
@@ -174,7 +177,7 @@ class ReportBuilder
             $this->layout=$layout;
             return $this;
     }
-
+    
     public function processColumnNames(){
         if(!empty($this->results)){
             $customizedColumns=[];
@@ -190,7 +193,10 @@ class ReportBuilder
                         $formatter=$customizedColumns[$col]['formatter'];
                     }
                 }
-                $this->columns[]=new $formatter($column);
+                $processedColumns=new $formatter($column);
+
+                $this->columns[]=$processedColumns;
+                $this->renderedColumns[$processedColumns->name()]=$processedColumns->render();
             } 
         }
     }
@@ -202,8 +208,10 @@ class ReportBuilder
                  $row_processor =$this->report->row_processor;
             }
             foreach($this->results as $col=>$val){
-                
-                $this->rows[]=new $row_processor($val);
+                $processedRow=new $row_processor($val);
+
+                $this->rows[]=$processedRow;
+                $this->renderedRows[]=$processedRow->render();
             } 
         }
         
@@ -211,12 +219,12 @@ class ReportBuilder
     }
 
     public function buildLayout(){
-        
-        $layout =  $this->report->layout;
-        // $layouts  = config("reportconfig.layouts");
-        $this->layout= $layout;  
-        $this->layout = (new $this->layout['class']($this,@$layout['settings'])) ;
-        
+        if($this->report->layout!=''){
+            $layout =  $this->report->layout;
+            // $layouts  = config("reportconfig.layouts");
+            $this->layout= $layout;  
+            $this->layout = (new $this->layout['class']($this,@$layout['settings'])) ;
+        }
 
 
     }

@@ -43,21 +43,29 @@ class CanvasChartLayout extends BaseLayout
         // $data_column=json_encode( $data_column);
         // $colors_column=json_encode( $colors_column);
         $script=<<<script
-                    
+              
+
+        function initChart(){
                   
-        var chart = new CanvasJS.Chart("chartContainer", {
-            title:{
-                text: '{$this->layoutSettings['chart_label']}'            
-            },
-            data: [              
-            {
-                // Change type to "doughnut", "line", "splineArea", etc.
-                type:'{$this->layoutSettings['type']['value']}',
-                dataPoints:  $labels
-            }
-            ]
-        });
-        chart.render();
+            var chart = new CanvasJS.Chart("chartContainer", {
+                title:{
+                    text: '{$this->layoutSettings['chart_label']}'            
+                },
+                data: [              
+                {
+                    // Change type to "doughnut", "line", "splineArea", etc.
+                    type:'{$this->layoutSettings['type']['value']}',
+                    dataPoints:  $labels
+                }
+                ]
+            });
+            chart.render();
+        }
+        initChart();
+        document.addEventListener("onReportUpdate",function(data){
+                  
+            initChart();
+        }) 
    
        
         script;

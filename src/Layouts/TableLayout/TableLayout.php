@@ -4,13 +4,17 @@ namespace Aman5537jains\ReportBuilder\Layouts\TableLayout;
 use Aman5537jains\ReportBuilder\Layouts\BaseLayout;
 
 class TableLayout extends BaseLayout
-{
-   
+{   
+
+    public $rederer="server";
     function scripts(){
         
         $script = <<<SCRIPT
-               
-             new DataTable('.tbl_report');
+                new DataTable('.tbl_report');
+                document.addEventListener("onReportUpdate",function(data){
+                  
+                    new DataTable('.tbl_report');
+                })
         SCRIPT;
 
         return [
@@ -25,10 +29,16 @@ class TableLayout extends BaseLayout
 
     function styles(){
         return [
-            'datatable'=>[
-                "src"=>"https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
-            ]
-            ];
+                    'datatable'=>[
+                        "src"=>"https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
+                    ]
+                ];
+    }
+
+    function jsonResult(){
+        return [
+            
+        ];
     }
 
     function render(){

@@ -9,7 +9,11 @@ class TextInput extends ReportInputs
      
        function html(){
 //  print_r($this->settings);
-           return  "  <span>{$this->config['title']} :</span><input type='{$this->settings['type']['value']}' name='{$this->name}' value='{$this->value}'   />";
+$type="text";
+if(is_array($this->settings['type'])){
+       $type= $this->settings['type']['value'];
+}
+           return  "  <span>{$this->config['title']} :</span><input type='{@$type}' name='{$this->name}' value='{$this->value}'   />";
        } 
 
 } 

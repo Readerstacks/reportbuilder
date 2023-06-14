@@ -22,6 +22,12 @@ class BaseLayout
     function styles(){
         return [];
     }
+    function jsonResult(){
+        return [
+            "col"=>$this->reportBuilder->renderedColumns,
+            "rows"=>$this->reportBuilder->renderedRows
+        ];
+    }
      
     function view($file){
         

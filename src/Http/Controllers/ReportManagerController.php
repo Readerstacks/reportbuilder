@@ -1,6 +1,7 @@
 <?php
 namespace Aman5537jains\ReportBuilder\Http\Controllers;
 
+use Aman5537jains\ReportBuilder\Model\ReportBuilderDashboard;
 use Aman5537jains\ReportBuilder\Model\ReportBuilderQuestion;
 use Aman5537jains\ReportBuilder\Model\ReportBuilderQuestionModel;
 use Illuminate\Http\Request;
@@ -20,6 +21,18 @@ class ReportManagerController extends Controller
     function builder(){ 
         return (new \Aman5537jains\ReportBuilder\ReportGenerator())->render(); 
    }
+   function dashBoardBuilder(){ 
+    return (new \Aman5537jains\ReportBuilder\ReportGenerator())->dashboardRender(); 
+    }
+    function getAllRepors(){
+        return response()->json(['data'=>ReportBuilderQuestion::get()]); 
+    }
+    
+    function showDashboard($id){
+         
+        return view("ReportBuilder::dashboard-view",['dashboardid'=>$id]);
+
+    }
     function showReport($id){
         $report=  ReportBuilderQuestion::where("uuid_token",$id)->first();
         
@@ -65,6 +78,55 @@ class ReportManagerController extends Controller
 
         }
     
+    }
+    
+    function saveDashboard(Request $request){
+        $filters =$request->get("filters");
+      
+        $sql =$request->get("layout");
+        $id=(int)$request->get("dashboard_id",0);
+
+        if(  $id<=0){
+            $ReportBuilderDashboard= new ReportBuilderDashboard();
+            $ReportBuilderDashboard->uuid_token=$this->generate_uuid();
+        }
+        else
+        $ReportBuilderDashboard=   ReportBuilderDashboard::find($request->get("dashboard_id"));
+
+        $ReportBuilderDashboard->title=$request->get("title");
+        // $ReportBuilderDashboard->sql_query=$sql;
+        $ReportBuilderDashboard->filters=$filters;
+        $ReportBuilderDashboard->visibility=$request->get("visibility","Public");
+        $ReportBuilderDashboard->connection=$request->get("connection",'');
+        
+        $ReportBuilderDashboard->token=$request->get("token","Public");
+        $ReportBuilderDashboard->filters=$filters;
+        $ReportBuilderDashboard->layout=$request->get("layout");
+        if(empty($ReportBuilderDashboard->uuid_token)){
+            $ReportBuilderDashboard->uuid_token=$this->generate_uuid();
+        }
+        $ReportBuilderDashboard->save();
+        
+        return ["status"=>true ,"data"=>$ReportBuilderDashboard  ];
+    }
+    function getDashboardById(Request $request){
+        $report=  ReportBuilderDashboard::where("uuid_token",$request->dashboardId)->first();
+        $reportManager= (new \Aman5537jains\ReportBuilder\ReportBuilder())
+        
+        ->setReportCustom([
+            "variables"=>json_decode($report->filters,true),
+            "query"=>  "select now()",
+            "layout" =>''
+        ])->build();
+        $inputs=[];
+        
+        foreach($reportManager->report->variables as $name=>$var)
+        {
+            $inpclass= $var['obj'];
+            $inputs[$name]=["input_type"=>$var['type'],"scripts"=>$inpclass->scripts(),"styles"=>$inpclass->styles(),"html"=>$inpclass->render()];
+        }
+        $report->inputs = $inputs;
+        return $report;
     }
     function saveReport(Request $request){
         $filters =$request->get("filters");
@@ -122,47 +184,51 @@ class ReportManagerController extends Controller
 
     function getReportCustom(Request $request){
        
-            $filters =$request->get("filters");
-            $sql =$request->get("sql");
-            $layout=$request->get("layout");
-            $connection=$request->get("connection");
-    //     // else{
-    //         $report=  ReportBuilderQuestion::find($request->reportId);
-    //         $sql=$report->sql_query;
-    //         $filters=$report->filters; 
-    //         $layout=$report->layout;
-    // //    }
+        $filters =$request->get("filters");
+        $sql =$request->get("sql");
+        $layout=$request->get("layout");
+        $connection=$request->get("connection");
         
+        //     // else{
+        //         $report=  ReportBuilderQuestion::find($request->reportId);
+        //         $sql=$report->sql_query;
+        //         $filters=$report->filters; 
+        //         $layout=$report->layout;
+        // //    }
+    
         return $this->getReport($sql,$filters, $layout,(object)[
             "connection"=>$connection
         ]);
        
-         
- 
     }
 
     function getReport($sql,$filters,$layout='table',$reportManager=null){
-        $report =(new \Aman5537jains\ReportBuilder\ReportBuilder())->setConnection($reportManager->connection)->setReportCustom([
+        $report =   (new \Aman5537jains\ReportBuilder\ReportBuilder())
+        ->setConnection($reportManager->connection)
+        ->setReportCustom([
             "variables"=>json_decode($filters,true),
             "query"=>  $sql,
             "layout" =>json_decode($layout,true)
         ])->build();
         $inputs=[];
-         
-            foreach($report->report->variables as $name=>$var)
-            {
-                $inpclass= $var['obj'];
-                $inputs[$name]=["input_type"=>$var['type'],"scripts"=>$inpclass->scripts(),"styles"=>$inpclass->styles(),"html"=>$inpclass->render()];
-            }
-            
-            
-            return [
-                'sql'=>$report->sql,
-                "inputs"=>$inputs,
-                "title"=>@$reportManager->title,
-                "layout"=>["scripts"=>$report->layout->scripts(),"styles"=>$report->layout->styles(),"html"=>$report->layout->render()]
-            ];
         
+        foreach($report->report->variables as $name=>$var)
+        {
+            $inpclass= $var['obj'];
+            $inputs[$name]=["input_type"=>$var['type'],"scripts"=>$inpclass->scripts(),"styles"=>$inpclass->styles(),"html"=>$inpclass->render()];
+        }
+        
+        return [
+            'sql'   => $report->sql,
+            "inputs"=> $inputs,
+            "title" => @$reportManager->title,
+            "layout"=>[
+                        "scripts"   => $report->layout->scripts(),
+                        "json"      => $report->layout->jsonResult(),
+                        "styles"    => $report->layout->styles(),
+                        "html"      => $report->layout->render()
+                    ]
+        ];
     }
 
 }

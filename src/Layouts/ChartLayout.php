@@ -7,7 +7,7 @@ use function GuzzleHttp\json_encode;
 
 class ChartLayout extends BaseLayout
 {
-
+    public $rederer="client";
     function settingBuilder(){
         return [
           "html"=>"",

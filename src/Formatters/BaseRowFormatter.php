@@ -18,7 +18,7 @@ class BaseRowFormatter
 
     }
 
-    function format(){
+    function format($name=''){
      
         // if($this->row->image){
         //     $this->row->image =" Image Here";
@@ -28,12 +28,14 @@ class BaseRowFormatter
 
 
     function render($name=''){
-        $this->format();
+        $this->format($name);
         if($name!=''){
              return $this->row->{$name} ;
         }
         else{
-            return $this->row  ;
+            foreach($this->row as $name=>$value)
+                 $this->format($name);
+            return   $this->row;
         }
     }
 

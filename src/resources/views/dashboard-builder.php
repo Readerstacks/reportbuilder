@@ -1,92 +1,24 @@
-<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
-<script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/8.1.0/gridstack-all.min.js" integrity="sha512-Yu/575sLsJNIParTS2bKHVRwUHPmFiwtQ7ZK6RZ9GtGS8Pn3lqzij0d3akUEO5NdiXFrNBa1Bwpw6T8oaHI1Vg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/gridstack.js/8.1.0/gridstack.min.css" integrity="sha512-Sp5X7gkrXd6GP4ILw5J981IMw/pfsg65BjhYBsy2oNxUKvRULyoJVw377OEGf3+soo7LI6mfIbTks6SS6FV5SA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="<?php echo url('/public/ReportBuilder/script.js') ?>"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js" integrity="sha512-05P5yOM5/yfeUDgnwTL0yEVQa0Cg6j3alVSbWSQtBxz24fERIyW3jeBdp7ZSHcgPMRYJWoa26IIWhJ2/UComLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/sql/sql.min.js" integrity="sha512-fb0A/RjJvLbWBSNDDNRUER4LHrkVQjlEs3a2myQH047y9+I6wZAZOboHn+EA7ZcEcVwSiH3okO/+XzMlGPqcow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/addon/hint/sql-hint.min.js" integrity="sha512-Pue0eeX9BJ4IA+BRNDOFwhQmxPjXIHiHOsvHNc9dQ+3J43swbPQDT9gwC8lzE1TTjR8iIxOd+lNiv4oTBRWqYw==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/addon/hint/show-hint.min.css" integrity="sha512-W/cvA9Wiaq79wGy/VOkgMpOILyqxqIMU+rkneDUW2uqiUT53I6DKmrF4lmCbRG+/YrW0J69ecvanKCCyb+sIWA==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-<script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/addon/hint/show-hint.min.js" integrity="sha512-4+hfJ/4qrBFEm8Wdz+mXpoTr/weIrB6XjJZAcc4pE2Yg5B06aKS/YLMN5iIAMXFTe0f1eneuLE5sRmnSHQqFNg==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/theme/base16-dark.min.css" integrity="sha512-CNZkbIVu/G4dB3YpFIZgMtE45vHp/QocgMbf6jg+DFFPLN3emncIob8ubKANmsGQ8JsnzzSVTj7WrFrnx6EgXQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
-
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+<script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
-<style>
-    #main{
-        display: flex;
-        flex-direction: row
-    }
-    .cls70{
-        width: 83%;
-        float: left
-    }
-    .cls30{
-        width: 15%
-    }
-    .head-title{
-        margin:20px 0
-    }
-    #app_layout{
-        display: flex;
-         
-    }
-    .footer-sticky{
-        float: right
 
-    }
-    .footer-sticky .btn{
-        margin: 0.25rem 0.125rem;
-        display: flex;
-        flex-direction: column;
-    }
-    #metabase{
-        display: flex;
-        flex-direction: column;
-        width: 70%;
-
-    }
-    #settings{
-        width:    30%;
-        height: 210px;
-        overflow-x:auto;
-        border:1px solid
-    }
-    
-    .metabase_filters .colin{
-        padding: 20px;
-        /* padding-top: 20px; */
-        
-        width: 100%
-    }
-    
-    .colin {
-        float: left;
-        margin-right: 10px
-    }
+<style type="text/css">
+  .grid-stack { background: white; }
+  .cls70{width:100%}
+  .grid-stack-item-content { background-color: #18BC9C; }
 </style>
+
+ 
  
 <div id="app" class='container-fluid'>
 <div class="  head-title">
-Title : <input placeholder="Report name"    v-model="report_title" /> 
-<?php
-$database = config('database');
-$default = $database['default'];
-$connections = $database['connections'];
-
-
-?>
-Connection : <select v-model='connection'>
-<?php 
-foreach($connections as $name=>$connection)
-{
-?>
-    <option   ><?php echo $name; ?></option>
-<?php }
-?>
-</select>
+Title : <input placeholder="Dashboard name"    v-model="dashboard_title" /> 
+ 
+ 
 </div>
  
     
@@ -94,32 +26,16 @@ foreach($connections as $name=>$connection)
             
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                     <div class="offcanvas-header">
-                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Layout</h5>
+                        <h5 class="offcanvas-title" id="offcanvasExampleLabel">Report</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="offcanvas" aria-label="Close"></button>
                     </div>
                     <div class="offcanvas-body">
-                        <select  v-model="layout" >
-                                <option :value="name" v-for='(value, name ) of settings.layouts'> 
-                                {{name}} 
-                                </option>
-                            </select>
-                            <div v-if="settings.layouts &&  settings.layouts[layout] && settings.layouts[layout]['settings']">  
-                                    Layout Settings
-                                    <br>
-                                    <div  v-for="(setting,sname) of settings.layouts[layout]['settings']">
-                                    <span> {{sname}} : </span>
-                                    <template v-if='typeof setting==="string"'>
-                                       <input v-model="settings.layouts[layout]['settings'][sname]"  type='text' />
-                                    </template>
-                                    <template v-if='typeof setting!=="string"'>
-                                       <select v-model="setting.value"   >
-                                       <option v-for="item of setting.options" >{{item}}</option>
-                                       </select>
-                                    </template>
-                                    </div>
-
-
+                     
+                            <div   v-for="report of reports">
+                                 {{report.title}} 
+                                 <button @click="addToDashboard(report)">Add</button>
                             </div>
+                            
                         </div>
                 </div>
 
@@ -130,8 +46,9 @@ foreach($connections as $name=>$connection)
                     </div>
                     <div class="offcanvas-body">
                         <div class="metabase_filters" >
+                            <button type="button" class="btn btn-primary"  @click='addVariables()'>Add New</button>
                             <div class="colin" v-for="(k,inp) of vars"> 
-                            
+                                {{k}}, {{inp}}
                                 <span>{{k.title}} : </span>
                                 
                                 <br> <input :placeholder="k.title"    v-model="k.title" />
@@ -172,6 +89,17 @@ foreach($connections as $name=>$connection)
                                 Required:   
                                 <br>  <select v-model="k.required" ><option value='1'> Yes</option> <option value='0'>No</option></select>
                                 <br>
+
+                                Mapping: 
+
+                                <br>
+                                <div v-for='widget of items'  >
+                                    {{widget.title}}  
+                                    <select v-model='widget.mappers[inp]' > <option v-for='(filter,filter_name) of widget.filters'>{{filter_name}}</option>
+                                    </select>
+                                </div>
+                                <br>
+
                                 
                             </div>
                         </div> 
@@ -216,14 +144,17 @@ foreach($connections as $name=>$connection)
                     </div>
                 </div>   
                 
-                <div class="metabase_editor">
-            
-                    <textarea    id='queryeditor' > 
-                  
-                </textarea> 
-            
-                
-                </div>
+                    <div class='grid-stack' style='height:500px'> 
+                        <div v-for="(w, indexs) in items" class="grid-stack-item" :gs-x="w.x" :gs-y="w.y" :gs-w="w.w" :gs-h="w.h"
+                            :gs-id="w.sid" :id="w.sid" :key="w.sid">
+                            <div class="grid-stack-item-content">
+                                <button @click="remove(w)">remove</button>
+                                <iframe :src='url+"/report/"+w.uid+"?hide_filters=true"'   frameborder="0"
+ style="position: relative; height: 90%; width: 100%;" >
+                                </iframe>
+                            </div>
+                        </div>
+                    </div>  
             </div>
            <Div class='settingsbtn cls30'>
            <div class='footer-sticky'>
@@ -248,18 +179,9 @@ foreach($connections as $name=>$connection)
                  
             
 
-    <div  style="width:100%" id='output'>
-                
-                <div id="filters" >
-                </div>
-            
-                <div  id="outpuhtml" >
-                </div>
-    </div>
+  
     
 </div>
-     
- 
 
 <script>
     let url ="<?php echo url("report-manager"); ?>"
@@ -268,76 +190,79 @@ foreach($connections as $name=>$connection)
         createApp,
         h
     } = Vue
+ 
     createApp({
         components: {},
         data() {
             return {
-                connection:'<?php echo $default; ?>',
+                
                 app: null,
+                reports:[],
                 message: 'Hello Vue!',
                 vars: {},
+                items:[],
                 json: {},
                 share:{url:"",visibility:"Public",token:""},
                 settings:{},
                 filters_html:"",
-                layout:'table',
-                report_title:"Untitled",
+                
+                dashboard_title:"Untitled",
                 html:"",
-                report_id:<?php echo request()->get("reportId",0) ?>,
-                sql: ``,
+                url:url,
+                dashboard_id:<?php echo request()->get("dashboardId",0) ?>,
+             
                 // editor:null
             }
         },
         mounted:function(){
-              this.editor=CodeMirror.fromTextArea(document.getElementsByTagName("textarea")[0], {
-        mode: "text/x-mysql",
-        lineNumbers: true,
-        theme:'base16-dark',    
-        extraKeys: {"Ctrl-Space": "autocomplete"}, // To invoke the auto complete
-        hint: CodeMirror.hint.sql,
-        hintOptions: {
-            tables: {
-                "table1": [ "col_A", "col_B", "col_C" ],
-                "table2": [ "other_columns1", "other_columns2" ]
-            }
-        }
-}); 
-this.editor.on('change', editor => {
- this.sql = this.editor.getValue();
-   this.findVars()
-});
-setTimeout(()=>{
- this.findVars()
-},1000)
- 
-            this.ajax(url+"/get-settings").then((data)=>{
-                for(var lt in data.layouts){
-                        data.layouts[lt]['title']=lt;
-                 }
+            
+            var items = [
+    // {content: 'my first widget'}, // will default to location (0,0) and 1x1
+    // {w: 2, content: 'another longer widget!'} // will be placed next at (1,0) and 2x1
+  ];
+  
+    this.grid = GridStack.init();
+    this.grid.load(this.items);
+    this.grid.on("dragstop", function (event, element) {
+              const node = element.gridstackNode;
+            //   info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
+    });
+            
+    this.grid.on('change', onChange);
+    function onChange(event, changeItems) {
+            updateInfo();
+            // update item position
+            changeItems.forEach(item => {
+              var widget = this.items.value.find(w => w.id == item.id);
+              if (!widget) {
+                alert("Widget not found: " + item.id);
+                return;
+              }
+              widget.x = item.x;
+              widget.y = item.y;
+              widget.w = item.w;
+              widget.h = item.h;            
+            });
+          }
+  this.ajax(url+"/get-settings").then((data)=>{
+           
                  this.settings =data;
-                 if(this.report_id>0){
-                this.ajax(url+"/get-report-detail?reportId="+this.report_id).then((data)=>{
-                    this.report_title       = data.title;
-                    if(data.connection)
-                    this.connection         = data.connection;
-                    this.sql                = data.sql_query;
-                    this.vars               = JSON.parse(data.filters);
+                });
+            this.ajax(url+"/get-all-reports").then((data)=>{
+           
+                       this.reports =data.data
+                console.log("this.reports",data)
+                //  this.settings =data;
+                 if(this.dashboard_id>0){
+                this.ajax(url+"/get-dashboard?dashboardId="+this.dashboard_id).then((data)=>{
+                    this.dashboard_title       = data.title;
+                   
+                    
                     this.share.visibility   = data.visibility || "Public";
-                    this.share.url          = '<?php echo url("report-manager/report/"); ?>/'+data.uuid_token;
+                    this.share.url          = '<?php echo url("report-manager/dashboard/"); ?>/'+data.uuid_token;
                     this.share.token        = data.token || "";
-                    this.editor.setValue(this.sql);
-                    this.findVars()
-                    let layout= JSON.parse(data.layout);
-                    for(let lt in this.settings.layouts){
-                        console.log("this.settings.layouts",layout,lt)
-                        if(layout["title"]==lt)
-                        { 
-                            this.layout = layout["title"];
-                            this.settings.layouts[lt]=layout;
-                        }
-                    }
-                    // this.layout =data.layout;
-                    this.report_id = data.id;
+                      
+                    this.dashboard_id = data.id;
 
                 })
                 }      
@@ -352,6 +277,57 @@ setTimeout(()=>{
                     return data.json();
                 });
             },
+            
+            addToDashboard:function (report){  
+                  const node = {sid:"w_"+report.id,id:report.id,title:report.title,
+                    mappers:{},
+                    uid:report.uuid_token,filters:JSON.parse(report.filters), 
+                    x: 0, y: 0, w: 2, h: 2 };
+                    
+        //          grid.addWidget(node);
+        
+                    this.items.push(node);
+                    setTimeout(()=>{
+                        this.grid.makeWidget(node.sid);
+                    },1000)
+                    // Vue.nextTick(()=>{
+                      
+                    //     // updateInfo();
+                    // });
+    //             var html=`<div style="position: relative; height: 100%; width: 100%;" > 
+    //             <div style='height:10%'>Drag</div>
+    //             <iframe src='${url+"/report/"+report.uuid_token}?hide_filters=true'   frameborder="0"
+    // style="position: relative; height: 90%; width: 100%;" /><div>`  ;
+    //             this.grid.addWidget({x:0, y:0, w:4, content: html});
+            },
+             remove:function(widget) {
+            var index = this.items.findIndex(w => w.id == widget.id);
+            this.items.splice(index, 1);
+            const selector = `#${widget.sid}`;
+            this.grid.removeWidget(selector, false);
+            // updateInfo();            
+          },
+            addVariables:function(){
+                var capturedGroup=prompt("Enter name ?");
+                if(capturedGroup){
+                let filter= Object.keys(this.settings.filters)[0];
+                        let input = JSON.parse(JSON.stringify(this.settings.filters[filter]));
+                        
+                        this.vars[capturedGroup] = {
+                            type: filter,
+                            class: input.class,
+                            settings: input.settings,
+                            name: capturedGroup,
+                            title: capturedGroup.charAt(0).toUpperCase() + capturedGroup.slice(1),
+                            required: '0',
+                            value: "",
+                            hidden:'0'
+                        };
+                     
+                    }
+
+            },
+            
             buildInputs:function(input,e){
 
                 var formData = new FormData();
@@ -456,40 +432,31 @@ setTimeout(()=>{
                 var formData = new FormData();
         
                 formData.append('title', this.report_title);
-                formData.append('sql', this.sql);
+                // formData.append('items', JSON.stringify(this.items));
                 formData.append('filters', JSON.stringify(this.vars));
                 formData.append('connection',  (this.connection));
                 formData.append('visibility', this.share.visibility);
                 formData.append('token', this.share.token);
-                formData.append('layout', JSON.stringify(this.settings.layouts[this.layout]));
-                formData.append('report_id', this.report_id);
+                formData.append('layout', JSON.stringify(this.items));
+                formData.append('dashboard_id', this.dashboard_id);
                 
                 
 
         
-        ReportBuilder.ajax("/save-report",{method:"POST",body:formData}).then((data)=>{
-                    // this.share.visibility = data.visibility || "Public";
-                    // this.share.url      = "report-manager/report/"+data.id;
-                    // this.share.token    = data.token || "";
-                    this.report_id      =   data.data.id;
-                    this.share.url      = '<?php echo url("report-manager/report/"); ?>/'+data.data.uuid_token;
-                   
-             console.log("data",data)
-        })
+                ReportBuilder.ajax("/save-dashboard",{method:"POST",body:formData}).then((data)=>{
+                            
+                            this.dashboard_id      =   data.data.id;
+                            this.share.url      = '<?php echo url("report-manager/dashboard/"); ?>/'+data.data.uuid_token;
+                        
+                    console.log("data",data)
+                })
     },
 
    
 
             
             run:function(){
-                // ReportBuilder.init({
-                //     url:url,
-                //     el:'#outpuhtml',
-                //     elFilter:"#filters",
-                //     sql:this.sql,
-                //     vars:this.vars,
-                    
-                // })
+              
                 ReportBuilder.data.url=url
                 ReportBuilder.el("#outpuhtml")
                 ReportBuilder.elFilter("#filters")
@@ -497,27 +464,7 @@ setTimeout(()=>{
                 setConnection(this.connection)
                 .setReportCustom(this.sql,this.vars,JSON.stringify(this.settings.layouts[this.layout]))
                 .getReportCustom();
-                // var formData = new FormData();
-                // formData.append('filters', JSON.stringify(this.vars));
-                // formData.append('sql', this.sql);
-                // this.filters_html ='';
-                // this.ajax(url+"/get-report",{method:"POST",body:formData}).then((data)=>{
-                //        this.html=data['layout'].html; 
-                //        for(let name in data['inputs']){
-                //          this.filters_html += data['inputs'][name].html;
-                //          setTimeout(()=>{
-                //             this.loadScripts(data['inputs'][name].scripts,0,data['inputs'][name]['input_type'].split(" ").join("_"))
-                //             this.loadStyle(data['inputs'][name].styles,0,data['inputs'][name]['input_type'].split(" ").join("_"))  
-
-                //          },100)
-                //        }
-
-                //     //  document.getElementById("input_"+input.name).innerHTML=data.html;
-                //     //  this.loadScripts(data.scripts,0,e.target.value.split(" ").join("_"))
                 
-                //     //  this.loadStyle(data.styles,0,e.target.value.split(" ").join("_"))
-
-                //  })
             },
 
             filterResults:function(e){
@@ -567,18 +514,4 @@ setTimeout(()=>{
             
         }
     }).mount('#app')
-</script>
-<script>
-
-
- 
- 
-// CodeMirror.commands.autocomplete = function(cm) {
-//     CodeMirror.showHint(cm, CodeMirror.hint.sql, { 
-//         tables: {
-//             "table1": [ "col_A", "col_B", "col_C" ],
-//             "table2": [ "other_columns1", "other_columns2" ]
-//         }
-//     } );
-// }
-</script>
+</script> 

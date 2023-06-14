@@ -13,5 +13,10 @@ class ReportGenerator
         return view("ReportBuilder::generator");
 
     }
+    public function dashboardRender(){
+        return view("ReportBuilder::dashboard-builder");
 
+    }
+
+    
 }
