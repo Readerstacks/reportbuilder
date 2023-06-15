@@ -1,12 +1,12 @@
 <?php
 
- 
+use Aman5537jains\ReportBuilder\Inputs\SelectInput;
 
 return [
 
-  "builder_url"=>"report-manager/builder", //if defined as false means not accessbile
-  "dashboar_builder_url"=>"report-manager/dashboar-builder",
-  
+  "builder_url"=>["middleware"=>"","url"=>"report-manager/builder"], //if defined as false means not accessbile
+  "dashboar_builder_url"=>["middleware"=>"","url"=>"report-manager/dashboar-builder"],
+  "report_view_url"=>["middleware"=>"","url"=>"report-manager/report"],
   "layouts"=>[
         "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
@@ -35,9 +35,13 @@ return [
         "Number"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"number"]],
         "Date Range"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,"settings"=>["column"=>"created_at",'timepicker'=>"false"]],
         "Select 2 Picker"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\Select2PickerFilterInput::class,"settings"=>["url"=>"https://api.github.com/search/repositories?term=sel&_type=query&q=sel"]],
-        "Touchpoint"=>[
-            "class"=>\Aman5537jains\ReportBuilder\Inputs\TouchPointSelectInput::class,"settings"=>["model"=>\App\Models\TableManager::class]
-        ]
+        
+        "SelectInput"=>["class"=>SelectInput::class,"settings"=>[
+            "model"=>\App\Models\User::class,
+            "columnid"=>"id",
+            "columnvalue"=>"title",
+            "filterClass"=>SelectInput::class
+            ]]
     ],
     
     'scripts'=>[

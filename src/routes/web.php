@@ -1,15 +1,51 @@
 <?php
  
- if(config("reportconfig.builder_url"))
- Route::get(config("reportconfig.builder_url"), 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@builder');
-
- if(config("reportconfig.dashboar_builder_url"))
- Route::get(config("reportconfig.dashboar_builder_url"), 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@dashBoardBuilder');
+ if(config("reportconfig.builder_url")){
+    $conf=config("reportconfig.builder_url");
+    $url="report-manager/builder";
+    $middleware=[];
+    if(gettype($conf)=="array"){
+        $url=$conf['url'];
+        $middleware=$conf['middleware'];
+        
+    }
+    Route::get($url, 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@builder')->middleware($middleware);
+ }
+ if(config("reportconfig.dashboar_builder_url")){
+    $conf=config("reportconfig.dashboar_builder_url");
+    $url="report-manager/dashboar_builder_url";
+    $middleware=[];
+    if(gettype($conf)=="array"){
+        $url=$conf['url'];
+        $middleware=$conf['middleware'];
+        
+    }
+    Route::get( $url, 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@dashBoardBuilder')->middleware($middleware);;
  
+ } 
+ if(config("reportconfig.report_view_url")){
+    $conf=config("reportconfig.report_view_url");
+    $url="report-manager/report/{id}";
+    $middleware=[];
+    if(gettype($conf)=="array"){
+        $url=$conf['url']."/{id}";
+        $middleware=$conf['middleware'];
+        
+    }
+    Route::get($url, 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@showReport')->middleware($middleware);;
  
-Route::group(['namespace' => 'Aman5537jains\ReportBuilder\Http\Controllers',"prefix"=>"report-manager"], function(){
+ } 
+ $conf=config("reportconfig.builder_url");
  
-    Route::get('report/{id}', 'ReportManagerController@showReport');
+ $middleware=[];
+ if(gettype($conf)=="array"){
+   
+     $middleware=$conf['middleware'];
+     
+ }
+Route::group(['namespace' => 'Aman5537jains\ReportBuilder\Http\Controllers',"prefix"=>"report-manager","middleware"=>[ $middleware]], function(){
+ 
+    // Route::get('report/{id}', 'ReportManagerController@showReport');
     Route::get('dashboard/{id}', 'ReportManagerController@showDashboard');
     Route::get('get-all-reports', 'ReportManagerController@getAllRepors');
     

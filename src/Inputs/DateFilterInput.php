@@ -84,7 +84,9 @@ class DateFilterInput extends ReportInputs
        }
      
        function html(){
-           $html ="<span>{$this->config['title']} </span>:<input type='text' readonly class='datefilter_{$this->name}' name='{$this->name}' value='{$this->value}' />";
+           $html ="<div class='form-group'>
+           <label  >{$this->config['title']}</label>
+           <input type='text' autocomplete='off' readonly class='datefilter_{$this->name} form-control'   name='{$this->name}' value='{$this->value}' />";
            return  $html;
        } 
 
