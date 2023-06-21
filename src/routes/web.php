@@ -32,6 +32,7 @@
         $middleware=$conf['middleware'];
         
     }
+     
     Route::get($url, 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@showReport')->middleware($middleware);
  
  } 

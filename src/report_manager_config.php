@@ -4,9 +4,9 @@ use Aman5537jains\ReportBuilder\Inputs\SelectInput;
 
 return [
 
-  "builder_url"=>["middleware"=>"","url"=>"report-manager/builder"], //if defined as false means not accessbile
-  "dashboar_builder_url"=>["middleware"=>"","url"=>"report-manager/dashboar-builder"],
-  "report_view_url"=>["middleware"=>"","url"=>"report-manager/report"],
+  "builder_url"=>["middleware"=>[],"url"=>"report-manager/builder"], //if defined as false means not accessbile
+  "dashboar_builder_url"=>["middleware"=>[],"url"=>"report-manager/dashboar-builder"],
+  "report_view_url"=>["middleware"=>[],"url"=>"report-manager/report"],
   "layouts"=>[
         "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
