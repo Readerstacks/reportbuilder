@@ -32,7 +32,7 @@
         $middleware=$conf['middleware'];
         
     }
-    Route::get($url, 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@showReport')->middleware($middleware);;
+    Route::get($url, 'Aman5537jains\ReportBuilder\Http\Controllers\ReportManagerController@showReport')->middleware($middleware);
  
  } 
  $conf=config("reportconfig.builder_url");
@@ -43,7 +43,8 @@
      $middleware=$conf['middleware'];
      
  }
-Route::group(['namespace' => 'Aman5537jains\ReportBuilder\Http\Controllers',"prefix"=>"report-manager","middleware"=>[ $middleware]], function(){
+
+Route::group(['namespace' => 'Aman5537jains\ReportBuilder\Http\Controllers',"prefix"=>"report-manager","middleware"=> $middleware], function(){
  
     // Route::get('report/{id}', 'ReportManagerController@showReport');
     Route::get('dashboard/{id}', 'ReportManagerController@showDashboard');
