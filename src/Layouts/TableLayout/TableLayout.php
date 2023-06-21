@@ -11,10 +11,7 @@ class TableLayout extends BaseLayout
         
         $script = <<<SCRIPT
                 new DataTable('.tbl_report');
-                document.addEventListener("onReportUpdate",function(data){
-                  
-                    new DataTable('.tbl_report');
-                })
+                
                 (function($){
 
 
