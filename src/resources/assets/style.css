@@ -1,8 +1,194 @@
+#report_filter{
+    width: 100%;
+    float: left;
+}
+
 #report_filter .form-group{
     width:300px;
     float: left;
     padding-right: 15px;
 }
+
 #report_filter .form-group button{
     margin-top:31px
 }
+
+.btn-primary {
+    color: #fff;
+    background-color: #004B93!important;
+    border-color: #004B93!important;
+}
+
+.daterangepicker .ranges li.active {
+    background-color: #004b93!important;
+ }
+
+#filters h4 {
+    border-bottom: solid 1px #004b93;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+    color: #0e4d92;
+}
+
+.exports {   
+    clear: both;
+    margin: 0px 10px 10px 0px;
+    float: right;
+}
+
+.dataTables_filter{
+    padding-right: 10px;
+}
+
+.dataTables_filter input {
+    margin-left: 10px!important;
+}
+
+.dataTables_filter input:focus{
+    outline: none!important;
+}
+
+.dataTable th {    
+    background:none; 
+    color: #111; 
+    border:none!important;         
+}
+
+.tbl_report tr th{
+    border-bottom: solid 1px #111!important;
+    border-top: none!important;  
+    line-break: anywhere;
+   
+}
+
+.tbl_report td, .tbl_report th {
+    border: none;
+}
+
+.tbl_report tr td:nth-child(2) {
+  width: 200px;
+}
+
+.tbl_report tr td:nth-child(3) {
+  width: 200px;
+}
+
+.tbl_report th{
+    padding: 10px 5px!important;
+    font-size: 14px;
+    border-bottom: none!important;
+}
+
+.tbl_report tr td{
+    padding: 8px 5px;    
+    font-size: 14px;
+    border-bottom: #111!important;
+}
+
+.tbl_report tr:nth-last-child(2){
+    border-bottom: solid 1px #111!important;
+}
+
+.dataTables_paginate{
+    margin: 10px 15px 0px 0px;
+}
+
+.dataTables_paginate .paginate_button {
+    background: #fff!important;
+    border-radius: 50%!important;
+    border: solid 1px #d5d5d5!important;
+    margin: 0px 5px;
+    cursor: pointer;
+    transform: .2s;
+}
+
+.dataTables_paginate .current {
+    background: #d5d5d5!important;
+    border-radius: 50%!important;
+    border: solid 1px #d5d5d5!important;    
+}
+
+.dataTables_paginate .paginate_button:hover {
+    background: #d5d5d5!important;
+}
+
+.dataTables_paginate .previous{
+    border:none!important;
+    border-radius: inherit!important;
+    background: none!important;
+}
+
+.dataTables_paginate .previous:hover{
+    border-radius: 5px!important;
+}
+
+.dataTables_paginate .next{
+    border:none!important;
+    border-radius: inherit!important;
+    background: none!important;
+}
+
+.dataTables_paginate .next:hover{
+    border-radius: 5px!important;
+}
+
+
+#tbl_report_wrapper{
+    overflow-x: auto;
+}
+
+.tbl_report{
+    min-width: 1800px;
+}
+
+
+
+
+
+
+
+
+
+@media only screen and (max-width: 992px) {
+
+.exports{
+    float: left;
+    margin: 0px 0px 15px;
+}
+
+}
+
+
+@media only screen and (max-width: 600px) {
+
+#report_filter .form-group button {
+    margin-top: 0px!important;
+}
+
+#tbl_report_length{
+    text-align: left;
+}
+
+.dataTables_filter{
+    text-align: left!important;
+}
+
+.exports {
+    clear: both;
+    margin: 0px 0px 15px;
+    float: left;
+}
+
+}
+
+
+@media only screen and (max-width: 479px) {
+
+#filters h4 {
+    font-size: 18px;
+}
+
+
+}
+
+

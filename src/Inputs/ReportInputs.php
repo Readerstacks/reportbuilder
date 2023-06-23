@@ -36,9 +36,13 @@ class ReportInputs
           $this->value= $params[$this->name];
         }
         else{
-          $this->value= @$this->config['value'];
+       
+          $this->value=  $this->defaultValue();
         }
         //  $this->value=request()->get("parameters")+$this->name,@$this->config['value']);
+   }
+   function defaultValue(){
+    return isset($this->config['value']) && !empty($this->config['value']) ? $this->config['value']:"";
    }
    function scripts(){
      return [];

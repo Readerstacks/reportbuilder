@@ -35,13 +35,16 @@ return [
     "filter_inputs"=>[
         "Input"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=> 
         [
-            "type"=>"dropdown","options"=>["text","number",'date','datetime','color','email','password'],"value"=>"text"]
-        ]],
+            "type"=>"dropdown","options"=>["text","number",'date','datetime','color','email','password'],"value"=>"text"],
+            
+        ] ,"defaultValue"=>""],
         "Number"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"number"]],
         "Date Range"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,
         "settings"=>["column"=>"created_at",'timepicker'=>"false",
-        "initial_value"=> 
-        ["type"=>"Date Range"]
+        "default"=>[  "type"=>"dropdown","options"=>["Today","Last 7 Days",'This Month','Last Month','Last 30 Days',"None"],"value"=>"This Month"],
+        // "initial_value_class"=> \Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,
+        // "initial_value_method"=> "value",
+         
         
         ]],
         "Select 2 Picker"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\Select2PickerFilterInput::class,"settings"=>["url"=>"https://api.github.com/search/repositories?term=sel&_type=query&q=sel"]],

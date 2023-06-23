@@ -5,6 +5,29 @@ use Illuminate\Support\Facades\Log;
 
 class DateFilterInput extends ReportInputs
 { 
+      function defaultValue(){
+       $default=$this->settings['default']['value'];
+        if( $default=="None"){
+          return isset($this->config['value']) && !empty($this->config['value']) ? $this->config['value']:"";
+        }
+        else if( $default=="This Month"){
+          return date("Y-m-01")." - ".date("Y-m-t");
+        }
+        else if( $default=="Today"){
+          return date("Y-m-d");
+        }
+        else if( $default=="Last 7 Days"){
+          return date("Y-m-d",strtotime("-7 days"))." - ".date("Y-m-d");
+        }
+        else if( $default=="Last Month"){
+          return date("Y-m-01",strtotime("-1 month"))." - ".date("Y-m-t",strtotime("-1 month"));
+        }
+        else if( $default=="Last 30 Days"){
+          return date("Y-m-d",strtotime("-1 month"))." - ".date("Y-m-d");
+        }
+
+        return "";
+      }
 
       function queryValue(){
       
@@ -86,7 +109,9 @@ class DateFilterInput extends ReportInputs
             ];
        }
      
+     
        function html(){
+
            $html ="<div class='form-group'>
            <label  >{$this->config['title']}</label>
            <input type='text' autocomplete='off' readonly class='datefilter_{$this->name} form-control'   name='{$this->name}' value='{$this->value}' /></div>";

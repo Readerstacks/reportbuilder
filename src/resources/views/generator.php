@@ -168,7 +168,7 @@ foreach($connections as $name=>$connection)
                                 <br>  <select v-model="k.hidden" ><option value='1'> Yes</option> <option value='0'>No</option></select>
                                 <br>
                                 <br>
-                                Default Value:   
+                                Default Value:    
                                 <br>  <input placeholder="value"    v-model="k.value" />
                                 <br>
                                 Required:   
@@ -559,7 +559,7 @@ setTimeout(()=>{
                             name: capturedGroup,
                             title: capturedGroup.charAt(0).toUpperCase() + capturedGroup.slice(1),
                             required: '0',
-                            value: "",
+                            value: input.defaultValue || "",
                             hidden:'0'
                         };
                     }
