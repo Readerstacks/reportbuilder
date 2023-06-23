@@ -6,7 +6,7 @@ use Illuminate\Support\Facades\Log;
 class DateFilterInput extends ReportInputs
 { 
       function defaultValue(){
-       $default=$this->settings['default']['value'];
+       $default = isset($this->settings['default']) && $this->settings['default']['value'] ?$this->settings['default']['value']:"";
         if( $default=="None"){
           return isset($this->config['value']) && !empty($this->config['value']) ? $this->config['value']:"";
         }
