@@ -330,11 +330,16 @@ setTimeout(()=>{
                     this.findVars()
                     let layout= JSON.parse(data.layout);
                     for(let lt in this.settings.layouts){
-                        console.log("this.settings.layouts",layout,lt)
+                        
                         if(layout["title"]==lt)
                         { 
                             this.layout = layout["title"];
-                            this.settings.layouts[lt]=layout;
+                           
+                            if(this.settings.layouts[lt]['settings'] && layout['settings'] ){
+                                for(let k in  layout['settings']){
+                                    this.settings.layouts[lt]['settings'][k]=layout['settings'][k];
+                                }
+                            }
                         }
                     }
                     // this.layout =data.layout;

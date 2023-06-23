@@ -282,7 +282,9 @@ class TableLayout extends BaseLayout
         </div>
         <table id="tbl_report" class="tbl_report table">';
         $table .=  '<thead><tr>';
-  
+        $colFormatter  =  isset($this->layoutSettings['column_formatter_class']) && !empty($this->layoutSettings['column_formatter_class'])?$this->layoutSettings['column_formatter_class']:"";
+        $colFormatterMethod  =  isset($this->layoutSettings['column_formatter_method']) && !empty($this->layoutSettings['column_formatter_method'])?$this->layoutSettings['column_formatter_method']:"";
+
         foreach($this->reportBuilder->columns as $column){
 
             $table.=   '<th>'.$column->render().' </th>';
@@ -291,8 +293,13 @@ class TableLayout extends BaseLayout
         foreach($this->reportBuilder->rows as $row){
             $table.=   '<tr>';
             foreach($this->reportBuilder->columns as $column){
-
-                $table.=   '<td>'.$row->render($column->name()).' </td>';
+                $value = $row->render($column->name());
+                if( $colFormatter!='' && $colFormatterMethod!=''){
+                    $value=$colFormatter::$colFormatterMethod($column->name(),$value,$row);
+                }
+                
+            
+                $table.=   '<td>'.$value.' </td>';
             }
             $table.=   '</tr>';
         }

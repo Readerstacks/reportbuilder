@@ -3,12 +3,15 @@ use \Aman5537jains\ReportBuilder\Inputs\SelectInput;
  
 
 return [
-
+  
   "builder_url"=>["middleware"=>[],"url"=>"report-manager/builder"], //if defined as false means not accessbile
   "dashboar_builder_url"=>["middleware"=>[],"url"=>"report-manager/dashboar-builder"],
   "report_view_url"=>["middleware"=>[],"url"=>"report-manager/report"],
   "layouts"=>[
-        "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
+        "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout","settings"=>[
+            "column_formatter_class"=>Aman5537jains\ReportBuilder\Formatters\TableColValueFormatter::class,
+            "column_formatter_method"=>"format"
+        ]],
         // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         "Number"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
     
