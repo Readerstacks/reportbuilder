@@ -1,3 +1,8 @@
 #report_filter .form-group{
-    width:300px
+    width:300px;
+    float: left;
+    padding-right: 15px;
+}
+#report_filter .form-group button{
+    margin-top:31px
 }
