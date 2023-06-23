@@ -1,6 +1,6 @@
 <?php
-
-use Aman5537jains\ReportBuilder\Inputs\SelectInput;
+use \Aman5537jains\ReportBuilder\Inputs\SelectInput;
+ 
 
 return [
 
@@ -11,9 +11,10 @@ return [
         "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         "Number"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
+    
         'Chart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\ChartLayout","settings"=>["type"=>"pie","chart_label"=>"Users","label_column"=>"labels","data_column"=>"data","colors_column"=>"colors"]],
         'CanvasChart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\CanvasChartLayout","settings"=>["type"=>[
-                        "type"=>"dropdown","options"=>["column","pie",'splineArea','doughnut','line'],"value"=>"column"
+                        "type"=>"dropdown","options"=>["column",'bar',"pie",'splineArea','doughnut','line'],"value"=>"column"
                         ],"chart_label"=>"Users","label_column"=>"labels","data_column"=>"data","colors_column"=>"colors"]
                     ],
         'InestorTouchpoint'=>[
@@ -40,7 +41,8 @@ return [
             "model"=>\App\Models\User::class,
             "columnid"=>"id",
             "columnvalue"=>"title",
-            "filterClass"=>SelectInput::class
+            "filterClass"=>SelectInput::class,
+            "filterMethod"=>"filter"
             ]]
     ],
     

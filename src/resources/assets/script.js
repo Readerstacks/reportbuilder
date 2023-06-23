@@ -51,7 +51,7 @@ var ReportBuilder = {
                       }
         }
     },
-    loadScripts:function   (scripts,index,name)  {
+    loadScripts:function   (scripts,index,name,cb)  {
         var scln=Object.keys(scripts).length;
         console.log(scln,index)
         if(index<scln){
@@ -68,7 +68,7 @@ var ReportBuilder = {
                           my_awesome_script.setAttribute('src',script['src']);
                            document.head.appendChild(my_awesome_script);
                             my_awesome_script.onload= ()=>{
-                                this.loadScripts(scripts,index+1,name);
+                                this.loadScripts(scripts,index+1,name,cb);
                             }
                            
                           
@@ -78,9 +78,12 @@ var ReportBuilder = {
                           if(!script['src']){
                             eval( script['text']);
                           }
-                          else
-                            this.loadScripts(scripts,index+1,name);
+                          
+                            this.loadScripts(scripts,index+1,name,cb);
                       }
+        }
+        else{
+        cb();
         }
     },
     loader:function(status){
@@ -215,7 +218,7 @@ var ReportBuilder = {
        
         return false;
     },
-    handleReportData:function(data){
+    handleReportData:async  function (data){
         
         var filterHtml=document.querySelector( this.data.elFilter);
         filterHtml.innerHTML='';
@@ -224,25 +227,41 @@ var ReportBuilder = {
      
         this.data.html=data['layout'].html; 
         setTimeout(()=>{
-            this.loadScripts(data['layout'].scripts,0,"main_html_script")
+            this.loadScripts(data['layout'].scripts,0,"main_html_script",()=>{})
             this.loadStyle(data['layout'].styles,0,'main_html_style')  
         },100)
         for(let name in data['inputs']){
             form+=data['inputs'][name].html ;
-            // document.querySelector( this.data.elFilter).innerHTML += data['inputs'][name].html;
-            setTimeout(()=>{
-                this.loadScripts(data['inputs'][name].scripts,0,data['inputs'][name]['input_type'].split(" ").join("_"))
-                this.loadStyle(data['inputs'][name].styles,0,data['inputs'][name]['input_type'].split(" ").join("_"))  
-            },100)
+            
         }
-        if(Object.keys(data['inputs']).length>0)
+           if(Object.keys(data['inputs']).length>0)
         form+='<button class="btn btn-success" type="button" onclick="ReportBuilder.handleSubmit()">Search</button></form>'
        
        filterHtml.insertAdjacentHTML( 'beforeend',form);
+
      
        document.querySelector( this.data.el).innerHTML =this.data.html;
+         for(let name in data['inputs']){
+            
+            // document.querySelector( this.data.elFilter).innerHTML += data['inputs'][name].html;
+          
+           await this.loadPromisify(data,name);
+         
+        }
+     
        
         
     },
+    loadPromisify:function(data,name){
+     return new Promise((resolve,reject)=>{
+      setTimeout(()=>{
+      
+                this.loadScripts(data['inputs'][name].scripts,0,data['inputs'][name]['input_type'].split(" ").join("_"),()=>{
+                   resolve();
+                 })
+                this.loadStyle(data['inputs'][name].styles,0,data['inputs'][name]['input_type'].split(" ").join("_"))  
+            },100)
+     })
+    }
 }
 // ReportBuilder.getReportCustom

@@ -4,7 +4,7 @@ namespace Aman5537jains\ReportBuilder\Inputs;
 use Aman5537jains\ReportBuilder\Inputs\ReportInputs;
 use Illuminate\Support\Facades\Log;
 
-class SelectInput extends ReportInputs
+class SelectInputXyz extends ReportInputs
 { 
 
       function queryValue(){
@@ -27,7 +27,7 @@ class SelectInput extends ReportInputs
       
        }
 
-       function filter($input,$model){
+       public static function filter($input,$model){
         return $model;
        }
 
@@ -43,14 +43,15 @@ class SelectInput extends ReportInputs
         $colid=$this->settings['columnid'];
         $columnvalue=$this->settings['columnvalue'];
         $filterClass = $this->settings['filterClass'];
+        $filterMethod = $this->settings['filterMethod'];
         if($filterClass!=''){
-             $class = new $filterClass();
-             $model = $class->filter($this,$model);
+             
+             $model = $filterClass::$filterMethod($this,$model);
         }
         $data = $model->get();
         $options='';
         foreach($data as $record){
-            $selected=$this->value==$record->id?"selected":"";
+            $selected=$this->value==$record->$colid?"selected":"";
             $options.=" <option  $selected  value='{$record->$colid}'>{$record->$columnvalue}</option>";
         }
 
