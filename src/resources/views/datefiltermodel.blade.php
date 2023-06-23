@@ -66,7 +66,7 @@
         <a class="close" href="#">&times;</a>
         <div class="content">
              @foreach ($columns as $name=>$col)
-                    <input  name="export_col[{{$col}}]" value='{{$name}}' class='checkedexport' type='checkbox' /> {{$col}}  <br>
+                    <input  name="export_col[{{$col}}]" value='{{$name}}' class='checkedexport' type='checkbox' checked/> {{$col}}  <br>
 
              @endforeach
             

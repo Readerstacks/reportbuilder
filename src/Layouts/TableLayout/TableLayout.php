@@ -221,6 +221,7 @@ class TableLayout extends BaseLayout
                         }
                     });
                     $("#tbl_report").tableHTMLExport({type:'pdf',filename:'$filename.pdf',ignoreColumns:".ignoreCol"});
+                    $(".ignoreCol").removeClass("ignoreCol");
                   })
         SCRIPT;
 
