@@ -214,7 +214,13 @@ class TableLayout extends BaseLayout
                     $("#tbl_report").tableHTMLExport({type:'csv',filename:'$filename.csv'});
                   })
                   $('#exportpdf').on('click',function(){
-                    $("#tbl_report").tableHTMLExport({type:'pdf',filename:'$filename.pdf'});
+                    $('.checkedexport').each(function(k,v){
+                        if(!v.checked){
+                            $("[data-col='"+v.value+"']").addClass("ignoreCol");
+                            console.log(k,v.checked,v.value,$("[data-col='"+v.value+"']"))
+                        }
+                    });
+                    $("#tbl_report").tableHTMLExport({type:'pdf',filename:'$filename.pdf',ignoreColumns:".ignoreCol"});
                   })
         SCRIPT;
 
@@ -248,6 +254,16 @@ class TableLayout extends BaseLayout
         ];
     }
 
+    function exportModel($columns,$hide_columns_arr){
+        $allColumns=[];
+        foreach($columns as $column){
+           
+            if(!in_array($column->name(),$hide_columns_arr))
+            $allColumns[$column->name()]=$column->render();
+        }
+        return view("ReportBuilder::datefiltermodel",['columns'=>$allColumns])->render();
+    }
+
     function render(){
         
         if($this->reportBuilder->error==''){
@@ -258,6 +274,13 @@ class TableLayout extends BaseLayout
         //     $table.=$var['obj']->render();
 
         // }
+        $hide_columns  =  isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns'])?$this->layoutSettings['hide_columns']:"";
+        $hide_columns_arr=[];
+        if(!empty( $hide_columns)){
+            $hide_columns_arr = explode(",", $hide_columns);
+
+        }
+        $exportButton= $this->exportModel($this->reportBuilder->columns,$hide_columns_arr);
         $table .=  ' 
         <style>
         .tbl_report{
@@ -282,23 +305,20 @@ class TableLayout extends BaseLayout
         </style>
         <div class="exports">
             <button id="export" class="btn btn-primary">Export Sheet</button>
-            <button id="exportpdf" class="btn btn-secondary">Export PDF</button>
+            '.$exportButton.'
+           
         </div>
         <table id="tbl_report" class="tbl_report table">';
         $table .=  '<thead><tr>';
         $colFormatter  =  isset($this->layoutSettings['column_formatter_class']) && !empty($this->layoutSettings['column_formatter_class'])?$this->layoutSettings['column_formatter_class']:"";
         $colFormatterMethod  =  isset($this->layoutSettings['column_formatter_method']) && !empty($this->layoutSettings['column_formatter_method'])?$this->layoutSettings['column_formatter_method']:"";
-        $hide_columns  =  isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns'])?$this->layoutSettings['hide_columns']:"";
-        $hide_columns_arr=[];
-        if(!empty( $hide_columns)){
-            $hide_columns_arr = explode(",", $hide_columns);
-
-        }
+     
+       
          
         foreach($this->reportBuilder->columns as $column){
            
             if(!in_array($column->name(),$hide_columns_arr))
-            $table.=   '<th>'.$column->render().' </th>';
+            $table.=   '<th data-col="'.$column->name().'">'.$column->render().' </th>';
         }
         $table .=  '</tr><thead><tbody>';
         foreach($this->reportBuilder->rows as $row){
