@@ -10,7 +10,8 @@ return [
   "layouts"=>[
         "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout","settings"=>[
             "column_formatter_class"=>Aman5537jains\ReportBuilder\Formatters\TableColValueFormatter::class,
-            "column_formatter_method"=>"format"
+            "column_formatter_method"=>"format",
+            "hide_columns"=>""
         ]],
         // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         "Number"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
@@ -37,7 +38,12 @@ return [
             "type"=>"dropdown","options"=>["text","number",'date','datetime','color','email','password'],"value"=>"text"]
         ]],
         "Number"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\TextInput::class,"settings"=>["type"=>"number"]],
-        "Date Range"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,"settings"=>["column"=>"created_at",'timepicker'=>"false"]],
+        "Date Range"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\DateFilterInput::class,
+        "settings"=>["column"=>"created_at",'timepicker'=>"false",
+        "initial_value"=> 
+        ["type"=>"Date Range"]
+        
+        ]],
         "Select 2 Picker"=>["class"=>\Aman5537jains\ReportBuilder\Inputs\Select2PickerFilterInput::class,"settings"=>["url"=>"https://api.github.com/search/repositories?term=sel&_type=query&q=sel"]],
         
         "SelectInput"=>["class"=>SelectInput::class,"settings"=>[

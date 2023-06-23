@@ -154,6 +154,7 @@ foreach($connections as $name=>$connection)
                                         <input v-model='k.settings[sname]'  type='text' />
                                         </template>
                                         <template v-if='typeof setting!=="string"'>
+                                            
                                             <select v-model="setting.value"   >
                                             <option v-for="item of setting.options" >{{item}}</option>
                                             </select>

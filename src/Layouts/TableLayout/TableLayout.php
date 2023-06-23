@@ -8,7 +8,10 @@ class TableLayout extends BaseLayout
 
     public $rederer="server";
     function scripts(){
-        
+        $filename="data";
+        if(@$this->reportBuilder->report->object->title){
+            $filename=$this->reportBuilder->report->object->title;
+        }
         $script = <<<SCRIPT
                 new DataTable('.tbl_report');
                 
@@ -205,13 +208,13 @@ class TableLayout extends BaseLayout
                 })(jQuery);
         
                 $('#json').on('click',function(){
-                    $("#tbl_report").tableHTMLExport({type:'json',filename:'sample.json'});
+                    $("#tbl_report").tableHTMLExport({type:'json',filename:'data.json'});
                   })
                   $('#export').on('click',function(){
-                    $("#tbl_report").tableHTMLExport({type:'csv',filename:'sample.csv'});
+                    $("#tbl_report").tableHTMLExport({type:'csv',filename:'$filename.csv'});
                   })
                   $('#exportpdf').on('click',function(){
-                    $("#tbl_report").tableHTMLExport({type:'pdf',filename:'sample.pdf'});
+                    $("#tbl_report").tableHTMLExport({type:'pdf',filename:'$filename.pdf'});
                   })
         SCRIPT;
 
@@ -246,6 +249,7 @@ class TableLayout extends BaseLayout
     }
 
     function render(){
+        
         if($this->reportBuilder->error==''){
         $table=' ';
 
@@ -284,15 +288,26 @@ class TableLayout extends BaseLayout
         $table .=  '<thead><tr>';
         $colFormatter  =  isset($this->layoutSettings['column_formatter_class']) && !empty($this->layoutSettings['column_formatter_class'])?$this->layoutSettings['column_formatter_class']:"";
         $colFormatterMethod  =  isset($this->layoutSettings['column_formatter_method']) && !empty($this->layoutSettings['column_formatter_method'])?$this->layoutSettings['column_formatter_method']:"";
+        $hide_columns  =  isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns'])?$this->layoutSettings['hide_columns']:"";
+        $hide_columns_arr=[];
+        if(!empty( $hide_columns)){
+            $hide_columns_arr = explode(",", $hide_columns);
 
+        }
+         
         foreach($this->reportBuilder->columns as $column){
-
+           
+            if(!in_array($column->name(),$hide_columns_arr))
             $table.=   '<th>'.$column->render().' </th>';
         }
         $table .=  '</tr><thead><tbody>';
         foreach($this->reportBuilder->rows as $row){
             $table.=   '<tr>';
             foreach($this->reportBuilder->columns as $column){
+                if(in_array($column->name(),$hide_columns_arr))
+                {
+                    continue;
+                }
                 $value = $row->render($column->name());
                 if( $colFormatter!='' && $colFormatterMethod!=''){
                     $value=$colFormatter::$colFormatterMethod($column->name(),$value,$row);

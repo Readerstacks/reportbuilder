@@ -69,7 +69,7 @@ class DateFilterInput extends ReportInputs
               });
               $('.datefilter_{$this->name}').on('cancel.daterangepicker', function(ev, picker) {
               
-                $('.datefilter_{$this->name}').val('');
+                // $('.datefilter_{$this->name}').val('');
               });
             "
           ]

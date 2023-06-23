@@ -208,7 +208,8 @@ class ReportManagerController extends Controller
         ->setReportCustom([
             "variables"=>json_decode($filters,true),
             "query"=>  $sql,
-            "layout" =>json_decode($layout,true)
+            "layout" =>json_decode($layout,true),
+            "object"=>@$reportManager
         ])->build();
         $inputs=[];
         
