@@ -269,7 +269,10 @@ class TableLayout extends BaseLayout
         
         if($this->reportBuilder->error==''){
         $table=' ';
-
+        if(count($this->reportBuilder->rows)<=0){
+            return  view("ReportBuilder::no-data")->render();
+            
+        }
      
         // foreach($this->reportBuilder->report->variables  as $name=>$var){
         //     $table.=$var['obj']->render();
@@ -322,24 +325,26 @@ class TableLayout extends BaseLayout
             $table.=   '<th data-col="'.$column->name().'">'.$column->render().' </th>';
         }
         $table .=  '</tr><thead><tbody>';
-        foreach($this->reportBuilder->rows as $row){
-            $table.=   '<tr>';
-            foreach($this->reportBuilder->columns as $column){
-                if(in_array($column->name(),$hide_columns_arr))
-                {
-                    continue;
-                }
-                $value = $row->render($column->name());
-                if( $colFormatter!='' && $colFormatterMethod!=''){
-                    $value=$colFormatter::$colFormatterMethod($column->name(),$value,$row);
-                }
+        if(count($this->reportBuilder->rows)>0){
+            foreach($this->reportBuilder->rows as $row){
+                $table.=   '<tr>';
+                foreach($this->reportBuilder->columns as $column){
+                    if(in_array($column->name(),$hide_columns_arr))
+                    {
+                        continue;
+                    }
+                    $value = $row->render($column->name());
+                    if( $colFormatter!='' && $colFormatterMethod!=''){
+                        $value=$colFormatter::$colFormatterMethod($column->name(),$value,$row);
+                    }
+                    
                 
-            
-                $table.=   '<td>'.$value.' </td>';
+                    $table.=   '<td>'.$value.' </td>';
+                }
+                $table.=   '</tr>';
             }
-            $table.=   '</tr>';
         }
-        
+       
         $table.= "</tbody></table>";
         
 
