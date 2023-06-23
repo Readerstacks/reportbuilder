@@ -46,6 +46,7 @@ class SelectInput extends ReportInputs
         $filterMethod = $this->settings['filterMethod'];
         if($filterClass!=''){
              
+            $filterMethod=empty($filterMethod)?"filter":$filterMethod;
              $model = $filterClass::$filterMethod($this,$model);
         }
         $data = $model->get();
