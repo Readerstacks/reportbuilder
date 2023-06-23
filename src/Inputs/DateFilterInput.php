@@ -35,9 +35,7 @@ class DateFilterInput extends ReportInputs
           'moment'=>[
               'src'=>'https://cdn.jsdelivr.net/momentjs/latest/moment.min.js'
           ],
-          'daterangepicker'=>[
-              'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
-          ],
+         
           'daterangepicker'=>[
               'src'=>'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js'
           ],
@@ -54,7 +52,8 @@ class DateFilterInput extends ReportInputs
                   'Last 7 Days': [moment().subtract(6, 'days'), moment()],
                   'Last 30 Days': [moment().subtract(29, 'days'), moment()],
                   'This Month': [moment().startOf('month'), moment().endOf('month')],
-                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')]
+                  'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
+                 
                },       
                 locale: {
                   'format': 'YYYY-MM-DD',
@@ -67,6 +66,10 @@ class DateFilterInput extends ReportInputs
                 $('.datefilter_{$this->name}').val(start.format('YYYY-MM-DD')+' - '+ end.format('YYYY-MM-DD'))
                 
                 console.log( start.format('YYYY-MM-DD')  , end.format('YYYY-MM-DD'));
+              });
+              $('.datefilter_{$this->name}').on('cancel.daterangepicker', function(ev, picker) {
+              
+                $('.datefilter_{$this->name}').val('');
               });
             "
           ]
@@ -86,7 +89,7 @@ class DateFilterInput extends ReportInputs
        function html(){
            $html ="<div class='form-group'>
            <label  >{$this->config['title']}</label>
-           <input type='text' autocomplete='off' readonly class='datefilter_{$this->name} form-control'   name='{$this->name}' value='{$this->value}' />";
+           <input type='text' autocomplete='off' readonly class='datefilter_{$this->name} form-control'   name='{$this->name}' value='{$this->value}' /></div>";
            return  $html;
        } 
 

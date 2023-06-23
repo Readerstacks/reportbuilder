@@ -1,7 +1,7 @@
 <script src="https://unpkg.com/vue@3/dist/vue.global.js"></script>
 <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
 <script src="<?php echo url('/public/ReportBuilder/script.js') ?>"></script>
-<link src="<?php echo url('/public/ReportBuilder/style.css') ?>" />
+<link rel="stylesheet" href="<?php echo url('/public/ReportBuilder/style.css') ?>" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.js" integrity="sha512-05P5yOM5/yfeUDgnwTL0yEVQa0Cg6j3alVSbWSQtBxz24fERIyW3jeBdp7ZSHcgPMRYJWoa26IIWhJ2/UComLA==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/codemirror.min.css" integrity="sha512-uf06llspW44/LZpHzHT6qBOIVODjWtv4MxCricRxkzvopAlSWnTf6hpZTFxuuZcuNE9CBQhqE0Seu1CoRk84nQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 <script src="https://cdnjs.cloudflare.com/ajax/libs/codemirror/5.65.12/mode/sql/sql.min.js" integrity="sha512-fb0A/RjJvLbWBSNDDNRUER4LHrkVQjlEs3a2myQH047y9+I6wZAZOboHn+EA7ZcEcVwSiH3okO/+XzMlGPqcow==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>

@@ -235,8 +235,8 @@ var ReportBuilder = {
             
         }
            if(Object.keys(data['inputs']).length>0)
-        form+='<button class="btn btn-success" type="button" onclick="ReportBuilder.handleSubmit()">Search</button></form>'
-       
+           form+='<div class="form-group"><button type="button" class="btn btn-primary" onclick="ReportBuilder.handleSubmit()">Search</button></div></form>'
+               
        filterHtml.insertAdjacentHTML( 'beforeend',form);
 
      

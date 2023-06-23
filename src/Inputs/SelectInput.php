@@ -14,13 +14,13 @@ class SelectInput extends ReportInputs
        function scripts(){
          
         return [
-            'select2'=>[
-                'src'=>'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'
-            ],
-            'script'=>[
-                'text'=>"  
-                    $('.select2').select2( );
-                "]
+            // 'select2'=>[
+            //     'src'=>'https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js'
+            // ],
+            // 'script'=>[
+            //     'text'=>"  
+            //         $('.select2').select2( );
+            //     "]
            
           
         ];
@@ -62,7 +62,7 @@ class SelectInput extends ReportInputs
            <option value=''>Select {$this->config['title']} </option>
            $options
            
-           </select>";
+           </select></div>";
            return  $html;
        } 
 
