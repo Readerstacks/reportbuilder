@@ -4,7 +4,7 @@ namespace Aman5537jains\ReportBuilder\Inputs;
 use Aman5537jains\ReportBuilder\Inputs\ReportInputs;
 use Illuminate\Support\Facades\Log;
 
-class SelectInputXyz extends ReportInputs
+class SelectInput extends ReportInputs
 { 
 
       function queryValue(){
