@@ -203,33 +203,49 @@ class ReportManagerController extends Controller
     }
 
     function getReport($sql,$filters,$layout='table',$reportManager=null){
-        $report =   (new \Aman5537jains\ReportBuilder\ReportBuilder())
-        ->setConnection($reportManager->connection)
-        ->setReportCustom([
-            "variables"=>json_decode($filters,true),
-            "query"=>  $sql,
-            "layout" =>json_decode($layout,true),
-            "object"=>@$reportManager
-        ])->build();
-        $inputs=[];
-        
-        foreach($report->report->variables as $name=>$var)
-        {
-            $inpclass= $var['obj'];
-            $inputs[$name]=["input_type"=>$var['type'],"scripts"=>$inpclass->scripts(),"styles"=>$inpclass->styles(),"html"=>$inpclass->render()];
+        try{
+            $report =   (new \Aman5537jains\ReportBuilder\ReportBuilder())
+                ->setConnection($reportManager->connection)
+                ->setReportCustom([
+                    "variables"=>json_decode($filters,true),
+                    "query"=>  $sql,
+                    "layout" =>json_decode($layout,true),
+                    "object"=>@$reportManager
+                ])->build();
+                $inputs=[];
+                
+                foreach($report->report->variables as $name=>$var)
+                {
+                    $inpclass= $var['obj'];
+                    $inputs[$name]=["input_type"=>$var['type'],"scripts"=>$inpclass->scripts(),"styles"=>$inpclass->styles(),"html"=>$inpclass->render()];
+                }
+                
+                return [
+                    'sql'   => config("debug") ? $report->sql : "",
+                    "inputs"=> $inputs,
+                    "title" => @$reportManager->title,
+                    "layout"=>[
+                                "scripts"   => $report->layout->scripts(),
+                                "json"      => [],
+                                "styles"    => $report->layout->styles(),
+                                "html"      => $report->layout->render()
+                            ]
+                ];
+        }
+        catch(\Exception $e){
+            return [
+                'sql'   => '',
+                "inputs"=> [],
+                "title" => "",
+                "layout"=>[
+                            "scripts"   => [],
+                            "json"      => [],
+                            "styles"    => [], 
+                            "html"      => '<span style="color:red"> Error : '.$e->getMessage()." - line ". $e->getLine()." - File -> " . $e->getFile(). '</span>'
+                        ]
+            ];
         }
         
-        return [
-            'sql'   => $report->sql,
-            "inputs"=> $inputs,
-            "title" => @$reportManager->title,
-            "layout"=>[
-                        "scripts"   => $report->layout->scripts(),
-                        "json"      => $report->layout->jsonResult(),
-                        "styles"    => $report->layout->styles(),
-                        "html"      => $report->layout->render()
-                    ]
-        ];
     }
 
 }

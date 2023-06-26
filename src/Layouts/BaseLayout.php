@@ -34,10 +34,21 @@ class BaseLayout
     }
      
 
-
+    function showNoData(){
+        if(count($this->reportBuilder->rows)<=0){
+            return  view("ReportBuilder::no-data")->render();
+            
+        }
+        return null;
+    }
     function render(){
       
-                if($this->reportBuilder->error==''){
+        if($this->reportBuilder->error==''){
+            $noData =  $this->showNoData();
+
+            if($noData !=null){
+                return $noData ;
+            }
             $table='<form>';
             foreach($this->reportBuilder->report->variables  as $name=>$var){
                 $table.=$var['rendered'];

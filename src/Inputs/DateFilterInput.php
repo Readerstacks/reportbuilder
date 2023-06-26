@@ -7,26 +7,29 @@ class DateFilterInput extends ReportInputs
 { 
       function defaultValue(){
        $default = isset($this->settings['default']) && $this->settings['default']['value'] ?$this->settings['default']['value']:"";
+       $timeS=($this->settings['timepicker']=='false')?"":"00:00:00";
+        $timeE=($this->settings['timepicker']=='false')?"":"23:59:59";
+         
         if( $default=="None"){
-          return isset($this->config['value']) && !empty($this->config['value']) ? $this->config['value']:"";
+          return parent::defaultValue();;
         }
         else if( $default=="This Month"){
-          return date("Y-m-01")." - ".date("Y-m-t");
+          return date("Y-m-01 $timeS")." - ".date("Y-m-t $timeE");
         }
         else if( $default=="Today"){
-          return date("Y-m-d");
+          return date("Y-m-d $timeS")." - ".date("Y-m-d $timeE");
         }
         else if( $default=="Last 7 Days"){
-          return date("Y-m-d",strtotime("-7 days"))." - ".date("Y-m-d");
+          return date("Y-m-d $timeS",strtotime("-7 days"))." - ".date("Y-m-d $timeE");
         }
         else if( $default=="Last Month"){
-          return date("Y-m-01",strtotime("-1 month"))." - ".date("Y-m-t",strtotime("-1 month"));
+          return date("Y-m-01 $timeS",strtotime("-1 month"))." - ".date("Y-m-t $timeE",strtotime("-1 month"));
         }
         else if( $default=="Last 30 Days"){
-          return date("Y-m-d",strtotime("-1 month"))." - ".date("Y-m-d");
+          return date("Y-m-d $timeS",strtotime("-1 month"))." - ".date("Y-m-d $timeE");
         }
 
-        return "";
+        return parent::defaultValue();
       }
 
       function queryValue(){

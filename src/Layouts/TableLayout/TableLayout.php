@@ -269,9 +269,10 @@ class TableLayout extends BaseLayout
         
         if($this->reportBuilder->error==''){
         $table=' ';
-        if(count($this->reportBuilder->rows)<=0){
-            return  view("ReportBuilder::no-data")->render();
-            
+        $noData =  $this->showNoData();
+
+        if($noData !=null){
+            return $noData ;
         }
      
         // foreach($this->reportBuilder->report->variables  as $name=>$var){

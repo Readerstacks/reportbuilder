@@ -74,8 +74,8 @@ class ChartLayout extends BaseLayout
 
     function render(){
         if($this->reportBuilder->error==''){
-            $table ="<div>
-            <canvas id='myChart'></canvas>
+            $table ="<div style='height:400px;width:100%;display:flex;justify-content:center;alighn-items:center'  >
+            <canvas   id='myChart'></canvas>
           </div>";
              
        
