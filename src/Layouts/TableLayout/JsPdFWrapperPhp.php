@@ -12,6 +12,9 @@ class JsPdFWrapperPhp{
     function data($params){
         return 'data.'.$params;
     }
+    function jsCode($str){
+        return  new JsCode($str) ;
+    }
     function now(){
         return 'new Date().toLocaleString()';
     }
@@ -26,6 +29,10 @@ class JsPdFWrapperPhp{
             if(gettype($arg)=="string"){
                 $args[$k]="'".$arg."'";
             }
+          
+            if(gettype($arg)=="object" && $arg instanceof JsCode){
+                $args[$k]=$arg->render();
+            }
         }
         $params= implode(",",$args);
 
@@ -36,4 +43,16 @@ class JsPdFWrapperPhp{
         return join("\n",$this->lines);
 
     }
+}
+
+
+class JsCode{
+    public $code;
+    function __construct($code)
+    {
+        $this->code=$code;
+    } 
+    function render(){
+        return $this->code;
+    }   
 }
