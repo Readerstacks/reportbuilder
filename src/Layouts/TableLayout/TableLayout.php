@@ -12,8 +12,8 @@ class TableLayout extends BaseLayout
         if(@$this->reportBuilder->report->object->title){
             $filename=$this->reportBuilder->report->object->title;
         }
-        $exportSchemaCls  =  isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema'])?$this->layoutSettings['column_formatter_class']:"";
-        $exportSchemaMethod  =  isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method'])?$this->layoutSettings['column_formatter_method']:"";
+        $exportSchemaCls  =  isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema'])?$this->layoutSettings['export_report_schema']:"";
+        $exportSchemaMethod  =  isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method'])?$this->layoutSettings['export_report_schema_method']:"";
         if($exportSchemaCls!='' && $exportSchemaMethod!=''){
            $reportHeaderInfo =   $exportSchemaCls::$exportSchemaMethod($this);
         }
