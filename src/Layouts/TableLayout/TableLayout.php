@@ -15,11 +15,22 @@ class TableLayout extends BaseLayout
         $exportSchemaCls  =  isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema'])?$this->layoutSettings['export_report_schema']:"";
         $exportSchemaMethod  =  isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method'])?$this->layoutSettings['export_report_schema_method']:"";
         if($exportSchemaCls!='' && $exportSchemaMethod!=''){
-           $reportHeaderInfo =   $exportSchemaCls::$exportSchemaMethod($this);
+          $pdf =   new JsPdFWrapperPhp();
+           $reportHeaderInfo =   $exportSchemaCls::$exportSchemaMethod($this,$pdf);
         }
         else{
+            $pdf =   new JsPdFWrapperPhp();
+            $pdf->setFontSize(14);
+            $pdf->setTextColor(40);
+            $pdf->addImage("http://localhost/mealinity_web/public/assets/img/logo.png", "JPEG", 220, 10, 60, 40);
+            $pdf->text("Report",  230, 60);
+            $pdf->setFontSize(11);
+            $pdf->text("Printed at ". $pdf->now(),   380, 90);
             $reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];
-        }
+        
+            
+    }
+            
         $datatable = isset($this->layoutSettings['datatable']) && !empty($this->layoutSettings['datatable'])?$this->layoutSettings['datatable']:"false";
         $datatbleScript ='';
         if($datatable=="true"){
@@ -210,16 +221,17 @@ class TableLayout extends BaseLayout
                                         top: 100
                                       },
                                     didDrawPage: function(data) {
+                                        {$pdf->render()}
                                         // Header
-                                        doc.setFontSize(14);
-                                        doc.setTextColor(40);
-                                        // doc.setFontStyle('normal');
-                                        if (base64Img) {
-                                          doc.addImage(base64Img, 'JPEG', data.settings.margin.left+220, 10, 60, 40);
-                                        }
-                                        doc.text("{$reportHeaderInfo['name']}", data.settings.margin.left + 230, 60);
-                                        doc.setFontSize(11);
-                                        doc.text("Printed at "+date, data.settings.margin.left + 380, 90);
+                                        // doc.setFontSize(14);
+                                        // doc.setTextColor(40);
+                                        // // doc.setFontStyle('normal');
+                                        // if (base64Img) {
+                                        //   doc.addImage(base64Img, 'JPEG', data.settings.margin.left+220, 10, 60, 40);
+                                        // }
+                                        // doc.text("{$reportHeaderInfo['name']}", data.settings.margin.left + 230, 60);
+                                        // doc.setFontSize(11);
+                                        // doc.text("Printed at "+date, data.settings.margin.left + 380, 90);
                                       },
                                 };
                 
