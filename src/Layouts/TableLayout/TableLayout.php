@@ -12,8 +12,21 @@ class TableLayout extends BaseLayout
         if(@$this->reportBuilder->report->object->title){
             $filename=$this->reportBuilder->report->object->title;
         }
+        $exportSchemaCls  =  isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema'])?$this->layoutSettings['column_formatter_class']:"";
+        $exportSchemaMethod  =  isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method'])?$this->layoutSettings['column_formatter_method']:"";
+        if($exportSchemaCls!='' && $exportSchemaMethod!=''){
+           $reportHeaderInfo =   $exportSchemaCls::$exportSchemaMethod($this);
+        }
+        else{
+            $reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];
+        }
+        $datatable = isset($this->layoutSettings['datatable']) && !empty($this->layoutSettings['datatable'])?$this->layoutSettings['datatable']:"false";
+        $datatbleScript ='';
+        if($datatable=="true"){
+            $datatbleScript = "new DataTable('.tbl_report');";
+        }
         $script = <<<SCRIPT
-                new DataTable('.tbl_report');
+                $datatbleScript 
                 
                 (function($){
 
@@ -186,19 +199,38 @@ class TableLayout extends BaseLayout
                             }else if(options.type == 'pdf'){
                 
                                 var jsonExportArray = toJson(el);
-                
+                                var   base64Img =  "{$reportHeaderInfo['logo']}";
+                                var totalPagesExp = "{total_pages_count_string}";
+                             
+                                   var  date = new Date().toLocaleString()
                                 var contentJsPdf = {
                                     head: [jsonExportArray.header],
-                                    body: jsonExportArray.data
+                                    body: jsonExportArray.data,
+                                    margin: {
+                                        top: 100
+                                      },
+                                    didDrawPage: function(data) {
+                                        // Header
+                                        doc.setFontSize(14);
+                                        doc.setTextColor(40);
+                                        // doc.setFontStyle('normal');
+                                        if (base64Img) {
+                                          doc.addImage(base64Img, 'JPEG', data.settings.margin.left+220, 10, 60, 40);
+                                        }
+                                        doc.text("{$reportHeaderInfo['name']}", data.settings.margin.left + 230, 60);
+                                        doc.setFontSize(11);
+                                        doc.text("Printed at "+date, data.settings.margin.left + 380, 90);
+                                      },
                                 };
                 
                                 if(defaults.consoleLog){
                                     console.log(contentJsPdf,);
                                 }
-                
+                              
+                                window.jsPDF = window.jspdf.jsPDF;
                                 var doc = new jsPDF(defaults.orientation, 'pt');
                                 
-                                doc.autoTable(jsonExportArray.header, jsonExportArray.data);
+                                doc.autoTable(contentJsPdf);
                                 doc.save(options.filename);
                 
                             }
@@ -230,10 +262,10 @@ class TableLayout extends BaseLayout
                 "src"=>'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js'
             ],
             "jsPdf"=>[
-                "src"=>"https://cdnjs.cloudflare.com/ajax/libs/jspdf/1.4.1/jspdf.min.js"
+                "src"=>"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
             ],
             "jsPdfAutoTable"=>[
-                "src"=>"https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/2.3.5/jspdf.plugin.autotable.min.js"
+                "src"=>"https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"
             ],
             'script'=>[
                 'text'=>$script
@@ -340,7 +372,7 @@ class TableLayout extends BaseLayout
                     }
                     
                 
-                    $table.=   '<td>'.$value.' </td>';
+                    $table.=   '<td title='.$value.'>'.$value.' </td>';
                 }
                 $table.=   '</tr>';
             }

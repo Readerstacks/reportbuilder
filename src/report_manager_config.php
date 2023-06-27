@@ -11,7 +11,10 @@ return [
         "table"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout","settings"=>[
             "column_formatter_class"=>Aman5537jains\ReportBuilder\Formatters\TableColValueFormatter::class,
             "column_formatter_method"=>"format",
-            "hide_columns"=>""
+            "hide_columns"=>"",
+            'export_report_schema'=>"",
+            'export_report_schema_method'=>"",
+            'datatable'=>"true"
         ]],
         // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
         "Number"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
