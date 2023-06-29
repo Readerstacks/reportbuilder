@@ -20,7 +20,7 @@ class ReportBuilder
     public $columns=[];
     public $rows=[];
     public $error='';
-    public BaseLayout $layout;
+    public $layout;
     public $sql='';
     public $connection='';
     public $bindingCounter=0;
