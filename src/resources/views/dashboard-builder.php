@@ -325,7 +325,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
             addVariables:function(){
                 var capturedGroup=prompt("Enter name ?");
                
-
+                this.addFilter(capturedGroup,{});
             },
 
             addFilter:function(capturedGroup,defaults){
