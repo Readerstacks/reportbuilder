@@ -33,7 +33,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                      
                             <div   v-for="report of reports">
                                  {{report.title}} 
-                                 <button @click="addToDashboard(report)">Add</button>
+                                 <button @click="addToDashboard(createNode(report))">Add</button>
                             </div>
                             
                         </div>
@@ -48,7 +48,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                         <div class="metabase_filters" >
                             <button type="button" class="btn btn-primary"  @click='addVariables()'>Add New</button>
                             <div class="colin" v-for="(k,inp) of vars"> 
-                                {{k}}, {{inp}}
+                                
                                 <span>{{k.title}} : </span>
                                 
                                 <br> <input :placeholder="k.title"    v-model="k.title" />
@@ -148,7 +148,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                         <div v-for="(w, indexs) in items" class="grid-stack-item" :gs-x="w.x" :gs-y="w.y" :gs-w="w.w" :gs-h="w.h"
                             :gs-id="w.sid" :id="w.sid" :key="w.sid">
                             <div class="grid-stack-item-content">
-                                <button @click="remove(w)">remove</button>
+                                <button @click="remove(w)">X</button>
                                 <iframe :src='url+"/report/"+w.uid+"?hide_filters=true"'   frameborder="0"
  style="position: relative; height: 90%; width: 100%;" >
                                 </iframe>
@@ -209,7 +209,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                 dashboard_title:"Untitled",
                 html:"",
                 url:url,
-                dashboard_id:<?php echo request()->get("dashboardId",0) ?>,
+                dashboard_id:'<?php echo request()->get("dashboardId",'') ?>',
              
                 // editor:null
             }
@@ -228,12 +228,13 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
             //   info.value = `you just dragged node #${node.id} to ${node.x},${node.y} – good job!`;
     });
             
-    this.grid.on('change', onChange);
+    this.grid.on('change', onChange.bind(this));
     function onChange(event, changeItems) {
-            updateInfo();
+            // this.updateInfo();
             // update item position
+            console.log("changeItems",changeItems, this.items)
             changeItems.forEach(item => {
-              var widget = this.items.value.find(w => w.id == item.id);
+              var widget = this.items.find(w => w.sid == item.id);
               if (!widget) {
                 alert("Widget not found: " + item.id);
                 return;
@@ -253,7 +254,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                        this.reports =data.data
                 console.log("this.reports",data)
                 //  this.settings =data;
-                 if(this.dashboard_id>0){
+                 if(this.dashboard_id!=''){
                 this.ajax(url+"/get-dashboard?dashboardId="+this.dashboard_id).then((data)=>{
                     this.dashboard_title       = data.title;
                    
@@ -263,6 +264,17 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                     this.share.token        = data.token || "";
                       
                     this.dashboard_id = data.id;
+                    let layout= JSON.parse(data.layout);
+                    let filters= JSON.parse(data.filters);
+
+                    for(let rpt of layout){
+                        this.addToDashboard(rpt)
+                    }
+
+                    for(let rpt in filters){
+                        this.addFilter(rpt,filters[rpt])
+                    }
+                    
 
                 })
                 }      
@@ -277,12 +289,15 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                     return data.json();
                 });
             },
-            
-            addToDashboard:function (report){  
-                  const node = {sid:"w_"+report.id,id:report.id,title:report.title,
+            createNode:function(report){
+                const node = {sid:"w_"+report.id,id:report.id,title:report.title,
                     mappers:{},
                     uid:report.uuid_token,filters:JSON.parse(report.filters), 
                     x: 0, y: 0, w: 2, h: 2 };
+                    return node;
+            },
+            addToDashboard:function (node){  
+                 
                     
         //          grid.addWidget(node);
         
@@ -309,14 +324,19 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
           },
             addVariables:function(){
                 var capturedGroup=prompt("Enter name ?");
+               
+
+            },
+
+            addFilter:function(capturedGroup,defaults){
                 if(capturedGroup){
                 let filter= Object.keys(this.settings.filters)[0];
                         let input = JSON.parse(JSON.stringify(this.settings.filters[filter]));
                         
                         this.vars[capturedGroup] = {
-                            type: filter,
-                            class: input.class,
-                            settings: input.settings,
+                            type:  defaults.type || filter,
+                            class: defaults.class ||  input.class,
+                            settings: defaults.settings || input.settings,
                             name: capturedGroup,
                             title: capturedGroup.charAt(0).toUpperCase() + capturedGroup.slice(1),
                             required: '0',
@@ -325,9 +345,8 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                         };
                      
                     }
-
-            },
-            
+            }
+            ,
             buildInputs:function(input,e){
 
                 var formData = new FormData();

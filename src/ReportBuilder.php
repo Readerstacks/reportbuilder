@@ -2,10 +2,13 @@
 
 namespace Aman5537jains\ReportBuilder;
 
+use Aman5537jains\ReportBuilder\Layouts\BaseLayout;
+use Aman5537jains\ReportBuilder\Layouts\LayoutInterface;
 use Aman5537jains\ReportBuilder\Model\ReportBuilderQuestion;
 use PHPHtmlParser\Dom;
 
 use Illuminate\Support\Facades\Log;
+ 
 
 class ReportBuilder
 {
@@ -17,6 +20,7 @@ class ReportBuilder
     public $columns=[];
     public $rows=[];
     public $error='';
+    public BaseLayout $layout;
     public $sql='';
     public $connection='';
     public $bindingCounter=0;
@@ -222,8 +226,8 @@ class ReportBuilder
         if($this->report->layout!=''){
             $layout =  $this->report->layout;
             // $layouts  = config("reportconfig.layouts");
-            $this->layout= $layout;  
-            $this->layout = (new $this->layout['class']($this,@$layout['settings'])) ;
+            // $this->layout= $layout;  
+            $this->layout = (new $layout['class']($this,@$layout['settings'])) ;
         }
 
 

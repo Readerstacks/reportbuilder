@@ -1,9 +1,7 @@
 <?php
 namespace Aman5537jains\ReportBuilder\Layouts;
  
- 
-
-class BaseLayout  
+class BaseLayout  implements LayoutInterface
 {
     public $reportBuilder;
     public $layoutSettings;

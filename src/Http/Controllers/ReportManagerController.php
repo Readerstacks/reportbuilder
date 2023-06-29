@@ -224,6 +224,7 @@ class ReportManagerController extends Controller
                     'sql'   => config("debug") ? $report->sql : "",
                     "inputs"=> $inputs,
                     "title" => @$reportManager->title,
+                    "id" => @$reportManager->id,
                     "layout"=>[
                                 "scripts"   => $report->layout->scripts(),
                                 "json"      => [],

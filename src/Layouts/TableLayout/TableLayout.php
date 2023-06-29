@@ -1,9 +1,9 @@
 <?php
 namespace Aman5537jains\ReportBuilder\Layouts\TableLayout;
 
-use Aman5537jains\ReportBuilder\Layouts\BaseLayout;
+use Aman5537jains\ReportBuilder\Layouts\BaseLayout; 
 
-class TableLayout extends BaseLayout
+class TableLayout extends BaseLayout  
 {   
 
     public $rederer="server";
@@ -21,9 +21,11 @@ class TableLayout extends BaseLayout
         else{
             $pdf =   new JsPdFWrapperPhp();
             $pdf->setFontSize(14);
+            $pdf->lines[] = "var width = doc.internal.pageSize.getWidth()/2;";
             $pdf->setTextColor(40);
-            $pdf->addImage("http://localhost/mealinity_web/public/assets/img/logo.png", "JPEG", 220, 10, 60, 40);
-            $pdf->text("Report",  230, 60);
+            $pdf->addImage("http://localhost/mealinity_web/public/assets/img/logo.png", "JPEG", $pdf->jsCode("width-40"), 10, 80, 40,'center');
+            $pdf->setFontSize(11);
+            $pdf->text("Report dfdfdfjldk dfdfdf dfdf  ",  $pdf->jsCode("width"), 70,'center');
             $pdf->setFontSize(11);
             $pdf->text($pdf->jsCode("'Printed at '+{$pdf->now()}"),  380, 90);
             $reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];

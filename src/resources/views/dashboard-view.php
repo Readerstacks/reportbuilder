@@ -10,18 +10,14 @@
 
 <style type="text/css">
   .grid-stack { background: white; }
-  .cls70{width:100%}
-  .grid-stack-item-content { background-color: #18BC9C; }
+  .cls70{width:100%;};
+  .grid-stack-item-content {  }
 </style>
 
  
  
 <div id="app" class='container-fluid'>
-<div class="  head-title">
-Title : <input placeholder="Dashboard name"  readonly  v-model="dashboard_title" /> 
  
- 
-</div>
  
     
          
@@ -38,17 +34,15 @@ Title : <input placeholder="Dashboard name"  readonly  v-model="dashboard_title"
         <div id="" style='display:flex'>
             <div class='cls70'>
                 <div class="metabase_filters " id="filters" style="padding-bottom:10px" >
-                    <div class='row'>
-                    <div :id='"input_"+k.name' class='col'  v-for="(k,inp) of vars"> <span>{{k.title}} : </span><br> <input :placeholder="k.title" :name="k.name" :type="k.type" v-model="k.value" /> </div>
-                    </div>
+                    
                 </div>   
                 
-                    <div class='grid-stack' style='height:500px'> 
+                    <div class='grid-stack'  > 
                         <div v-for="(w, indexs) in items" class="grid-stack-item" :gs-x="w.x" :gs-y="w.y" :gs-w="w.w" :gs-h="w.h"
                             :gs-id="w.sid" :id="w.sid" :key="w.sid">
                             <div class="grid-stack-item-content">
                                
-                                <iframe :src='url+"/report/"+w.uid+"?hide_filters=true"'   frameborder="0"
+                                <iframe :src='url+"/report/"+w.uid+"?hide_filters=true&"+w.filters'   frameborder="0"
  style="position: relative; height: 90%; width: 100%;" >
                                 </iframe>
                             </div>
@@ -127,26 +121,43 @@ Title : <input placeholder="Dashboard name"  readonly  v-model="dashboard_title"
                 console.log("this.reports",this.dashboard_id)
                 //  this.settings =data;
                  if(this.dashboard_id!=''){
-                 ReportBuilder.setDashboardId('<?php echo $dashboardid ;?>','public').getDashboardReport().then((data)=>{
+                 ReportBuilder.setDashboardId('<?php echo $dashboardid ;?>','public').getDashboardReport((data,filters)=>{
                     this.dashboard_title       = data.title;
-                   
-                    // this.grid.load(JSON.parse(data.layout));
-                   
-                    let items= JSON.parse(data.layout);
-                    for(let item of items){
-                        this.items.push(item);
-                       
+                    this.items=[];
+                   // this.grid.load(JSON.parse(data.layout));
+                    console.log("data,filters",data,filters)
+                   let items= JSON.parse(data.layout);
+                   this.grid.removeAll(false);
+                   for(let item of items){
+                    let mappedFilters={};
+                    for(let mapper in item.mappers){
+                        if(filters[mapper]){
+                            mappedFilters[item.mappers[mapper]]=filters[mapper]
+                        }
                     }
-                    setTimeout(()=>{
-                        for(let widget of this.items)
-                        this.grid.makeWidget(widget.sid);
-                    })
-                    
-                    this.share.visibility   = data.visibility || "Public";
-                    this.share.url          = '<?php echo url("report-manager/dashboard/"); ?>/'+data.uuid_token;
-                    this.share.token        = data.token || "";
+                    // item.noResize=true;
+                    // item.noMove=true;
+                    item.filters=this.serialize(mappedFilters);
+                       this.items.push(item);
                       
-                    this.dashboard_id = data.id;
+                   }
+                   setTimeout(()=>{
+                       for(let widget of this.items){
+                       this.grid.makeWidget(widget.sid);
+                       this.grid.enableMove(false);
+                       this.grid.enableResize(false);
+                       }
+                   })
+                   
+                   this.share.visibility   = data.visibility || "Public";
+                   this.share.url          = '<?php echo url("report-manager/dashboard/"); ?>/'+data.uuid_token;
+                   this.share.token        = data.token || "";
+                     
+                   this.dashboard_id = data.id;
+                 }).then((data)=>{
+
+
+                    
 
                 })
                 }      
@@ -155,6 +166,14 @@ Title : <input placeholder="Dashboard name"  readonly  v-model="dashboard_title"
            
         },
         methods: {
+            serialize : function(obj) {
+  var str = [];
+  for (var p in obj)
+    if (obj.hasOwnProperty(p)) {
+      str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+    }
+  return str.join("&");
+},
             ajax:function(...arguments){
                  
                 return   fetch(...arguments).then((data)=>{

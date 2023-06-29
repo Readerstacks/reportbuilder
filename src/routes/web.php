@@ -59,7 +59,7 @@ Route::group(['namespace' => 'Aman5537jains\ReportBuilder\Http\Controllers',"pre
     Route::post('get-report', 'ReportManagerController@getReportById');
     Route::post('save-report', 'ReportManagerController@saveReport');
 
-    Route::post('get-dashboard', 'ReportManagerController@getDashboardById');
+    Route::any('get-dashboard', 'ReportManagerController@getDashboardById');
     Route::post('save-dashboard', 'ReportManagerController@saveDashboard');
     
     
