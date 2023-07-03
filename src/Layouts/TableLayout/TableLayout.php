@@ -377,7 +377,7 @@ class TableLayout extends BaseLayout
                     }
                     
                 
-                    $table.=   '<td title='.$value.'>'.$value.' </td>';
+                    $table.=   '<td title='.strip_tags($value).'>'.$value.' </td>';
                 }
                 $table.=   '</tr>';
             }
