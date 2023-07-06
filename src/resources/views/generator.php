@@ -540,12 +540,15 @@ setTimeout(()=>{
             getStringBetween: function(str, start, end) {
                 const vars = [];
                 const text = str;
-                const pattern = /{{\s*([a-zA-Z0-9_]+)\s*}}/g;
+                const pattern = /{{\s*([a-zA-Z0-9_.]+)\s*}}/g;
                 let match;
                 var origin = this.vars;
                 var newo = {};
                 while ((match = pattern.exec(text)) !== null) {
-                    const capturedGroup = match[1];
+                    const matchGroup = match[1];
+                    let captured = matchGroup.split(".");
+                    let capturedGroup = captured[0];
+                    
                     if (origin[capturedGroup]) {
                         newo[capturedGroup] = origin[capturedGroup];
                     } else if (!origin[capturedGroup]) {

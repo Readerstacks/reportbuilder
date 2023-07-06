@@ -77,16 +77,29 @@ class ReportBuilder
     function requestC($var)
     {
 
-
+       
           $var = trim($var);
-  
-        if(isset( $this->report->variables[$var])){
-            $val = $this->report->variables[$var]['obj']->queryValue();
-              // dump($vars[$var]);
-              return $val;
+          
+          $varArr = explode(".",$var);
+          $var= $varArr[0];
+          $val=false;
+            if(isset( $this->report->variables[$var])){
+                if(count($varArr)>1){
+                    $arrays = $this->report->variables[$var]['obj']->queryValue();
+                    foreach( $varArr as $name){
+                        if(isset($arrays[$name])){
+                            $val = $arrays[$name];
+                        }
+                    }
+
+                }
+                else
+                    $val = $this->report->variables[$var]['obj']->queryValue();
+             
+             
         }
        
-        return false;
+        return $val;
     }
 
     public function setBindings($paramsValue){
@@ -159,7 +172,7 @@ class ReportBuilder
                 $this->report->variables[$name]["rendered"] = $filter->render();
             }
             
-            $this->sql = $this->createQuery($this->report->query);
+            $this->sql = htmlspecialchars_decode($this->createQuery(htmlspecialchars( $this->report->query)));
             try{
                 
              $this->results =   \DB::connection($this->connection)->select($this->sql, $this->bindings);

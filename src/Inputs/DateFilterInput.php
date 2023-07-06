@@ -28,6 +28,12 @@ class DateFilterInput extends ReportInputs
         else if( $default=="Last 30 Days"){
           return date("Y-m-d $timeS",strtotime("-1 month"))." - ".date("Y-m-d $timeE");
         }
+        else if( $default=="This Year"){
+          return date("Y-m-d $timeS",strtotime("-1 year"))." - ".date("Y-m-d $timeE");
+        }
+        else if( $default=="Last 1 Year"){
+          return date("Y-m-d $timeS",strtotime("-1 year"))." - ".date("Y-m-d $timeE");
+        }
 
         return parent::defaultValue();
       }
@@ -40,15 +46,24 @@ class DateFilterInput extends ReportInputs
             $v2=trim($value[1]);
             $timeS=($this->settings['timepicker']=='true')?"":" 00:00:00";
             $timeE=($this->settings['timepicker']=='true')?"":" 23:59:59";
-              $start= $v1.$timeS;
-             $end=  $v2.$timeE;
+            $mode=isset ($this->settings['mode'])?$this->settings['mode']:"AUTO";
 
-            return [
-              "sql"=>"{$this->settings['column']} >= ? and  {$this->settings['column']} <= ?  ",
-              "params"=>[
-                $start,$end
-              ]
-            ];
+
+            $start= $v1.$timeS;
+            $end=  $v2.$timeE;
+            if($mode=='AUTO'){  
+              return [
+                "sql"=>"{$this->settings['column']} >= ? and  {$this->settings['column']} <= ?  ",
+                "params"=>[
+                  $start,$end
+                ]
+              ];
+            }
+            else{
+              return compact("start","end");
+            }
+           
+            
             return "{$this->settings['column']} >= '{$start}' and  {$this->settings['column']} <= '{$end}'  ";
 
           }
