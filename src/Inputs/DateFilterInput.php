@@ -46,7 +46,7 @@ class DateFilterInput extends ReportInputs
             $v2=trim($value[1]);
             $timeS=($this->settings['timepicker']=='true')?"":" 00:00:00";
             $timeE=($this->settings['timepicker']=='true')?"":" 23:59:59";
-            $mode=isset ($this->settings['mode'])?$this->settings['mode']:"AUTO";
+            $mode=isset ($this->settings['mode'])?$this->settings['mode']['value']:"AUTO";
 
 
             $start= $v1.$timeS;
