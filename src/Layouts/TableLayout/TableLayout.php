@@ -212,7 +212,7 @@ class TableLayout extends BaseLayout
                             }else if(options.type == 'pdf'){
                 
                                 var jsonExportArray = toJson(el);
-                               // var   base64Img =  "{$reportHeaderInfo['logo']}";
+                              
                                 var totalPagesExp = "{total_pages_count_string}";
                              
                                    var  date = new Date().toLocaleString()
