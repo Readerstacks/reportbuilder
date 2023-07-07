@@ -16,7 +16,7 @@ class TableLayout extends BaseLayout
         $exportSchemaMethod  =  isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method'])?$this->layoutSettings['export_report_schema_method']:"";
         if($exportSchemaCls!='' && $exportSchemaMethod!=''){
            $pdf =   new JsPdFWrapperPhp();
-           $reportHeaderInfo =   $exportSchemaCls::$exportSchemaMethod($this,$pdf);
+               $exportSchemaCls::$exportSchemaMethod($this,$pdf);
         }
         else{
             $pdf =   new JsPdFWrapperPhp();
@@ -28,7 +28,7 @@ class TableLayout extends BaseLayout
             $pdf->text("Report dfdfdfjldk dfdfdf dfdf  ",  $pdf->jsCode("width"), 70,'center');
             $pdf->setFontSize(11);
             $pdf->text($pdf->jsCode("'Printed at '+{$pdf->now()}"),  380, 90);
-            $reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];
+            //$reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];
         
             
     }
@@ -212,7 +212,7 @@ class TableLayout extends BaseLayout
                             }else if(options.type == 'pdf'){
                 
                                 var jsonExportArray = toJson(el);
-                                var   base64Img =  "{$reportHeaderInfo['logo']}";
+                               // var   base64Img =  "{$reportHeaderInfo['logo']}";
                                 var totalPagesExp = "{total_pages_count_string}";
                              
                                    var  date = new Date().toLocaleString()
