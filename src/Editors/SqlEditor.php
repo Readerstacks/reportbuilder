@@ -1,64 +1,65 @@
 <?php
+
 namespace Aman5537jains\ReportBuilder\Editors;
- 
+
 use PHPHtmlParser\Dom;
 
-
-class SqlEditor  extends Editor
+class SqlEditor extends Editor
 {
-   
-    public $bindings=[];
-    function createQuery($html)
-    {
+    public $bindings = [];
 
-        $html = str_replace("[[", "<conditional>", $html);
-        $html = str_replace("]]", "</conditional>", $html);
-        $html = str_replace("{{", "<variable>", $html);
-        $html = str_replace("}}", "</variable>", $html);
+    public function createQuery($html)
+    {
+        $html = str_replace('[[', '<conditional>', $html);
+        $html = str_replace(']]', '</conditional>', $html);
+        $html = str_replace('{{', '<variable>', $html);
+        $html = str_replace('}}', '</variable>', $html);
         $html = "<sql>$html</sql>";
-        $dom = new Dom;
+        $dom = new Dom();
         $dom->loadStr($html);
         // dd((new Options())->setWhitespaceTextNode(false) );
         $dom->setOptions(
             // this is set as the global option level.
             ['whitespaceTextNode' => false]
-
         );
 
-        $sql = ($dom->find("sql"));
-        $q = "";
-        $this->getchilds(($sql), $q);
+        $sql = $dom->find('sql');
+        $q = '';
+        $this->getchilds($sql, $q);
+
         return $q;
     }
-    function requestC($var)
+
+    public function requestC($var)
     {
-
-
         $var = trim($var);
-        if(isset( $this->report->variables[$var])){
+        if (isset($this->report->variables[$var])) {
             $val = $this->report->variables[$var]['obj']->queryValue();
-              // dump($vars[$var]);
-              return $val;
+            // dump($vars[$var]);
+            return $val;
         }
-       
+
         return false;
     }
 
-    public function setBindings($paramsValue){
-        
-        if(is_array($paramsValue)){
+    public function setBindings($paramsValue)
+    {
+        if (is_array($paramsValue)) {
             $paramsValue['sql'];
             $paramsValue['params'];
-            foreach($paramsValue['params'] as $val)
-                $this->bindings[]=$val;
+            foreach ($paramsValue['params'] as $val) {
+                $this->bindings[] = $val;
+            }
+
             return $paramsValue['sql'];
         }
-        
-        $this->bindings[]=$paramsValue;
-        return "?";
 
+        $this->bindings[] = $paramsValue;
+
+        return '?';
     }
-    function getchilds($sql, &$query = '')
+
+    public function getchilds($sql, &$query = '')
     {
         // echo ""
         // $query="";
@@ -68,37 +69,36 @@ class SqlEditor  extends Editor
             // dump($s);
             // echo "&nbsp;&nbsp;&nbsp;";
             if ($s->isTextNode()) {
-                $queryInner .= ($s->text());
+                $queryInner .= $s->text();
                 // getchilds( $s->getChildren());
-            } else if (!$s->isTextNode() && $s->hasChildren()) {
+            } elseif (!$s->isTextNode() && $s->hasChildren()) {
                 // dump($s->getTag()->name()  );
-                if ($s->getTag()->name() == "sql") {
+                if ($s->getTag()->name() == 'sql') {
                     $this->getchilds($s->getChildren(), $query);
-                } else if ($s->getTag()->name() == "conditional") {
-
+                } elseif ($s->getTag()->name() == 'conditional') {
                     $new = '';
                     $this->getchilds($s->getChildren(), $new);
                     $queryInner .= $new;
                     // getchilds( );
-                } else if ($s->getTag()->name() == "variable") {
+                } elseif ($s->getTag()->name() == 'variable') {
                     //  echo ( );
-                    $output=$this->requestC($s->getChildren()[0]->text());
+                    $output = $this->requestC($s->getChildren()[0]->text());
                     if (!$output) {
                         $include = false;
                     } else {
-                        
-                        $binding=$this->setBindings($output);
+                        $binding = $this->setBindings($output);
 
                         $queryInner .= $binding;
                     }
                 }
             }
         }
-        if ($include)
+        if ($include) {
             $query .= $queryInner;
+        }
     }
 
-    function build(){
-
+    public function build()
+    {
     }
 }

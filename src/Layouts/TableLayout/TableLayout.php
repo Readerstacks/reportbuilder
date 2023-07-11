@@ -1,41 +1,40 @@
 <?php
+
 namespace Aman5537jains\ReportBuilder\Layouts\TableLayout;
 
-use Aman5537jains\ReportBuilder\Layouts\BaseLayout; 
+use Aman5537jains\ReportBuilder\Layouts\BaseLayout;
 
-class TableLayout extends BaseLayout  
-{   
+class TableLayout extends BaseLayout
+{
+    public $rederer = 'server';
 
-    public $rederer="server";
-    function scripts(){
-        $filename="data";
-        if(@$this->reportBuilder->report->object->title){
-            $filename=$this->reportBuilder->report->object->title;
+    public function scripts()
+    {
+        $filename = 'data';
+        if (@$this->reportBuilder->report->object->title) {
+            $filename = $this->reportBuilder->report->object->title;
         }
-        $exportSchemaCls  =  isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema'])?$this->layoutSettings['export_report_schema']:"";
-        $exportSchemaMethod  =  isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method'])?$this->layoutSettings['export_report_schema_method']:"";
-        if($exportSchemaCls!='' && $exportSchemaMethod!=''){
-           $pdf =   new JsPdFWrapperPhp();
-               $exportSchemaCls::$exportSchemaMethod($this,$pdf);
-        }
-        else{
-            $pdf =   new JsPdFWrapperPhp();
+        $exportSchemaCls = isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema']) ? $this->layoutSettings['export_report_schema'] : '';
+        $exportSchemaMethod = isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method']) ? $this->layoutSettings['export_report_schema_method'] : '';
+        if ($exportSchemaCls != '' && $exportSchemaMethod != '') {
+            $pdf = new JsPdFWrapperPhp();
+            $exportSchemaCls::$exportSchemaMethod($this, $pdf);
+        } else {
+            $pdf = new JsPdFWrapperPhp();
             $pdf->setFontSize(14);
-            $pdf->lines[] = "var width = doc.internal.pageSize.getWidth()/2;";
+            $pdf->lines[] = 'var width = doc.internal.pageSize.getWidth()/2;';
             $pdf->setTextColor(40);
-            $pdf->addImage("http://localhost/mealinity_web/public/assets/img/logo.png", "JPEG", $pdf->jsCode("width-40"), 10, 80, 40,'center');
+            $pdf->addImage('http://localhost/mealinity_web/public/assets/img/logo.png', 'JPEG', $pdf->jsCode('width-40'), 10, 80, 40, 'center');
             $pdf->setFontSize(11);
-            $pdf->text("Report dfdfdfjldk dfdfdf dfdf  ",  $pdf->jsCode("width"), 70,'center');
+            $pdf->text('Report dfdfdfjldk dfdfdf dfdf  ', $pdf->jsCode('width'), 70, 'center');
             $pdf->setFontSize(11);
-            $pdf->text($pdf->jsCode("'Printed at '+{$pdf->now()}"),  380, 90);
+            $pdf->text($pdf->jsCode("'Printed at '+{$pdf->now()}"), 380, 90);
             //$reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];
-        
-            
-    }
-            
-        $datatable = isset($this->layoutSettings['datatable']) && !empty($this->layoutSettings['datatable'])?$this->layoutSettings['datatable']:"false";
-        $datatbleScript ='';
-        if($datatable=="true"){
+        }
+
+        $datatable = isset($this->layoutSettings['datatable']) && !empty($this->layoutSettings['datatable']) ? $this->layoutSettings['datatable'] : 'false';
+        $datatbleScript = '';
+        if ($datatable == 'true') {
             $datatbleScript = "new DataTable('.tbl_report');";
         }
         $script = <<<SCRIPT
@@ -263,67 +262,70 @@ class TableLayout extends BaseLayout
         SCRIPT;
 
         return [
-            'datatable'=>[
-                "src"=>'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js'
+            'datatable'=> [
+                'src'=> 'https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js',
             ],
-            "jsPdf"=>[
-                "src"=>"https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"
+            'jsPdf'=> [
+                'src'=> 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js',
             ],
-            "jsPdfAutoTable"=>[
-                "src"=>"https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js"
+            'jsPdfAutoTable'=> [
+                'src'=> 'https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.29/jspdf.plugin.autotable.min.js',
             ],
-            'script'=>[
-                'text'=>$script
-                ]
+            'script'=> [
+                'text'=> $script,
+            ],
         ];
     }
 
-    function styles(){
+    public function styles()
+    {
         return [
-                    'datatable'=>[
-                        "src"=>"https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css"
-                    ]
-                ];
-    }
-
-    function jsonResult(){
-        return [
-            
+            'datatable'=> [
+                'src'=> 'https://cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css',
+            ],
         ];
     }
 
-    function exportModel($columns,$hide_columns_arr){
-        $allColumns=[];
-        foreach($columns as $column){
-           
-            if(!in_array($column->name(),$hide_columns_arr))
-            $allColumns[$column->name()]=$column->render();
-        }
-        return view("ReportBuilder::datefiltermodel",['columns'=>$allColumns])->render();
+    public function jsonResult()
+    {
+        return [
+
+        ];
     }
 
-    function render(){
-        
-        if($this->reportBuilder->error==''){
-        $table=' ';
-        $noData =  $this->showNoData();
-
-        if($noData !=null){
-            return $noData ;
+    public function exportModel($columns, $hide_columns_arr)
+    {
+        $allColumns = [];
+        foreach ($columns as $column) {
+            if (!in_array($column->name(), $hide_columns_arr)) {
+                $allColumns[$column->name()] = $column->render();
+            }
         }
-     
-        // foreach($this->reportBuilder->report->variables  as $name=>$var){
+
+        return view('ReportBuilder::datefiltermodel', ['columns'=>$allColumns])->render();
+    }
+
+    public function render()
+    {
+        if ($this->reportBuilder->error == '') {
+            $table = ' ';
+            $noData = $this->showNoData();
+
+            if ($noData != null) {
+                return $noData;
+            }
+
+            // foreach($this->reportBuilder->report->variables  as $name=>$var){
         //     $table.=$var['obj']->render();
 
-        // }
-        $hide_columns  =  isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns'])?$this->layoutSettings['hide_columns']:"";
-        $hide_columns_arr=[];
-        if(!empty( $hide_columns)){
-            $hide_columns_arr = explode(",", $hide_columns);
-
-        }
-        $exportButton= $this->exportModel($this->reportBuilder->columns,$hide_columns_arr);
-        $table .=  ' 
+            // }
+            $hide_columns = isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns']) ? $this->layoutSettings['hide_columns'] : '';
+            $hide_columns_arr = [];
+            if (!empty($hide_columns)) {
+                $hide_columns_arr = explode(',', $hide_columns);
+            }
+            $exportButton = $this->exportModel($this->reportBuilder->columns, $hide_columns_arr);
+            $table .= ' 
         <style>
         .tbl_report{
             border-collapse: collapse;
@@ -351,48 +353,39 @@ class TableLayout extends BaseLayout
            
         </div>
         <table id="tbl_report" class="tbl_report table">';
-        $table .=  '<thead><tr>';
-        $colFormatter  =  isset($this->layoutSettings['column_formatter_class']) && !empty($this->layoutSettings['column_formatter_class'])?$this->layoutSettings['column_formatter_class']:"";
-        $colFormatterMethod  =  isset($this->layoutSettings['column_formatter_method']) && !empty($this->layoutSettings['column_formatter_method'])?$this->layoutSettings['column_formatter_method']:"";
-     
-       
-         
-        foreach($this->reportBuilder->columns as $column){
-           
-            if(!in_array($column->name(),$hide_columns_arr))
-            $table.=   '<th data-col="'.$column->name().'">'.$column->render().' </th>';
-        }
-        $table .=  '</tr><thead><tbody>';
-        if(count($this->reportBuilder->rows)>0){
-            foreach($this->reportBuilder->rows as $row){
-                $table.=   '<tr>';
-                foreach($this->reportBuilder->columns as $column){
-                    if(in_array($column->name(),$hide_columns_arr))
-                    {
-                        continue;
-                    }
-                    $value = $row->render($column->name());
-                    if( $colFormatter!='' && $colFormatterMethod!=''){
-                        $value=$colFormatter::$colFormatterMethod($column->name(),$value,$row);
-                    }
-                    
-                
-                    $table.=   '<td title='.strip_tags($value).'>'.$value.' </td>';
-                }
-                $table.=   '</tr>';
-            }
-        }
-       
-        $table.= "</tbody></table>";
-        
+            $table .= '<thead><tr>';
+            $colFormatter = isset($this->layoutSettings['column_formatter_class']) && !empty($this->layoutSettings['column_formatter_class']) ? $this->layoutSettings['column_formatter_class'] : '';
+            $colFormatterMethod = isset($this->layoutSettings['column_formatter_method']) && !empty($this->layoutSettings['column_formatter_method']) ? $this->layoutSettings['column_formatter_method'] : '';
 
-        
-        return $table ;
-        }
-        else{
-            return "<span style='color:red'>".$this->reportBuilder->error."</span>";
+            foreach ($this->reportBuilder->columns as $column) {
+                if (!in_array($column->name(), $hide_columns_arr)) {
+                    $table .= '<th data-col="'.$column->name().'">'.$column->render().' </th>';
+                }
+            }
+            $table .= '</tr><thead><tbody>';
+            if (count($this->reportBuilder->rows) > 0) {
+                foreach ($this->reportBuilder->rows as $row) {
+                    $table .= '<tr>';
+                    foreach ($this->reportBuilder->columns as $column) {
+                        if (in_array($column->name(), $hide_columns_arr)) {
+                            continue;
+                        }
+                        $value = $row->render($column->name());
+                        if ($colFormatter != '' && $colFormatterMethod != '') {
+                            $value = $colFormatter::$colFormatterMethod($column->name(), $value, $row);
+                        }
+
+                        $table .= '<td title='.strip_tags($value).'>'.$value.' </td>';
+                    }
+                    $table .= '</tr>';
+                }
+            }
+
+            $table .= '</tbody></table>';
+
+            return $table;
+        } else {
+            return "<span style='color:red'>".$this->reportBuilder->error.'</span>';
         }
     }
-    
-
 }
