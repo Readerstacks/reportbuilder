@@ -1,22 +1,26 @@
 <?php
+
 namespace Aman5537jains\ReportBuilder\Formatters;
 
-class BaseVaraibleFormatter{
+class BaseVaraibleFormatter
+{
     public $varaibles;
     public $var;
-    function __construct($var,$variables)
+
+    public function __construct($var, $variables)
     {
-        $this->variables=$variables;
-        $this->var=$var;
-        
-     
-       
+        $this->variables = $variables;
+        $this->var = $var;
     }
-    function query(){
-        if(isset( $this->variables[$this->var])){
+
+    public function query()
+    {
+        if (isset($this->variables[$this->var])) {
             $val = $this->variables[$this->var]['value'];
+
             return $val;
         }
+
         return false;
     }
 }

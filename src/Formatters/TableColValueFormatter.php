@@ -1,13 +1,11 @@
 <?php
+
 namespace Aman5537jains\ReportBuilder\Formatters;
 
-use Aman5537jains\ReportBuilder\Formatters\BaseRowFormatter;
-
-class TableColValueFormatter  
+class TableColValueFormatter
 {
-
-     public static function format($name,$value,$row){
-        
+    public static function format($name, $value, $row)
+    {
         return $value;
-     }
+    }
 }

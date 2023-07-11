@@ -1,58 +1,65 @@
 <?php
+
 namespace Aman5537jains\ReportBuilder\Layouts;
- 
-class BaseLayout  implements LayoutInterface
+
+class BaseLayout implements LayoutInterface
 {
     public $reportBuilder;
     public $layoutSettings;
-    function __construct($reportBuilder,$settings=[]){
-        $this->layoutSettings=$settings;
-        if(empty($reportBuilder)){
-            throw new \Exception("table cannot be empty");
+
+    public function __construct($reportBuilder, $settings = [])
+    {
+        $this->layoutSettings = $settings;
+        if (empty($reportBuilder)) {
+            throw new \Exception('table cannot be empty');
         }
-        $this->reportBuilder=$reportBuilder;
+        $this->reportBuilder = $reportBuilder;
     }
 
-    function scripts(){
+    public function scripts()
+    {
         return [];
     }
 
-    function styles(){
+    public function styles()
+    {
         return [];
     }
-    function jsonResult(){
+
+    public function jsonResult()
+    {
         return [
-            "col"=>$this->reportBuilder->renderedColumns,
-            "rows"=>$this->reportBuilder->renderedRows
+            'col' => $this->reportBuilder->renderedColumns,
+            'rows'=> $this->reportBuilder->renderedRows,
         ];
     }
-     
-    function view($file){
-        
-    }
-     
 
-    function showNoData(){
-        if(count($this->reportBuilder->rows)<=0){
-            return  view("ReportBuilder::no-data")->render();
-            
+    public function view($file)
+    {
+    }
+
+    public function showNoData()
+    {
+        if (count($this->reportBuilder->rows) <= 0) {
+            return  view('ReportBuilder::no-data')->render();
         }
+
         return null;
     }
-    function render(){
-      
-        if($this->reportBuilder->error==''){
-            $noData =  $this->showNoData();
 
-            if($noData !=null){
-                return $noData ;
-            }
-            $table='<form>';
-            foreach($this->reportBuilder->report->variables  as $name=>$var){
-                $table.=$var['rendered'];
+    public function render()
+    {
+        if ($this->reportBuilder->error == '') {
+            $noData = $this->showNoData();
 
+            if ($noData != null) {
+                return $noData;
             }
-            $table .=  '</form>
+            $table = '<form>';
+            foreach ($this->reportBuilder->report->variables  as $name=>$var) {
+                $table .= $var['rendered'];
+            }
+            $table .= '</form>
             <style>
             .tbl_report{
                 border-collapse: collapse;
@@ -72,30 +79,24 @@ class BaseLayout  implements LayoutInterface
             </style>
             
             <table class="tbl_report">';
-            $table .=  '<tr>';
-    
-            foreach($this->reportBuilder->columns as $column){
+            $table .= '<tr>';
 
-                $table.=   '<th>'.$column->render().' </th>';
+            foreach ($this->reportBuilder->columns as $column) {
+                $table .= '<th>'.$column->render().' </th>';
             }
-            foreach($this->reportBuilder->rows as $row){
-                $table.=   '<tr>';
-                foreach($this->reportBuilder->columns as $column){
-
-                    $table.=   '<td>'.$row->render($column->name()).' </td>';
+            foreach ($this->reportBuilder->rows as $row) {
+                $table .= '<tr>';
+                foreach ($this->reportBuilder->columns as $column) {
+                    $table .= '<td>'.$row->render($column->name()).' </td>';
                 }
-                $table.=   '</tr>';
+                $table .= '</tr>';
             }
-            
-            $table.= "</tR></table>";
-            
 
-            
-            return $table ;
-        }
-        else{
-            return "<span style='color:red'>".$this->error."</span>";
+            $table .= '</tR></table>';
+
+            return $table;
+        } else {
+            return "<span style='color:red'>".$this->error.'</span>';
         }
     }
-
 }
