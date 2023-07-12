@@ -26,7 +26,7 @@ class TableLayout extends BaseLayout
             $pdf->setTextColor(40);
             $pdf->addImage('http://localhost/mealinity_web/public/assets/img/logo.png', 'JPEG', $pdf->jsCode('width-40'), 10, 80, 40, 'center');
             $pdf->setFontSize(11);
-            $pdf->text('Report dfdfdfjldk dfdfdf dfdf  ', $pdf->jsCode('width'), 70, 'center');
+            $pdf->text('Report', $pdf->jsCode('width'), 70, 'center');
             $pdf->setFontSize(11);
             $pdf->text($pdf->jsCode("'Printed at '+{$pdf->now()}"), 380, 90);
             //$reportHeaderInfo= ["name"=>"Report ","logo"=>"http://localhost/mealinity_web/public/assets/img/logo.png"];
