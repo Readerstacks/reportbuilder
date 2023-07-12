@@ -55,7 +55,7 @@ var ReportBuilder = {
             }
         }
     },
-    loadScripts: function (scripts, index, name) {
+    loadScripts: function (scripts, index, name,cb) {
         var scln = Object.keys(scripts).length;
         console.log(scln, index)
         if (index < scln) {
@@ -78,7 +78,7 @@ var ReportBuilder = {
 
                 document.head.appendChild(my_awesome_script);
                 my_awesome_script.onload = () => {
-                    this.loadScripts(scripts, index + 1, name);
+                    this.loadScripts(scripts, index + 1, name,cb);
                 }
 
 
@@ -98,12 +98,19 @@ var ReportBuilder = {
 
                     if (typeof evalCodeFn == "function") {
                         evalCodeFn(this)
+                        
                     }
+                    
+                        this.loadScripts(scripts,index+1,name,cb);
                 }
                 else
-                    this.loadScripts(scripts, index + 1, name);
+                    this.loadScripts(scripts, index + 1, name,cb);
             }
         }
+        else{
+            if(cb)
+            cb();
+            }
     },
     loader: function (status) {
         if (!document.getElementById("loader")) {
