@@ -2,7 +2,7 @@
 
 namespace Aman5537jains\ReportBuilder\Layouts;
 
-use function GuzzleHttp\json_encode;
+ 
 
 class ChartLayout extends BaseLayout
 {
@@ -25,21 +25,71 @@ class ChartLayout extends BaseLayout
         $data_column = [];
         $colors_column = [];
 
+        $allColumns = [];
+        $allRows    = [];
+        $dataNames  = [];
+        $columns =  explode(",",$this->layoutSettings['data_column']); // Y AXIS
+        $rows =  explode(",",$this->layoutSettings['label_column']); //X AXIS
+        
+     
+            foreach ($this->reportBuilder->rows as $row) {
+                if(!isset($xAxis[$row->row->{$rows[0]}])){
+                    $xAxis[$row->row->{$rows[0]}]=[];
+                }
+                $col='data';
+                if(isset($rows[1])){
+                   
+                    $col=$row->row->{$rows[1]};
+                }
+                $xAxis[$row->row->{$rows[0]}][$col]  = $row->row->{$columns[0]};
+                $dataNames[$col]=$col;
+            }
+
+         foreach($xAxis as $x=>$value){
+            $allRows[]=$x;
+            foreach($dataNames as $dataName){
+                if(!isset($value[$dataName])){
+                    $xAxis[$x][$dataName]=0 ;
+                }
+            }
+            
+         }   
+         foreach($dataNames  as $k=>$val){
+            $values=[];
+            foreach($xAxis as $v){
+               $values[]= $v[$k];
+            }
+            $allColumns[]=["label"=>$k,"data"=>$values];
+         }
+        
+         
+      
+       $allRows =array_keys($xAxis);
+
         foreach ($this->reportBuilder->rows as $row) {
-            if (isset($row->row->{$this->layoutSettings['label_column']})) {
-                $labels[] = $row->row->{$this->layoutSettings['label_column']};
-            }
-            if (isset($row->row->{$this->layoutSettings['data_column']})) {
-                $data_column[] = $row->row->{$this->layoutSettings['data_column']};
-            }
             if (isset($row->row->{$this->layoutSettings['colors_column']})) {
                 $colors_column[] = $row->row->{$this->layoutSettings['colors_column']};
             }
         }
-        $labels = json_encode($labels);
-        $data_column = json_encode($data_column);
+        
+        // dd($allRows,$allColumns);
+        $colors=["red","green","yellow","blue","orange","black","#dc3545",'#18833f','#927a0e'];
+        if(count($labels)>0 && count($colors_column)<=0){
+            if(!empty($this->layoutSettings['colors_column']))
+            {
+                $colors_column = explode(",",$this->layoutSettings['colors_column']);
+            }
+            else{
+                $count=count($labels);
+                for($i=0;$i<$count;$i++){
+                    $colors_column[] =  $colors[$i];
+                }
+            }
+        }
+        $labels = json_encode($allRows);
+        $data_column = json_encode($allColumns);
         $colors_column = json_encode($colors_column);
-
+        
         return [
             'chart'=> [
                 'src'=> 'https://cdn.jsdelivr.net/npm/chart.js',
@@ -50,16 +100,11 @@ class ChartLayout extends BaseLayout
                     const ctx = document.getElementById('myChart');
                     const data = {
                       labels: $labels,
-                      datasets: [{
-                        label:  '{$this->layoutSettings['chart_label']}',
-                        data: $data_column,
-                        backgroundColor: $colors_column,
-                        hoverOffset: 4
-                      }]
+                      datasets:$data_column
                     };
 
                     new Chart(ctx, {
-                      type:  '{$this->layoutSettings['type']}',
+                      type:  '{$this->layoutSettings['type']['value']}',
                       data:  data
                     });",
             ],
@@ -77,7 +122,7 @@ class ChartLayout extends BaseLayout
     public function render()
     {
         if ($this->reportBuilder->error == '') {
-            $table = "<div style='height:400px;width:100%;display:flex;justify-content:center;alighn-items:center'  >
+            $table = "<div style='max-height:400px;width:100%;display:flex;justify-content:center;alighn-items:center'  >
             <canvas   id='myChart'></canvas>
           </div>";
 
