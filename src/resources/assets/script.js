@@ -190,17 +190,10 @@ var ReportBuilder = {
 
         formData.append('dashboardId', this.data.reportId);
         formData.append('password', this.data.password);
+        for (let param in this.data.parameters)
+            formData.append('parameters[' + param + ']', this.data.parameters[param]);
 
-
-
-
-
-
-
-        this.filters_html = '';
-
-
-
+       this.filters_html = '';
 
         this.ajax("/get-dashboard", { method: "POST", body: formData }).then((data) => {
             this.data.response = data;
@@ -345,16 +338,16 @@ var ReportBuilder = {
             filterHtml.insertAdjacentHTML('beforeend', title);
         }
 
-        if (Object.keys(data['inputs']).length == 0 || Object.keys(data['inputs']).length <= document.querySelectorAll("#report_filter input[type='hidden']").length) {
-            document.querySelector("#report_filter").style.display = 'none';
-        }
+       
         document.querySelector(this.data.el).innerHTML = this.data.html;
 
         for (let name in data['inputs']) {
             await this.loadPromisify(data, name);
         }
 
-
+        if (Object.keys(data['inputs']).length == 0 || Object.keys(data['inputs']).length <= document.querySelectorAll("#report_filter input[type='hidden']").length) {
+            document.querySelector("#report_filter").style.display = 'none';
+        }
 
     },
     handleDashboardData: function (data) {
