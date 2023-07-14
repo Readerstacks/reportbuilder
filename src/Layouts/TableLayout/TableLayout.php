@@ -348,7 +348,7 @@ class TableLayout extends BaseLayout
           }
         </style>
         <div class="exports">
-            <button id="export" class="btn btn-primary">Export Sheet</button>
+            <button id="export" class="btn btn-primary">Export Excel</button>
             '.$exportButton.'
            
         </div>
