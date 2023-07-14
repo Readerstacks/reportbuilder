@@ -57,21 +57,21 @@
 .tbl_report tr th{
     border-bottom: solid 1px #111!important;
     border-top: none!important;  
-    line-break: anywhere;
-   
+    text-wrap:nowrap;
+     /* min-width: 100px; */
 }
 
 .tbl_report td, .tbl_report th {
     border: none;
 }
 
-.tbl_report tr td:nth-child(2) {
+/* .tbl_report tr td:nth-child(2) {
   width: 200px;
 }
 
 .tbl_report tr td:nth-child(3) {
   width: 200px;
-}
+} */
 
 .tbl_report th{
     padding: 10px 5px!important;
@@ -83,6 +83,10 @@
     padding: 8px 5px;    
     font-size: 14px;
     border-bottom: #111!important;
+    max-width: 300px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+/*    text-align: center;*/
 }
 
 .tbl_report tr:nth-last-child(2){
@@ -138,7 +142,7 @@
 }
 
 .tbl_report{
-    min-width: 1800px;
+    /* min-width: 1800px; */
 }
 
 
