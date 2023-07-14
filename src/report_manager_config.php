@@ -16,20 +16,19 @@ return [
             'export_report_schema_method'=> '',
             'datatable'                  => 'true',
         ]],
-        // "table2"=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\TableLayout\TableLayout"],
+        
         'Number'=> ['class'=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
 
-        'Chart'      => ['class'=>"\Aman5537jains\ReportBuilder\Layouts\ChartLayout", 'settings'=>['type'=>'pie', 'chart_label'=>'Users', 'label_column'=>'labels', 'data_column'=>'data', 'colors_column'=>'colors']],
+        'Chart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\ChartLayout","settings"=>[
+            "type"=>[
+                "type"=>"dropdown","options"=>["column",'bar',"pie",'splineArea','doughnut','line'],"value"=>"column"
+                ],"chart_label"=>"Users","label_column"=>"labels","data_column"=>"data","colors_column"=>"colors"]
+        ],
         'CanvasChart'=> ['class'=> "\Aman5537jains\ReportBuilder\Layouts\CanvasChartLayout", 'settings'=>['type'=> [
             'type'=> 'dropdown', 'options'=>['column', 'bar', 'pie', 'splineArea', 'doughnut', 'line'], 'value'=>'column',
         ], 'chart_label'=>'Users', 'label_column'=>'labels', 'data_column'=>'data', 'colors_column'=>'colors'],
         ],
-        'InestorTouchpoint'=> [
-            'class'=> \App\Reports\Layout\InvestorTouchpointBox::class, 'settings'=>[],
-        ],
-        'InvestorTouchpointChart'=> [
-            'class'=> \App\Reports\Layout\InvestorTouchpointChart::class, 'settings'=>[],
-        ],
+        
 
     ],
     'filter_inputs'=> [
