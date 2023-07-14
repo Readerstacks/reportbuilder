@@ -122,6 +122,11 @@ class ChartLayout extends BaseLayout
     public function render()
     {
         if ($this->reportBuilder->error == '') {
+             $noData = $this->showNoData();
+
+            if ($noData != null) {
+                return $noData;
+            }
             $table = "<div style='max-height:400px;width:100%;display:flex;justify-content:center;alighn-items:center'  >
             <canvas   id='myChart'></canvas>
           </div>";
