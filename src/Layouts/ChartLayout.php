@@ -30,7 +30,7 @@ class ChartLayout extends BaseLayout
         $dataNames  = [];
         $columns =  explode(",",$this->layoutSettings['data_column']); // Y AXIS
         $rows =  explode(",",$this->layoutSettings['label_column']); //X AXIS
-        
+        $xAxis = [];
      
             foreach ($this->reportBuilder->rows as $row) {
                 if(!isset($xAxis[$row->row->{$rows[0]}])){
