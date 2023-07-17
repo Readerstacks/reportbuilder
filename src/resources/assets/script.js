@@ -367,13 +367,14 @@ var ReportBuilder = {
                 this.loadStyle(data['inputs'][name].styles, 0, data['inputs'][name]['input_type'].split(" ").join("_"))
             }, 100)
         }
-        
+      
         if (!this.data.parameters['hide_filters'])
             filterHtml.insertAdjacentHTML('beforeend', form);
-
+            
         if (Object.keys(data['inputs']).length == 0 || Object.keys(data['inputs']).length <= document.querySelectorAll("#report_filter input[type='hidden']").length) {
             document.querySelector("#report_filter").style.display = 'none';
         }
+
 
 
     },
