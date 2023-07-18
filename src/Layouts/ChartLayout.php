@@ -91,6 +91,7 @@ class ChartLayout extends BaseLayout
         $colors_column = json_encode($colors_column);
         $chartType=$this->layoutSettings['type']['value'];
         $options=[];
+       
         if( $chartType=='bar horizontal'){
           $chartType='bar';
           $options = ['indexAxis'=>"y"];
@@ -113,7 +114,7 @@ class ChartLayout extends BaseLayout
                     };
 
                     new Chart(ctx, {
-                      type:  '{$this->layoutSettings['type']['value']}',
+                      type:  '$chartType',
                       data:  data,
                       options: $options
                     });",
