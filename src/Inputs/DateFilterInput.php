@@ -23,7 +23,7 @@ class DateFilterInput extends ReportInputs
         } elseif ($default == 'Last 30 Days') {
             return date("Y-m-d $timeS", strtotime('-1 month')).' - '.date("Y-m-d $timeE");
         } elseif ($default == 'This Year') {
-            return date("Y-m-d $timeS", strtotime('-1 year')).' - '.date("Y-m-d $timeE");
+            return date("Y-01-01 $timeS").' - '.date("Y-m-d $timeE");
         } elseif ($default == 'Last 1 Year') {
             return date("Y-m-d $timeS", strtotime('-1 year')).' - '.date("Y-m-d $timeE");
         }
