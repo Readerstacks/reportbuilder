@@ -95,8 +95,17 @@ class ChartLayout extends BaseLayout
         if( $chartType=='bar horizontal'){
           $chartType='bar';
           $options = ['indexAxis'=>"y"];
+          $settings= ["type"=>$chartType,
+                      "data"=> [ "labels"=>$labels,"datasets"=> $data_column],
+                      "options"=> ['indexAxis'=>"y"]
+                     ];
         }
-        $options= json_encode($options);
+        else{
+         $settings= ["type"=>$chartType,
+                     "data"=> [ "labels"=>$labels,"datasets"=> $data_column]
+                    ];
+        }      
+        $settings= json_encode($settings);
      
      
         
@@ -106,18 +115,8 @@ class ChartLayout extends BaseLayout
             ],
             'script'=> [
                 'text'=> "
-                    
                     const ctx = document.getElementById('myChart');
-                    const data = {
-                      labels: $labels,
-                      datasets:$data_column
-                    };
-
-                    new Chart(ctx, {
-                      type:  '$chartType',
-                      data:  data,
-                      options: $options
-                    });",
+                    new Chart(ctx, $settings);",
             ],
 
         ];
