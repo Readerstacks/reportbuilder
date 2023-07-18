@@ -86,9 +86,9 @@ class ChartLayout extends BaseLayout
                 }
             }
         }
-        $labels = json_encode($allRows);
-        $data_column = json_encode($allColumns);
-        $colors_column = json_encode($colors_column);
+        $labels = ($allRows);
+        $data_column = ($allColumns);
+        $colors_column = ($colors_column);
         $chartType=$this->layoutSettings['type']['value'];
         $options=[];
        
