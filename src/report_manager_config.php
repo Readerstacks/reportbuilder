@@ -21,7 +21,7 @@ return [
 
         'Chart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\ChartLayout","settings"=>[
             "type"=>[
-                "type"=>"dropdown","options"=>["column",'bar',"pie",'splineArea','doughnut','line'],"value"=>"column"
+                "type"=>"dropdown","options"=>["column",'bar',"bar horizontal","pie",'splineArea','doughnut','line'],"value"=>"column"
                 ],"chart_label"=>"Users","label_column"=>"labels","data_column"=>"data","colors_column"=>"colors"]
         ],
         'CanvasChart'=> ['class'=> "\Aman5537jains\ReportBuilder\Layouts\CanvasChartLayout", 'settings'=>['type'=> [
