@@ -38,15 +38,15 @@ class TableLayout extends BaseLayout
             $datatbleScript = "new DataTable('.tbl_report');";
         }
         $script = <<<SCRIPT
-                $datatbleScript 
-                
+                $datatbleScript
+
                 (function($){
 
 
 
                     $.fn.extend({
                         tableHTMLExport: function(options) {
-                
+
                             var defaults = {
                                 separator: ',',
                                 newline: '\\r\\n',
@@ -62,15 +62,15 @@ class TableLayout extends BaseLayout
                                 orientation: 'p' //only when exported to *pdf* "portrait" or "landscape" (or shortcuts "p" or "l")
                             };
                             var options = $.extend(defaults, options);
-                
-                
+
+
                             function quote(text) {
                                 return '"' + text.replace('"', '""') + '"';
                             }
-                
-                
+
+
                             function parseString(data){
-                
+
                                 if(defaults.htmlContent){
                                     content_data = data.html().trim();
                                 }else{
@@ -78,60 +78,60 @@ class TableLayout extends BaseLayout
                                 }
                                 return content_data;
                             }
-                
+
                             function download(filename, text) {
                                 var element = document.createElement('a');
                                 element.setAttribute('href', 'data:text/csv;charset=utf-8,' + encodeURIComponent(text));
                                 element.setAttribute('download', filename);
-                
+
                                 element.style.display = 'none';
                                 document.body.appendChild(element);
-                
+
                                 element.click();
-                
+
                                 document.body.removeChild(element);
                             }
-                
+
                             /**
                              * Convierte la tabla enviada a json
                              * @param el
                              * @returns {{header: *, data: Array}}
                              */
                             function toJson(el){
-                
+
                                 var jsonHeaderArray = [];
                                 $(el).find('thead').find('tr').not(options.ignoreRows).each(function() {
                                     var tdData ="";
                                     var jsonArrayTd = [];
-                
+
                                     $(this).find('th').not(options.ignoreColumns).each(function(index,data) {
                                         if ($(this).css('display') != 'none'){
                                             jsonArrayTd.push(parseString($(this)));
                                         }
                                     });
                                     jsonHeaderArray.push(jsonArrayTd);
-                
+
                                 });
-                
+
                                 var jsonArray = [];
                                 $(el).find('tbody').find('tr').not(options.ignoreRows).each(function() {
                                     var tdData ="";
                                     var jsonArrayTd = [];
-                
+
                                     $(this).find('td').not(options.ignoreColumns).each(function(index,data) {
                                         if ($(this).css('display') != 'none'){
                                             jsonArrayTd.push(parseString($(this)));
                                         }
                                     });
                                     jsonArray.push(jsonArrayTd);
-                
+
                                 });
-                
-                
+
+
                                 return {header:jsonHeaderArray[0],data:jsonArray};
                             }
-                
-                
+
+
                             /**
                              * Convierte la tabla enviada a csv o texto
                              * @param table
@@ -139,23 +139,23 @@ class TableLayout extends BaseLayout
                              */
                             function toCsv(table){
                                 var output = "";
-                                
-                                if (options.utf8BOM === true) {                
+
+                                if (options.utf8BOM === true) {
                                     output += '\ufeff';
                                 }
-                
+
                                 var rows = table.find('tr').not(options.ignoreRows);
-                
+
                                 var numCols = rows.first().find("td,th").not(options.ignoreColumns).length;
-                
+
                                 rows.each(function() {
                                     $(this).find("td,th").not(options.ignoreColumns)
                                         .each(function(i, col) {
                                             var column = $(col);
-                
+
                                             // Strip whitespaces
                                             var content = options.trimContent ? $.trim(column.text()) : column.text();
-                
+
                                             output += options.quoteFields ? quote(content) : content;
                                             if(i !== numCols-1) {
                                                 output += options.separator;
@@ -164,57 +164,58 @@ class TableLayout extends BaseLayout
                                             }
                                         });
                                 });
-                
+
                                 return output;
                             }
-                
-                
+
+
                             var el = this;
                             var dataMe;
                             if(options.type == 'csv' || options.type == 'txt'){
-                
-                
+
+
                                 var table = this.filter('table'); // TODO use $.each
-                
+
                                 if(table.length <= 0){
                                     throw new Error('tableHTMLExport must be called on a <table> element')
                                 }
-                
+
                                 if(table.length > 1){
                                     throw new Error('converting multiple table elements at once is not supported yet')
                                 }
-                
+
                                 dataMe = toCsv(table);
-                
+
                                 if(defaults.consoleLog){
                                     console.log(dataMe);
                                 }
-                
+
                                 download(options.filename,dataMe);
-                
-                
+
+
                                 //var base64data = "base64," + $.base64.encode(tdData);
                                 //window.open('data:application/'+defaults.type+';filename=exportData;' + base64data);
                             }else if(options.type == 'json'){
-                
+
                                 var jsonExportArray = toJson(el);
-                
+
                                 if(defaults.consoleLog){
                                     console.log(JSON.stringify(jsonExportArray));
                                 }
                                 dataMe = JSON.stringify(jsonExportArray);
-                
+
                                 download(options.filename,dataMe)
                                 /*
                                 var base64data = "base64," + $.base64.encode(JSON.stringify(jsonExportArray));
                                 window.open('data:application/json;filename=exportData;' + base64data);*/
                             }else if(options.type == 'pdf'){
-                
+
                                 var jsonExportArray = toJson(el);
-                              
-                                var totalPagesExp = "{total_pages_count_string}";
-                             
-                                   var  date = new Date().toLocaleString()
+
+                                window.jsPDF = window.jspdf.jsPDF;
+                                var doc = new jsPDF(defaults.orientation, 'pt');
+                                const totalPagesExp = "{total_pages_count_string}";
+                                var  date = new Date().toLocaleString()
                                 var contentJsPdf = {
                                     head: [jsonExportArray.header],
                                     body: jsonExportArray.data,
@@ -223,26 +224,39 @@ class TableLayout extends BaseLayout
                                       },
                                     didDrawPage: function(data) {
                                         {$pdf->render()}
-                                       
+
                                       },
+                                      addPageContent: function(data){
+                                        let footerStr = "Page " + doc.internal.getNumberOfPages();
+                                        if (typeof doc.putTotalPages === 'function') {
+                                          footerStr = footerStr + " of " + totalPagesExp;
+                                        }
+                                        doc.setFontSize(10);
+                                        doc.text(footerStr, (doc.internal.pageSize.getWidth()/2)+50, doc.internal.pageSize.height - 10,'center');
+                                      }
                                 };
-                
+
+
+
                                 if(defaults.consoleLog){
                                     console.log(contentJsPdf,);
                                 }
-                              
-                                window.jsPDF = window.jspdf.jsPDF;
-                                var doc = new jsPDF(defaults.orientation, 'pt');
-                                
+
+
+
                                 doc.autoTable(contentJsPdf);
+                                if (typeof doc.putTotalPages === 'function') {
+                                    doc.putTotalPages(totalPagesExp);
+                                }
                                 doc.save(options.filename);
-                
+
+
                             }
                             return this;
                         }
                     });
                 })(jQuery);
-        
+
                 $('#json').on('click',function(){
                     $("#tbl_report").tableHTMLExport({type:'json',filename:'data.json'});
                   })
@@ -305,27 +319,29 @@ class TableLayout extends BaseLayout
         return view('ReportBuilder::datefiltermodel', ['columns'=>$allColumns])->render();
     }
 
-    public function render()
+    public function reportTitle()
     {
-        if ($this->reportBuilder->error == '') {
-            $table = ' ';
-            $noData = $this->showNoData();
+        $titleClass =  isset($this->layoutSettings['title_class']) && !empty($this->layoutSettings['title_class']) ? $this->layoutSettings['title_class'] : '';
+        $titleMethod =  isset($this->layoutSettings['title_method']) && !empty($this->layoutSettings['title_method']) ? $this->layoutSettings['title_method'] : '';
 
-            if ($noData != null) {
-                return $noData;
-            }
+        if(!empty($titleClass) && !empty($titleMethod)){
+            return $titleClass::$titleMethod($this,parent::reportTitle());
+        }
 
-            // foreach($this->reportBuilder->report->variables  as $name=>$var){
-        //     $table.=$var['obj']->render();
+        return parent::reportTitle();
 
-            // }
-            $hide_columns = isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns']) ? $this->layoutSettings['hide_columns'] : '';
-            $hide_columns_arr = [];
-            if (!empty($hide_columns)) {
-                $hide_columns_arr = explode(',', $hide_columns);
-            }
-            $exportButton = $this->exportModel($this->reportBuilder->columns, $hide_columns_arr);
-            $table .= ' 
+    }
+
+    public function html()
+    {
+        $table='';
+        $hide_columns = isset($this->layoutSettings['hide_columns']) && !empty($this->layoutSettings['hide_columns']) ? $this->layoutSettings['hide_columns'] : '';
+        $hide_columns_arr = [];
+        if (!empty($hide_columns)) {
+            $hide_columns_arr = explode(',', $hide_columns);
+        }
+        $exportButton = $this->exportModel($this->reportBuilder->columns, $hide_columns_arr);
+        $table .= '
         <style>
         .tbl_report{
             border-collapse: collapse;
@@ -350,7 +366,7 @@ class TableLayout extends BaseLayout
         <div class="exports">
             <button id="export" class="btn btn-primary">Export Excel</button>
             '.$exportButton.'
-           
+
         </div>
         <table id="tbl_report" class="tbl_report table">';
             $table .= '<thead><tr>';
@@ -384,8 +400,6 @@ class TableLayout extends BaseLayout
             $table .= '</tbody></table>';
 
             return $table;
-        } else {
-            return "<span style='color:red'>".$this->reportBuilder->error.'</span>';
-        }
+
     }
 }

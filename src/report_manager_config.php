@@ -14,9 +14,11 @@ return [
             'hide_columns'               => '',
             'export_report_schema'       => '',
             'export_report_schema_method'=> '',
+            'title_class'                => '',
+            'title_method'               => '',
             'datatable'                  => 'true',
         ]],
-        
+
         'Number'=> ['class'=>"\Aman5537jains\ReportBuilder\Layouts\NumberViewLayout"],
 
         'Chart'=>["class"=>"\Aman5537jains\ReportBuilder\Layouts\ChartLayout","settings"=>[
@@ -28,7 +30,7 @@ return [
             'type'=> 'dropdown', 'options'=>['column', 'bar', 'pie', 'splineArea', 'doughnut', 'line'], 'value'=>'column',
         ], 'chart_label'=>'Users', 'label_column'=>'labels', 'data_column'=>'data', 'colors_column'=>'colors'],
         ],
-        
+
 
     ],
     'filter_inputs'=> [

@@ -32,7 +32,7 @@
     }
     #app_layout{
         display: flex;
-         
+
     }
     .footer-sticky{
         float: right
@@ -55,23 +55,23 @@
         overflow-x:auto;
         border:1px solid
     }
-    
+
     .metabase_filters .colin{
         padding: 20px;
         /* padding-top: 20px; */
-        
+
         width: 100%
     }
-    
+
     .colin {
         float: left;
         margin-right: 10px
     }
 </style>
- 
+
 <div id="app" class='container-fluid'>
 <div class="  head-title">
-Title : <input placeholder="Report name"    v-model="report_title" /> 
+Title : <input placeholder="Report name"    v-model="report_title" />
 <?php
 $database = config('database');
 $default = $database['default'];
@@ -80,7 +80,7 @@ $connections = $database['connections'];
 
 ?>
 Connection : <select v-model='connection'>
-<?php 
+<?php
 foreach($connections as $name=>$connection)
 {
 ?>
@@ -89,10 +89,10 @@ foreach($connections as $name=>$connection)
 ?>
 </select>
 </div>
- 
-    
-         
-            
+
+
+
+
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="offcanvasExample" aria-labelledby="offcanvasExampleLabel">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Layout</h5>
@@ -100,11 +100,11 @@ foreach($connections as $name=>$connection)
                     </div>
                     <div class="offcanvas-body">
                         <select  v-model="layout" >
-                                <option :value="name" v-for='(value, name ) of settings.layouts'> 
-                                {{name}} 
+                                <option :value="name" v-for='(value, name ) of settings.layouts'>
+                                {{name}}
                                 </option>
                             </select>
-                            <div v-if="settings.layouts &&  settings.layouts[layout] && settings.layouts[layout]['settings']">  
+                            <div v-if="settings.layouts &&  settings.layouts[layout] && settings.layouts[layout]['settings']">
                                     Layout Settings
                                     <br>
                                     <div  v-for="(setting,sname) of settings.layouts[layout]['settings']">
@@ -131,30 +131,30 @@ foreach($connections as $name=>$connection)
                     </div>
                     <div class="offcanvas-body">
                         <div class="metabase_filters" >
-                            <div class="colin" v-for="(k,inp) of vars"> 
-                            
+                            <div class="colin" v-for="(k,inp) of vars">
+
                                 <span>{{k.title}} : </span>
-                                
+
                                 <br> <input :placeholder="k.title"    v-model="k.title" />
                                 <br>
-                                Type:   
+                                Type:
                                 <br> <select @change="buildInput(k,$event)" v-model="k.type" >
 
-                                    <option :value="name" v-for='(value, name ) of settings.filters'> 
-                                        {{name}} 
+                                    <option :value="name" v-for='(value, name ) of settings.filters'>
+                                        {{name}}
                                     </option>
                                 </select>
-                                <div v-if="k.type && k.settings">  
+                                <div v-if="k.type && k.settings">
                                         Input Settings
                                         <br>
                                         <div  v-for='(setting,sname) of k.settings'>
                                         <span> {{sname}} : </span>
-                                      
+
                                         <template v-if='typeof setting==="string"'>
                                         <input v-model='k.settings[sname]'  type='text' />
                                         </template>
                                         <template v-if='typeof setting!=="string"'>
-                                            
+
                                             <select v-model="setting.value"   >
                                             <option v-for="item of setting.options" >{{item}}</option>
                                             </select>
@@ -164,23 +164,23 @@ foreach($connections as $name=>$connection)
 
                                 </div>
                                 <br>
-                                Hidden:   
+                                Hidden:
                                 <br>  <select v-model="k.hidden" ><option value='1'> Yes</option> <option value='0'>No</option></select>
                                 <br>
                                 <br>
-                                Default Value:    
+                                Default Value:
                                 <br>  <input placeholder="value"    v-model="k.value" />
                                 <br>
-                                Required:   
+                                Required:
                                 <br>  <select v-model="k.required" ><option value='1'> Yes</option> <option value='0'>No</option></select>
                                 <br>
-                                
+
                             </div>
-                        </div> 
+                        </div>
                     </div>
                 </div>
-           
-                  
+
+
                 <div class="offcanvas offcanvas-start" tabindex="-1" id="share-settings" aria-labelledby="offcanvasExampleLabel2">
                     <div class="offcanvas-header">
                         <h5 class="offcanvas-title" id="offcanvasExampleLabel">Share Settings</h5>
@@ -197,34 +197,34 @@ foreach($connections as $name=>$connection)
                             <option>Public</option>
                             <option>Private</option>
                             <option>Protected</option>
-                            
+
                             </select>
                         </div>
                         <div v-if='share.visibility=="Protected"' class="form-group">
                             <label for="exampleInputEmail1">Password or Token</label>
                             <input  v-model='share.token' type="text" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter">
-                        </div>   
+                        </div>
                         <button @click='saveReport()' data-bs-dismiss="offcanvas" aria-label="Close" type="button" class="btn btn-primary">Share</button>
                     </div>
-                </div>      
-            
+                </div>
 
-        
+
+
         <div id="" style='display:flex'>
             <div class='cls70'>
                 <div class="metabase_filters " style="padding-bottom:10px" >
                     <div class='row'>
                     <div :id='"input_"+k.name' class='col'  v-for="(k,inp) of vars"> <span>{{k.title}} : </span><br> <input :placeholder="k.title" :name="k.name" :type="k.type" v-model="k.value" /> </div>
                     </div>
-                </div>   
-                
+                </div>
+
                 <div class="metabase_editor">
-            
-                    <textarea    id='queryeditor' > 
-                  
-                </textarea> 
-            
-                
+
+                    <textarea    id='queryeditor' >
+
+                </textarea>
+
+
                 </div>
             </div>
            <Div class='settingsbtn cls30'>
@@ -238,34 +238,34 @@ foreach($connections as $name=>$connection)
             <button v-if='share.url!=""' class="btn btn-secondary" type="button" data-bs-toggle="offcanvas" data-bs-target="#share-settings" aria-controls="offcanvasExample">
              Share
             </button>
-            
+
             <button type="button"  class="btn btn-success" @click='run()'>Run</button>
             <button type="button"  class="btn btn-danger" @click='saveReport()'>Save</button>
         </div>
            </Div>
 
         </div>
-         
-        
-                 
-            
+
+
+
+
 
     <div  style="width:100%" id='output'>
-                
+
                 <div id="filters" >
                 </div>
-            
+
                 <div  id="outpuhtml" >
                 </div>
     </div>
-    
+
 </div>
-     
- 
+
+
 
 <script>
     let url ="<?php echo url("report-manager"); ?>"
- 
+
     const {
         createApp,
         h
@@ -294,7 +294,7 @@ foreach($connections as $name=>$connection)
               this.editor=CodeMirror.fromTextArea(document.getElementsByTagName("textarea")[0], {
         mode: "text/x-mysql",
         lineNumbers: true,
-        theme:'base16-dark',    
+        theme:'base16-dark',
         extraKeys: {"Ctrl-Space": "autocomplete"}, // To invoke the auto complete
         hint: CodeMirror.hint.sql,
         hintOptions: {
@@ -303,7 +303,7 @@ foreach($connections as $name=>$connection)
                 "table2": [ "other_columns1", "other_columns2" ]
             }
         }
-}); 
+});
 this.editor.on('change', editor => {
  this.sql = this.editor.getValue();
    this.findVars()
@@ -311,7 +311,7 @@ this.editor.on('change', editor => {
 setTimeout(()=>{
  this.findVars()
 },1000)
- 
+
             this.ajax(url+"/get-settings").then((data)=>{
                 for(var lt in data.layouts){
                         data.layouts[lt]['title']=lt;
@@ -331,11 +331,11 @@ setTimeout(()=>{
                     this.findVars()
                     let layout= JSON.parse(data.layout);
                     for(let lt in this.settings.layouts){
-                        
+
                         if(layout["title"]==lt)
-                        { 
+                        {
                             this.layout = layout["title"];
-                           
+
                             if(this.settings.layouts[lt]['settings'] && layout['settings'] ){
                                 for(let k in  layout['settings']){
                                     this.settings.layouts[lt]['settings'][k]=layout['settings'][k];
@@ -347,14 +347,14 @@ setTimeout(()=>{
                     this.report_id = data.id;
 
                 })
-                }      
+                }
 
             })
-           
+
         },
         methods: {
             ajax:function(...arguments){
-                 
+
                 return   fetch(...arguments).then((data)=>{
                     return data.json();
                 });
@@ -366,7 +366,7 @@ setTimeout(()=>{
                 formData.append('config', JSON.stringify(input));
 
                 this.ajax(url+"/get-input",{method:"POST",body:formData}).then((data)=>{
-                    
+
                     document.getElementById("input_"+input.name).innerHTML=data.html;
                     this.loadScripts(data.scripts,0,e.target.value.split(" ").join("_"))
 
@@ -375,21 +375,21 @@ setTimeout(()=>{
                 })
             },
             buildInput:function(input,e){
-               
+
                 if(this.settings.filters[input.type] && this.settings.filters[input.type]['settings']){
                     input.class= this.settings.filters[input.type]['class'];
-                    input.settings=JSON.parse(JSON.stringify(this.settings.filters[input.type]['settings']));  
+                    input.settings=JSON.parse(JSON.stringify(this.settings.filters[input.type]['settings']));
                 }
-                
+
                 // var formData = new FormData();
                 // formData.append('input', e.target.value);
                 // formData.append('config', JSON.stringify(input));
 
                 // this.ajax(url+"/get-input",{method:"POST",body:formData}).then((data)=>{
-                    
+
                 //     //  document.getElementById("input_"+input.name).innerHTML=data.html;
                 //     //  this.loadScripts(data.scripts,0,e.target.value.split(" ").join("_"))
-                
+
                 //     //  this.loadStyle(data.styles,0,e.target.value.split(" ").join("_"))
 
                 //  })
@@ -404,8 +404,8 @@ setTimeout(()=>{
                                 var inpname= name+"_"+ind+"_style";
                                 console.log(inpname,script,'inpname')
                              if( !document.getElementById(inpname)){
-                                 
-                                  
+
+
                                   var my_awesome_script = document.createElement('link');
                                   my_awesome_script.setAttribute("id",inpname)
                                   my_awesome_script.rel = "stylesheet";
@@ -415,12 +415,12 @@ setTimeout(()=>{
                                     my_awesome_script.onload= ()=>{
                                         this.loadStyle(scripts,index+1,name);
                                     }
-                                   
-                                  
-                                  
+
+
+
                               }
                               else{
-                                  
+
                                     this.loadStyle(scripts,index+1,name);
                               }
             }
@@ -435,8 +435,8 @@ setTimeout(()=>{
                                 var inpname= name+"_"+ind+"_script";
                                 console.log(inpname,script,'inpname')
                              if(script['src'] && !document.getElementById(inpname)){
-                                 
-                                  
+
+
                                   var my_awesome_script = document.createElement('script');
                                     my_awesome_script.setAttribute("id",inpname)
                                     my_awesome_script.setAttribute('src',script['src']);
@@ -444,9 +444,9 @@ setTimeout(()=>{
                                     my_awesome_script.onload= ()=>{
                                         this.loadScripts(scripts,index+1,name);
                                     }
-                                   
-                                  
-                                  
+
+
+
                               }
                               else{
                                   if(!script['src']){
@@ -461,7 +461,7 @@ setTimeout(()=>{
             saveReport:function(){
                 ReportBuilder.data.url=url
                 var formData = new FormData();
-        
+
                 formData.append('title', this.report_title);
                 formData.append('sql', this.sql);
                 formData.append('filters', JSON.stringify(this.vars));
@@ -470,24 +470,24 @@ setTimeout(()=>{
                 formData.append('token', this.share.token);
                 formData.append('layout', JSON.stringify(this.settings.layouts[this.layout]));
                 formData.append('report_id', this.report_id);
-                
-                
 
-        
+
+
+
         ReportBuilder.ajax("/save-report",{method:"POST",body:formData}).then((data)=>{
                     // this.share.visibility = data.visibility || "Public";
                     // this.share.url      = "report-manager/report/"+data.id;
                     // this.share.token    = data.token || "";
                     this.report_id      =   data.data.id;
                     this.share.url      = '<?php echo url("report-manager/report/"); ?>/'+data.data.uuid_token;
-                   
+
              console.log("data",data)
         })
     },
 
-   
 
-            
+
+
             run:function(){
                 // ReportBuilder.init({
                 //     url:url,
@@ -495,7 +495,7 @@ setTimeout(()=>{
                 //     elFilter:"#filters",
                 //     sql:this.sql,
                 //     vars:this.vars,
-                    
+
                 // })
                 ReportBuilder.data.url=url
                 ReportBuilder.el("#outpuhtml")
@@ -509,19 +509,19 @@ setTimeout(()=>{
                 // formData.append('sql', this.sql);
                 // this.filters_html ='';
                 // this.ajax(url+"/get-report",{method:"POST",body:formData}).then((data)=>{
-                //        this.html=data['layout'].html; 
+                //        this.html=data['layout'].html;
                 //        for(let name in data['inputs']){
                 //          this.filters_html += data['inputs'][name].html;
                 //          setTimeout(()=>{
                 //             this.loadScripts(data['inputs'][name].scripts,0,data['inputs'][name]['input_type'].split(" ").join("_"))
-                //             this.loadStyle(data['inputs'][name].styles,0,data['inputs'][name]['input_type'].split(" ").join("_"))  
+                //             this.loadStyle(data['inputs'][name].styles,0,data['inputs'][name]['input_type'].split(" ").join("_"))
 
                 //          },100)
                 //        }
 
                 //     //  document.getElementById("input_"+input.name).innerHTML=data.html;
                 //     //  this.loadScripts(data.scripts,0,e.target.value.split(" ").join("_"))
-                
+
                 //     //  this.loadStyle(data.styles,0,e.target.value.split(" ").join("_"))
 
                 //  })
@@ -531,7 +531,7 @@ setTimeout(()=>{
                 e.preventDefault()
                 console.log(this.$refs.form,e)
                 var formData = new FormData(e.form);
-                
+
                 console.log("formData",formData,)
                 return false;
             },
@@ -548,13 +548,13 @@ setTimeout(()=>{
                     const matchGroup = match[1];
                     let captured = matchGroup.split(".");
                     let capturedGroup = captured[0];
-                    
+
                     if (origin[capturedGroup]) {
                         newo[capturedGroup] = origin[capturedGroup];
                     } else if (!origin[capturedGroup]) {
                         let filter= Object.keys(this.settings.filters)[0];
                         let input = JSON.parse(JSON.stringify(this.settings.filters[filter]));
-                        
+
                         newo[capturedGroup] = {
                             type: filter,
                             class: input.class,
@@ -574,17 +574,17 @@ setTimeout(()=>{
             findVars: function() {
                 this.getStringBetween(this.sql, '{{', '}}');
             },
-            
+
         }
     }).mount('#app')
 </script>
 <script>
 
 
- 
- 
+
+
 // CodeMirror.commands.autocomplete = function(cm) {
-//     CodeMirror.showHint(cm, CodeMirror.hint.sql, { 
+//     CodeMirror.showHint(cm, CodeMirror.hint.sql, {
 //         tables: {
 //             "table1": [ "col_A", "col_B", "col_C" ],
 //             "table2": [ "other_columns1", "other_columns2" ]

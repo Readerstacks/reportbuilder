@@ -104,7 +104,6 @@ class ReportBuilder
             foreach ($paramsValue['params'] as $val) {
                 $this->bindings[] = $val;
             }
-
             return $paramsValue['sql'];
         }
 
@@ -191,7 +190,7 @@ class ReportBuilder
     {
         if (!empty($this->results)) {
             $customizedColumns = [];
-            if (isset($this->report->columns) && count(isset($this->report->columns)) > 0) {
+            if (isset($this->report->columns) && count(($this->report->columns)) > 0) {
                 $customizedColumns = $this->report->columns;
             }
             foreach ($this->results[0] as $col=>$val) {
@@ -232,8 +231,6 @@ class ReportBuilder
     {
         if ($this->report->layout != '') {
             $layout = $this->report->layout;
-            // $layouts  = config("reportconfig.layouts");
-            // $this->layout= $layout;
             $this->layout = (new $layout['class']($this, @$layout['settings']));
         }
     }

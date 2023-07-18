@@ -231,7 +231,7 @@ class ReportManagerController extends Controller
             return [
                 'sql'   => config('debug') || 1 ? $report->sql : '',
                 'inputs'=> $inputs,
-                'title' => @$reportManager->title,
+                'title' => $report->layout->reportTitle(),
                 'id'    => @$reportManager->id,
                 'layout'=> [
                     'scripts'   => $report->layout->scripts(),
