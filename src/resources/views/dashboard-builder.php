@@ -48,7 +48,7 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
                         <div class="metabase_filters" >
                             <button type="button" class="btn btn-primary"  @click='addVariables()'>Add New</button>
                             <div class="colin" v-for="(k,inp) of vars"> 
-                                
+                                <button @click='deleteVar(inp)'>Delete</button>
                                 <span>{{k.title}} : </span>
                                 
                                 <br> <input :placeholder="k.title"    v-model="k.title" />
@@ -324,10 +324,16 @@ Title : <input placeholder="Dashboard name"    v-model="dashboard_title" />
           },
             addVariables:function(){
                 var capturedGroup=prompt("Enter name ?");
-               
                 this.addFilter(capturedGroup,{});
             },
 
+            deleteVar:function(name){
+                var sure=confirm("Are you sure?");
+                if(sure){
+                  delete  this.vars[name] 
+                }
+                
+            },
             addFilter:function(capturedGroup,defaults){
                 if(capturedGroup){
                 let filter= Object.keys(this.settings.filters)[0];

@@ -98,9 +98,9 @@ var ReportBuilder = {
 
                     if (typeof evalCodeFn == "function") {
                         evalCodeFn(this)
-                        
+
                     }
-                    
+
                         this.loadScripts(scripts,index+1,name,cb);
                 }
                 else
@@ -181,7 +181,9 @@ var ReportBuilder = {
         })
     },
     getDashboardReport: function (listner) {
+        if(listner)
         this.dashboarChangeListner = listner
+        
         var response = '';
         if (this.data.visibility == 'Protected' && this.data.password == '') {
             this.data.password = prompt("Enter Password to access report");
@@ -269,6 +271,45 @@ var ReportBuilder = {
         this.setQueryParam()
         return this;
     },
+    clearForm:function(){
+        let elements = document.forms["report_filter"]
+        const data = new FormData(elements);
+        let params = '';
+        this.data.parameters = {};
+        for (const [name, value] of data) {
+
+                this.data.parameters[name] = '';
+            params += "name=" ;
+        }
+
+        if (this.data.reportId)
+            this.getReport()
+        else
+            this.getReportCustom()
+
+
+
+        return false;
+    },
+    
+    clearDashBoardForm:function(){
+        let elements = document.forms["report_filter"]
+        const data = new FormData(elements);
+        let params = '';
+        this.data.parameters = {};
+        for (const [name, value] of data) {
+
+                this.data.parameters[name] = '';
+            params += "name=" ;
+        }
+
+        this.getDashboardReport();
+
+
+
+
+        return false;
+    },
     handleSubmit: function () {
         let elements = document.forms["report_filter"]
         const data = new FormData(elements);
@@ -279,7 +320,7 @@ var ReportBuilder = {
                 this.data.parameters[name] = value;
             params += "name=" + value;
         }
-        console.log("this.data", this.data)
+
         if (this.data.reportId)
             this.getReport()
         else
@@ -330,7 +371,7 @@ var ReportBuilder = {
         }
 
 
-        form += '<div class="form-group"><button type="button" class="btn btn-primary"  onclick="ReportBuilder.handleSubmit()">Search</button></div></form>'
+        form += '<div class="form-group"><button type="button" class="btn btn-primary"  onclick="ReportBuilder.handleSubmit()">Search</button> <button type="button" class="btn btn-danger"  onclick="ReportBuilder.clearForm()">Reset</button></div></form>'
 
         if (!this.data.parameters['hide_filters'])
             filterHtml.insertAdjacentHTML('beforeend', form);
@@ -338,7 +379,7 @@ var ReportBuilder = {
             filterHtml.insertAdjacentHTML('beforeend', title);
         }
 
-       
+
         document.querySelector(this.data.el).innerHTML = this.data.html;
 
         for (let name in data['inputs']) {
@@ -367,10 +408,12 @@ var ReportBuilder = {
                 this.loadStyle(data['inputs'][name].styles, 0, data['inputs'][name]['input_type'].split(" ").join("_"))
             }, 100)
         }
-      
+        form += '<div class="form-group"><button type="button" class="btn btn-primary"  onclick="ReportBuilder.handleDasboardSubmit()">Search</button> <button type="button" class="btn btn-danger"  onclick="ReportBuilder.clearDashBoardForm()">Reset</button></div></form>'
+
+
         if (!this.data.parameters['hide_filters'])
             filterHtml.insertAdjacentHTML('beforeend', form);
-            
+
         if (Object.keys(data['inputs']).length == 0 || Object.keys(data['inputs']).length <= document.querySelectorAll("#report_filter input[type='hidden']").length) {
             document.querySelector("#report_filter").style.display = 'none';
         }
