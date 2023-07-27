@@ -224,15 +224,13 @@ class TableLayout extends BaseLayout
                                       },
                                     didDrawPage: function(data) {
                                         {$pdf->render()}
-
-                                      },
-                                      addPageContent: function(data){
                                         let footerStr = "Page " + doc.internal.getNumberOfPages();
                                         if (typeof doc.putTotalPages === 'function') {
                                           footerStr = footerStr + " of " + totalPagesExp;
                                         }
                                         doc.setFontSize(10);
                                         doc.text(footerStr, (doc.internal.pageSize.getWidth()/2)+50, doc.internal.pageSize.height - 10,'center');
+
                                       }
                                 };
 
