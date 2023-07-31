@@ -100,5 +100,6 @@ class SqlEditor extends Editor
 
     public function build()
     {
+        // $this->sql = htmlspecialchars_decode($this->createQuery(htmlspecialchars($this->report->query)));
     }
 }

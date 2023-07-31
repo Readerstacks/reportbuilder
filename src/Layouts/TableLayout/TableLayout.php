@@ -16,6 +16,8 @@ class TableLayout extends BaseLayout
         }
         $exportSchemaCls = isset($this->layoutSettings['export_report_schema']) && !empty($this->layoutSettings['export_report_schema']) ? $this->layoutSettings['export_report_schema'] : '';
         $exportSchemaMethod = isset($this->layoutSettings['export_report_schema_method']) && !empty($this->layoutSettings['export_report_schema_method']) ? $this->layoutSettings['export_report_schema_method'] : '';
+        $footer_sum_columns = isset($this->layoutSettings['footer_sum_columns']) && !empty($this->layoutSettings['footer_sum_columns']) ? $this->layoutSettings['footer_sum_columns'] : '';
+
         if ($exportSchemaCls != '' && $exportSchemaMethod != '') {
             $pdf = new JsPdFWrapperPhp();
             $exportSchemaCls::$exportSchemaMethod($this, $pdf);
@@ -370,9 +372,17 @@ class TableLayout extends BaseLayout
             $table .= '<thead><tr>';
             $colFormatter = isset($this->layoutSettings['column_formatter_class']) && !empty($this->layoutSettings['column_formatter_class']) ? $this->layoutSettings['column_formatter_class'] : '';
             $colFormatterMethod = isset($this->layoutSettings['column_formatter_method']) && !empty($this->layoutSettings['column_formatter_method']) ? $this->layoutSettings['column_formatter_method'] : '';
-
+            $footer_sum_columns =  isset($this->layoutSettings['footer_sum_columns']) && !empty($this->layoutSettings['footer_sum_columns']) ? $this->layoutSettings['footer_sum_columns'] : '';
+            $sumCols=[];
+            $footerCols=[];
+            if(!empty($footer_sum_columns)){
+                $footerCols = explode(",",$footer_sum_columns) ;
+            }
             foreach ($this->reportBuilder->columns as $column) {
                 if (!in_array($column->name(), $hide_columns_arr)) {
+                    if(in_array ($column->name() ,$footerCols)){
+                        $sumCols[$column->name()]=0;
+                    }
                     $table .= '<th data-col="'.$column->name().'">'.$column->render().' </th>';
                 }
             }
@@ -388,16 +398,28 @@ class TableLayout extends BaseLayout
                         if ($colFormatter != '' && $colFormatterMethod != '') {
                             $value = $colFormatter::$colFormatterMethod($column->name(), $value, $row);
                         }
+                        if(isset($sumCols[$column->name()])){
+                            $sumCols[$column->name()] = $sumCols[$column->name()]+$value;
+                        }
 
                         $table .= '<td title='.strip_tags($value).'>'.$value.' </td>';
                     }
                     $table .= '</tr>';
                 }
             }
+            if(count($sumCols)>0){
+                $table .= '<tfoot><tr>';
+                foreach ($this->reportBuilder->columns as $column) {
+                    $table .= '<td  >'.(isset($sumCols[$column->name()])?$sumCols[$column->name()]:"").' </td>';
+                }
+                $table .= '</tr></tfoot>';
+            }
+
 
             $table .= '</tbody></table>';
 
             return $table;
+
 
     }
 }
