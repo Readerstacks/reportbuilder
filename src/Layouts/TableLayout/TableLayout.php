@@ -128,9 +128,22 @@ class TableLayout extends BaseLayout
                                     jsonArray.push(jsonArrayTd);
 
                                 });
+                                 var jsonArrayFooter = [];
+                                $(el).find('tfoot').find('tr').not(options.ignoreRows).each(function() {
+                                    var tdData ="";
+                                    var jsonArrayTd = [];
+
+                                    $(this).find('td').not(options.ignoreColumns).each(function(index,data) {
+                                        if ($(this).css('display') != 'none'){
+                                            jsonArrayTd.push(parseString($(this)));
+                                        }
+                                    });
+                                    jsonArrayFooter.push(jsonArrayTd);
+
+                                });
 
 
-                                return {header:jsonHeaderArray[0],data:jsonArray};
+                                return {header:jsonHeaderArray[0],data:jsonArray,footer:jsonArrayFooter[0]};
                             }
 
 
@@ -221,6 +234,7 @@ class TableLayout extends BaseLayout
                                 var contentJsPdf = {
                                     head: [jsonExportArray.header],
                                     body: jsonExportArray.data,
+                                    foot:[jsonExportArray.footer],
                                     margin: {
                                         top: 100
                                       },
@@ -410,7 +424,7 @@ class TableLayout extends BaseLayout
             if(count($sumCols)>0){
                 $table .= '<tfoot><tr>';
                 foreach ($this->reportBuilder->columns as $column) {
-                    $table .= '<td  >'.(isset($sumCols[$column->name()])?$sumCols[$column->name()]:"").' </td>';
+                    $table .= '<td  ><span style="font-weight:bold">'.(isset($sumCols[$column->name()])?$sumCols[$column->name()]:"").'</span> </td>';
                 }
                 $table .= '</tr></tfoot>';
             }
