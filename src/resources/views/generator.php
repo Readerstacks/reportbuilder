@@ -112,10 +112,13 @@ foreach($connections as $name=>$connection)
                                     <template v-if='typeof setting==="string"'>
                                        <input v-model="settings.layouts[layout]['settings'][sname]"  type='text' />
                                     </template>
-                                    <template v-if='typeof setting!=="string"'>
-                                       <select v-model="setting.value"   >
-                                       <option v-for="item of setting.options" >{{item}}</option>
+                                    <template v-if='typeof setting!=="string" '>
+                                       <select v-if='setting.type=="dropdown"' v-model="setting.value"   >
+                                        <option v-for="item of setting.options" >{{item}}</option>
                                        </select>
+                                       <div v-if='setting.type=="custom"' >
+                                                    <div @click="customLayoutSetting(settings.layouts[layout]['settings'],setting,sname)" > Settings</div>
+                                       </div>
                                     </template>
                                     </div>
 
@@ -265,6 +268,7 @@ foreach($connections as $name=>$connection)
 
 <script>
     let url ="<?php echo url("report-manager"); ?>"
+    let mainurl ="<?php echo url(""); ?>"
 
     const {
         createApp,
@@ -358,6 +362,15 @@ setTimeout(()=>{
                 return   fetch(...arguments).then((data)=>{
                     return data.json();
                 });
+            },
+            customLayoutSetting:function(layout,setting,value){
+                console.log(layout,setting,value)
+                if(setting.script){
+                    let divScripts = document.getElementById('load-script');
+                    let newScript = document.createElement('script');
+                    newScript.src = mainurl+setting.script;
+                    document.body.appendChild(newScript);
+                }
             },
             buildInputs:function(input,e){
 

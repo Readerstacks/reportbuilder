@@ -143,7 +143,7 @@ class TableLayout extends BaseLayout
                                 });
 
 
-                                return {header:jsonHeaderArray[0],data:jsonArray,footer:jsonArrayFooter[0]};
+                                return {header:jsonHeaderArray[0],data:jsonArray,footer:jsonArrayFooter.length>0 ? jsonArrayFooter[0]:[]};
                             }
 
 
