@@ -368,7 +368,7 @@ class TableLayout extends BaseLayout
           .tbl_report th {
             padding-top: 12px;
             padding-bottom: 12px;
-            text-align: left;
+            text-align: center;
             background-color: #000;
             color: white;
           }
