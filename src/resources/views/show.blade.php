@@ -8,6 +8,8 @@
                 </div>
     </div>
    <script src="https://cdn.jsdelivr.net/jquery/latest/jquery.min.js"></script>
+   <script src="https://davidjbradshaw.github.io/iframe-resizer/js/iframeResizer.contentWindow.min.js"></script>
+
    <script src="<?php echo url('/public/ReportBuilder/script.js') ?>"></script>
    <link rel="stylesheet" href="<?php echo url('/public/ReportBuilder/style.css') ?>" />
 

@@ -37,7 +37,10 @@ class TableLayout extends BaseLayout
         $datatable = isset($this->layoutSettings['datatable']) && !empty($this->layoutSettings['datatable']) ? $this->layoutSettings['datatable'] : 'false';
         $datatbleScript = '';
         if ($datatable == 'true') {
-            $datatbleScript = "new DataTable('.tbl_report');";
+            $datatbleScript = "new DataTable('.tbl_report',{
+                'aLengthMenu': [ [10, 50, 100, -1], [10, 50, 100 , 'All'] ],
+       'iDisplayLength' : 10,
+                });";
         }
         $script = <<<SCRIPT
                 $datatbleScript
@@ -416,7 +419,7 @@ class TableLayout extends BaseLayout
                             $sumCols[$column->name()] = $sumCols[$column->name()]+$value;
                         }
 
-                        $table .= '<td title='.strip_tags($value).'>'.$value.' </td>';
+                        $table .= '<td data-col="'.$column->name().'" title='.strip_tags($value).'>'.$value.' </td>';
                     }
                     $table .= '</tr>';
                 }
@@ -424,7 +427,10 @@ class TableLayout extends BaseLayout
             if(count($sumCols)>0){
                 $table .= '<tfoot><tr>';
                 foreach ($this->reportBuilder->columns as $column) {
-                    $table .= '<td  ><span style="font-weight:bold">'.(isset($sumCols[$column->name()])?$sumCols[$column->name()]:"").'</span> </td>';
+                    if (in_array($column->name(), $hide_columns_arr)) {
+                        continue;
+                    }
+                    $table .= '<td data-col="'.$column->name().'" ><span style="font-weight:bold">'.(isset($sumCols[$column->name()])?$sumCols[$column->name()]:"").'</span> </td>';
                 }
                 $table .= '</tr></tfoot>';
             }

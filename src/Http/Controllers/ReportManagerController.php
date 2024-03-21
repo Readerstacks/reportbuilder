@@ -176,19 +176,8 @@ class ReportManagerController extends Controller
 
     public function getReportById(Request $request)
     {
-        $report = ReportBuilderQuestion::where('uuid_token', $request->reportId)->first();
-        if ($report->visibility == 'Protected' && $request->password == $report->token) {
-            return $this->getReport($report->sql_query, $report->filters, $report->layout, $report);
-        } elseif ($report->visibility == 'Public') {
-            return $this->getReport($report->sql_query, $report->filters, $report->layout, $report);
-        } else {
-            return [
-                'sql'   => '',
-                'inputs'=> [],
-                'title' => 'Access Denied!',
-                'layout'=> ['scripts'=>[], 'styles'=>[], 'html'=>['Invalid password']],
-            ];
-        }
+        return (new \Aman5537jains\ReportBuilder\ReportBuilder())->getReportById($request);
+       
     }
 
     public function getReportCustom(Request $request)
@@ -205,53 +194,10 @@ class ReportManagerController extends Controller
         //         $layout=$report->layout;
         // //    }
 
-        return $this->getReport($sql, $filters, $layout, (object) [
+        return (new \Aman5537jains\ReportBuilder\ReportBuilder())->getReport($sql, $filters, $layout, (object) [
             'connection'=> $connection,
         ]);
     }
 
-    public function getReport($sql, $filters, $layout = 'table', $reportManager = null)
-    {
-        try {
-            $report = (new \Aman5537jains\ReportBuilder\ReportBuilder())
-                ->setConnection($reportManager->connection)
-                ->setReportCustom([
-                    'variables'=> json_decode($filters, true),
-                    'query'    => $sql,
-                    'layout'   => json_decode($layout, true),
-                    'object'   => @$reportManager,
-                ])->build();
-            $inputs = [];
-
-            foreach ($report->report->variables as $name=>$var) {
-                $inpclass = $var['obj'];
-                $inputs[$name] = ['input_type'=>$var['type'], 'scripts'=>$inpclass->scripts(), 'styles'=>$inpclass->styles(), 'html'=>$inpclass->render()];
-            }
-
-            return [
-                'sql'   => config('debug') || 1 ? $report->sql : '',
-                'inputs'=> $inputs,
-                'title' => $report->layout->reportTitle(),
-                'id'    => @$reportManager->id,
-                'layout'=> [
-                    'scripts'   => $report->layout->scripts(),
-                    'json'      => [],
-                    'styles'    => $report->layout->styles(),
-                    'html'      => $report->layout->render(),
-                ],
-            ];
-        } catch(\Exception $e) {
-            return [
-                'sql'   => '',
-                'inputs'=> [],
-                'title' => '',
-                'layout'=> [
-                    'scripts'   => [],
-                    'json'      => [],
-                    'styles'    => [],
-                    'html'      => '<span style="color:red"> Error : '.$e->getMessage().' - line '.$e->getLine().' - File -> '.$e->getFile().'</span>',
-                ],
-            ];
-        }
-    }
+     
 }

@@ -215,6 +215,7 @@ foreach($connections as $name=>$connection)
 
         <div id="" style='display:flex'>
             <div class='cls70'>
+                <login-page></login-page>
                 <div class="metabase_filters " style="padding-bottom:10px" >
                     <div class='row'>
                     <div :id='"input_"+k.name' class='col'  v-for="(k,inp) of vars"> <span>{{k.title}} : </span><br> <input :placeholder="k.title" :name="k.name" :type="k.type" v-model="k.value" /> </div>
@@ -272,10 +273,28 @@ foreach($connections as $name=>$connection)
 
     const {
         createApp,
-        h
+        h,
+        defineAsyncComponent
     } = Vue
+
+const AsyncComp = defineAsyncComponent(
+    () =>
+
+            new Promise((resolve, reject) => {
+                setTimeout(()=>{
+                    resolve({
+                    template: '<div>I am async!</div>',
+                    })
+                },3000)
+                })
+
+
+
+  )
     createApp({
-        components: {},
+        components: {
+            LoginPage:AsyncComp
+        },
         data() {
             return {
                 connection:'<?php echo $default; ?>',

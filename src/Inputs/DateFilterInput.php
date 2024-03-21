@@ -72,21 +72,21 @@ class DateFilterInput extends ReportInputs
                  'src'=> 'https://cdn.jsdelivr.net/npm/daterangepicker/daterangepicker.min.js',
              ],
              'script'=> [
-                 'text'=> "  
+                 'text'=> "
               var timepicker= {$this->settings['timepicker']};
               $('.datefilter_{$this->name}').daterangepicker({
-                autoUpdateInput: false, 
-                timePicker: timepicker,  
+                autoUpdateInput: false,
+                timePicker: timepicker,
                 showDropdowns: true,
                 ranges: {
-                  'Today': [moment(), moment()],
-                  'Yesterday': [moment().subtract(1, 'days'), moment().subtract(1, 'days')],
-                  'Last 7 Days': [moment().subtract(6, 'days'), moment()],
-                  'Last 30 Days': [moment().subtract(29, 'days'), moment()],
+                  'Today': [moment().startOf('day'), moment().endOf('day')],
+                  'Yesterday': [moment().subtract(1, 'days').startOf('day'), moment().subtract(1, 'days').endOf('day')],
+                  'Last 7 Days': [moment().subtract(6, 'days').startOf('day'), moment().endOf('day')],
+                  'Last 30 Days': [moment().subtract(29, 'days').startOf('day'), moment().endOf('day')],
                   'This Month': [moment().startOf('month'), moment().endOf('month')],
                   'Last Month': [moment().subtract(1, 'month').startOf('month'), moment().subtract(1, 'month').endOf('month')],
-                 
-               },       
+
+               },
                 locale: {
                   'format': 'YYYY-MM-DD',
                 },
@@ -96,11 +96,11 @@ class DateFilterInput extends ReportInputs
                 $('.datefilter_{$this->name}').val(start.format('YYYY-MM-DD HH:mm:ss')+' - '+ end.format('YYYY-MM-DD HH:mm:ss'))
                 else
                 $('.datefilter_{$this->name}').val(start.format('YYYY-MM-DD')+' - '+ end.format('YYYY-MM-DD'))
-                
+
                 console.log( start.format('YYYY-MM-DD')  , end.format('YYYY-MM-DD'));
               });
               $('.datefilter_{$this->name}').on('cancel.daterangepicker', function(ev, picker) {
-              
+
                 // $('.datefilter_{$this->name}').val('');
               });
             ",

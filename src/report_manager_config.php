@@ -17,6 +17,7 @@ return [
             'title_class'                => '',
             'title_method'               => '',
             'datatable'                  => 'true',
+
             "column_settings"            => [
                 "type"=>"custom",
                 "script"=>"public/report-table.js"

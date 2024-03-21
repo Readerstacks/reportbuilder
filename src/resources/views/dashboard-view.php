@@ -7,6 +7,22 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="<?php echo url('/public/ReportBuilder/script.js') ?>"></script>
+<link rel="stylesheet" href="<?php echo url('/public/ReportBuilder/dashboard.css') ?>" />
+<script>
+    let pluginList =[];
+const {
+        createApp,
+        h
+    } = Vue
+    // Vue.use=function(plugins){
+    //     pluginList =plugins;// .push(plugins);
+    //     console.log('plugins',plugins)
+    // }
+</script>
+<script src="<?php echo url('/public/vue3-grid-layout.umd.c.js') ?>"></script>
+<link href="
+https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
+" rel="stylesheet">
 
 <style type="text/css">
   .grid-stack { background: white; }
@@ -14,74 +30,98 @@
   .grid-stack-item-content {  }
 </style>
 
- 
- 
+
+
 <div id="app" class='container-fluid'>
- 
- 
-    
-         
-            
-                 
 
-                
-           
-                  
-                    
-            
 
-        
+
+
+
+
+
+
+
+
+
+
+
+
         <div id="" style='display:flex'>
             <div class='cls70'>
                 <div class="metabase_filters " id="filters" style="padding-bottom:10px" >
-                    
-                </div>   
-                
-                    <div class='grid-stack'  > 
+
+                </div>
+
+                    <!-- <div class='grid-stack'  >
                         <div v-for="(w, indexs) in items" class="grid-stack-item" :gs-x="w.x" :gs-y="w.y" :gs-w="w.w" :gs-h="w.h"
                             :gs-id="w.sid" :id="w.sid" :key="w.sid">
                             <div class="grid-stack-item-content">
-                               
-                                <iframe :src='url+"/report/"+w.uid+"?hide_filters=true&"+w.filters'   frameborder="0"
+
+                                <iframe :id="'iframe-'+w.sid"  :src='url+"/report/"+w.uid+"?hide_filters=true&"+w.filters'   frameborder="0"
  style="position: relative; height: 90%; width: 100%;" >
                                 </iframe>
                             </div>
                         </div>
-                    </div>  
+                    </div> -->
+                    <grid-layout
+            :layout.sync="layout"
+            :col-num="12"
+            :row-height="30"
+            :is-draggable="true"
+            :is-resizable="true"
+            :is-mirrored="false"
+            :vertical-compact="true"
+            :margin="[10, 10]"
+            :use-css-transforms="true"
+    >
+
+        <grid-item v-for="(item, indexs) in items"
+                   :x="item.x"
+                   :y="item.y"
+                   :w="item.w"
+                   :h="item.h"
+                   :i="item.sid"
+                   :key="item.sid">
+                   <iframe :id="'iframe-'+item.sid"  :src='url+"/report/"+item.uid+"?hide_filters=true&"+item.filters'   frameborder="0"
+ style="position: relative; height: 90%; width: 100%;" >
+                                </iframe>
+        </grid-item>
+    </grid-layout>
             </div>
-            
+
 
         </div>
-         
-        
-                 
-            
 
-  
-    
+
+
+
+
+
+
 </div>
 <script>
  let url ="<?php echo url("report-manager"); ?>"
-        //  
+        //
                 ReportBuilder.data.url=url
                 ReportBuilder.el("#outpuhtml")
                 ReportBuilder.elFilter("#filters")
-                 
-                
+
+
     </script>
 <script>
-   
- 
-    const {
-        createApp,
-        h
-    } = Vue
- 
-    createApp({
-        components: {},
+
+
+
+
+  let app =   createApp({
+        components: {
+            GridLayout: VueGridLayout.GridLayout,
+           GridItem: VueGridLayout.GridItem
+        },
         data() {
             return {
-                
+
                 app: null,
                 reports:[],
                 message: 'Hello Vue!',
@@ -91,33 +131,33 @@
                 share:{url:"",visibility:"Public",token:""},
                 settings:{},
                 filters_html:"",
-                
+
                 dashboard_title:"Untitled",
                 html:"",
                 url:url,
                 dashboard_id:'<?php echo $dashboardid; ?>',
-             
+
                 // editor:null
             }
         },
         mounted:function(){
-            
+
             var items = [
     // {content: 'my first widget'}, // will default to location (0,0) and 1x1
     // {w: 2, content: 'another longer widget!'} // will be placed next at (1,0) and 2x1
   ];
-  
-    this.grid = GridStack.init();
-    this.grid.load(this.items);
-    
+
+    // this.grid = GridStack.init({sizeToContent:true});
+    // this.grid.load(this.items);
+    // window.addEventListener('resize',  () =>{this.resizeGrid()})
   this.ajax(url+"/get-settings").then((data)=>{
-           
+
                  this.settings =data;
                 });
-       
-           
-           
-                       
+
+
+
+
                 console.log("this.reports",this.dashboard_id)
                 //  this.settings =data;
                  if(this.dashboard_id!=''){
@@ -127,7 +167,7 @@
                    // this.grid.load(JSON.parse(data.layout));
                     console.log("data,filters",data,filters)
                    let items= JSON.parse(data.layout);
-                   this.grid.removeAll(false);
+                //    this.grid.removeAll(false);
                    for(let item of items){
                     let mappedFilters={};
                     for(let mapper in item.mappers){
@@ -139,33 +179,55 @@
                     // item.noMove=true;
                     item.filters=this.serialize(mappedFilters);
                        this.items.push(item);
-                      
+
                    }
                    setTimeout(()=>{
                        for(let widget of this.items){
-                       this.grid.makeWidget(widget.sid);
-                       this.grid.enableMove(false);
-                       this.grid.enableResize(false);
+                    //    this.grid.makeWidget(widget.sid);
+                    //    this.grid.enableMove(false);
+                    //    this.grid.enableResize(false);
+                    //    iFrameResize({ log: true }, '#iframe-'+widget.sid)
+                    //    this.grid.resizeToContent(document.getElementById(widget.sid));
                        }
                    })
-                   
+
                    this.share.visibility   = data.visibility || "Public";
                    this.share.url          = '<?php echo url("report-manager/dashboard/"); ?>/'+data.uuid_token;
                    this.share.token        = data.token || "";
-                     
+
                    this.dashboard_id = data.id;
                  }).then((data)=>{
 
 
-                    
+
 
                 })
-                }      
+                }
 
-            
-           
+
+
         },
         methods: {
+            resizeGrid:function() {
+      let width = document.body.clientWidth;
+      let layout = 'moveScale'
+      if (width < 700) {
+        this.grid.column(1, layout).cellHeight('100vw');
+
+      } else if (width < 850) {
+        this.grid.column(3, layout).cellHeight('33.3333vw');
+
+      } else if (width < 950) {
+        this.grid.column(6, layout).cellHeight('16.6666vw');
+
+      } else if (width < 1100) {
+        this.grid.column(8, layout).cellHeight('12.25vw');
+
+      } else {
+        this.grid.column(12, layout).cellHeight('8.3333vw');
+
+      }
+    },
             serialize : function(obj) {
   var str = [];
   for (var p in obj)
@@ -175,38 +237,41 @@
   return str.join("&");
 },
             ajax:function(...arguments){
-                 
+
                 return   fetch(...arguments).then((data)=>{
                     return data.json();
                 });
             },
-                   
 
-            
-            
-            addToDashboard:function (report){  
+
+
+
+            addToDashboard:function (report){
                 //   const node = {sid:"w_"+report.id,id:report.id,title:report.title,
                 //     mappers:{},
-                //     uid:report.uuid_token,filters:JSON.parse(report.filters), 
+                //     uid:report.uuid_token,filters:JSON.parse(report.filters),
                 //     x: 0, y: 0, w: 2, h: 2 };
-                    
+
         //          grid.addWidget(node);
-        
-                   
-                    
+
+
+
                     // Vue.nextTick(()=>{
-                      
+
                     //     // updateInfo();
                     // });
-    //             var html=`<div style="position: relative; height: 100%; width: 100%;" > 
+    //             var html=`<div style="position: relative; height: 100%; width: 100%;" >
     //             <div style='height:10%'>Drag</div>
     //             <iframe src='${url+"/report/"+report.uuid_token}?hide_filters=true'   frameborder="0"
     // style="position: relative; height: 90%; width: 100%;" /><div>`  ;
     //             this.grid.addWidget({x:0, y:0, w:4, content: html});
             },
 
-            
-            
+
+
         }
-    }).mount('#app')
-</script> 
+    });
+    app.mount('#app')
+    app.use(pluginList)
+</script>
+
