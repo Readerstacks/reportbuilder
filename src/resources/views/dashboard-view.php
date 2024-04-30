@@ -7,22 +7,6 @@
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 <script src="<?php echo url('/public/ReportBuilder/script.js') ?>"></script>
-<link rel="stylesheet" href="<?php echo url('/public/ReportBuilder/dashboard.css') ?>" />
-<script>
-    let pluginList =[];
-const {
-        createApp,
-        h
-    } = Vue
-    // Vue.use=function(plugins){
-    //     pluginList =plugins;// .push(plugins);
-    //     console.log('plugins',plugins)
-    // }
-</script>
-<script src="<?php echo url('/public/vue3-grid-layout.umd.c.js') ?>"></script>
-<link href="
-https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
-" rel="stylesheet">
 
 <style type="text/css">
   .grid-stack { background: white; }
@@ -53,41 +37,17 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
 
                 </div>
 
-                    <!-- <div class='grid-stack'  >
+                    <div class='grid-stack'  >
                         <div v-for="(w, indexs) in items" class="grid-stack-item" :gs-x="w.x" :gs-y="w.y" :gs-w="w.w" :gs-h="w.h"
                             :gs-id="w.sid" :id="w.sid" :key="w.sid">
                             <div class="grid-stack-item-content">
 
-                                <iframe :id="'iframe-'+w.sid"  :src='url+"/report/"+w.uid+"?hide_filters=true&"+w.filters'   frameborder="0"
+                                <iframe :src='url+"/report/"+w.uid+"?hide_filters=true&"+w.filters'   frameborder="0"
  style="position: relative; height: 90%; width: 100%;" >
                                 </iframe>
                             </div>
                         </div>
-                    </div> -->
-                    <grid-layout
-            :layout.sync="layout"
-            :col-num="12"
-            :row-height="30"
-            :is-draggable="true"
-            :is-resizable="true"
-            :is-mirrored="false"
-            :vertical-compact="true"
-            :margin="[10, 10]"
-            :use-css-transforms="true"
-    >
-
-        <grid-item v-for="(item, indexs) in items"
-                   :x="item.x"
-                   :y="item.y"
-                   :w="item.w"
-                   :h="item.h"
-                   :i="item.sid"
-                   :key="item.sid">
-                   <iframe :id="'iframe-'+item.sid"  :src='url+"/report/"+item.uid+"?hide_filters=true&"+item.filters'   frameborder="0"
- style="position: relative; height: 90%; width: 100%;" >
-                                </iframe>
-        </grid-item>
-    </grid-layout>
+                    </div>
             </div>
 
 
@@ -112,13 +72,13 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
 <script>
 
 
+    const {
+        createApp,
+        h
+    } = Vue
 
-
-  let app =   createApp({
-        components: {
-            GridLayout: VueGridLayout.GridLayout,
-           GridItem: VueGridLayout.GridItem
-        },
+    createApp({
+        components: {},
         data() {
             return {
 
@@ -147,9 +107,9 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
     // {w: 2, content: 'another longer widget!'} // will be placed next at (1,0) and 2x1
   ];
 
-    // this.grid = GridStack.init({sizeToContent:true});
-    // this.grid.load(this.items);
-    // window.addEventListener('resize',  () =>{this.resizeGrid()})
+    this.grid = GridStack.init();
+    this.grid.load(this.items);
+
   this.ajax(url+"/get-settings").then((data)=>{
 
                  this.settings =data;
@@ -167,7 +127,7 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
                    // this.grid.load(JSON.parse(data.layout));
                     console.log("data,filters",data,filters)
                    let items= JSON.parse(data.layout);
-                //    this.grid.removeAll(false);
+                   this.grid.removeAll(false);
                    for(let item of items){
                     let mappedFilters={};
                     for(let mapper in item.mappers){
@@ -183,11 +143,9 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
                    }
                    setTimeout(()=>{
                        for(let widget of this.items){
-                    //    this.grid.makeWidget(widget.sid);
-                    //    this.grid.enableMove(false);
-                    //    this.grid.enableResize(false);
-                    //    iFrameResize({ log: true }, '#iframe-'+widget.sid)
-                    //    this.grid.resizeToContent(document.getElementById(widget.sid));
+                       this.grid.makeWidget(widget.sid);
+                       this.grid.enableMove(false);
+                       this.grid.enableResize(false);
                        }
                    })
 
@@ -208,26 +166,6 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
 
         },
         methods: {
-            resizeGrid:function() {
-      let width = document.body.clientWidth;
-      let layout = 'moveScale'
-      if (width < 700) {
-        this.grid.column(1, layout).cellHeight('100vw');
-
-      } else if (width < 850) {
-        this.grid.column(3, layout).cellHeight('33.3333vw');
-
-      } else if (width < 950) {
-        this.grid.column(6, layout).cellHeight('16.6666vw');
-
-      } else if (width < 1100) {
-        this.grid.column(8, layout).cellHeight('12.25vw');
-
-      } else {
-        this.grid.column(12, layout).cellHeight('8.3333vw');
-
-      }
-    },
             serialize : function(obj) {
   var str = [];
   for (var p in obj)
@@ -270,8 +208,5 @@ https://cdn.jsdelivr.net/npm/vue-grid-layout@2.4.0/public/app.min.css
 
 
         }
-    });
-    app.mount('#app')
-    app.use(pluginList)
+    }).mount('#app')
 </script>
-
