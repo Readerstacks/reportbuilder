@@ -2,7 +2,7 @@
 
 namespace Aman5537jains\ReportBuilder\Layouts;
 
- 
+
 
 class ChartLayout extends BaseLayout
 {
@@ -30,7 +30,11 @@ class ChartLayout extends BaseLayout
         $dataNames  = [];
         $columns =  explode(",",$this->layoutSettings['data_column']); // Y AXIS
         $rows =  explode(",",$this->layoutSettings['label_column']); //X AXIS
+        $colorCol =  explode(",",$this->layoutSettings['colors_column']); //X AXIS
+
         $xAxis = [];
+        $colors = [];
+
         try{
             foreach ($this->reportBuilder->rows as $row) {
                 if(!isset($xAxis[$row->row->{$rows[0]}])){
@@ -38,10 +42,13 @@ class ChartLayout extends BaseLayout
                 }
                 $col='data';
                 if(isset($rows[1])){
-                    
+
                     $col=$row->row->{$rows[1]};
                 }
                 $xAxis[$row->row->{$rows[0]}][$col]  = $row->row->{$columns[0]};
+                if(!empty($colorCol) && isset($row->row->{$colorCol[0]})){
+                    $colors[]= $row->row->{$colorCol[0]};
+                }
                 $dataNames[$col]=$col;
             }
 
@@ -52,18 +59,27 @@ class ChartLayout extends BaseLayout
                         $xAxis[$x][$dataName]=0 ;
                     }
                 }
-                
-            }   
+
+            }
+
             foreach($dataNames  as $k=>$val){
                 $values=[];
                 foreach($xAxis as $v){
                 $values[]= $v[$k];
                 }
-                $allColumns[]=["label"=>$k,"data"=>$values];
+                if(count($colors)>0){
+                    $allColumns[]=["label"=>$k,"data"=>$values,"backgroundColor"=> $colors];
+                }
+
+                else if(request()->input("parameters.color","")!=''){
+                    $allColumns[]=["label"=>$k,"data"=>$values,"backgroundColor"=> request()->input("parameters.color","")];
+                }
+                else
+                $allColumns[]=["label"=>$k,"data"=>$values ];
             }
-            
-            
-        
+
+
+            // dd($xAxis,$dataNames,$colors);
         $allRows =array_keys($xAxis);
 
             foreach ($this->reportBuilder->rows as $row) {
@@ -71,56 +87,63 @@ class ChartLayout extends BaseLayout
                     $colors_column[] = $row->row->{$this->layoutSettings['colors_column']};
                 }
             }
-            
+
             // dd($allRows,$allColumns);
-            $colors=["red","green","yellow","blue","orange","black","#dc3545",'#18833f','#927a0e'];
-            if(count($labels)>0 && count($colors_column)<=0){
-                if(!empty($this->layoutSettings['colors_column']))
-                {
-                    $colors_column = explode(",",$this->layoutSettings['colors_column']);
-                }
-                else{
-                    $count=count($labels);
-                    for($i=0;$i<$count;$i++){
-                        $colors_column[] =  $colors[$i];
-                    }
-                }
-            }
+            // $colors=["red","green","yellow","blue","orange","black","#dc3545",'#18833f','#927a0e'];
+            // if(count($labels)>0 && count($colors_column)<=0){
+            //     if(!empty($this->layoutSettings['colors_column']))
+            //     {
+            //         $colors_column = explode(",",$this->layoutSettings['colors_column']);
+            //     }
+            //     else{
+            //         $count=count($labels);
+            //         for($i=0;$i<$count;$i++){
+            //             $colors_column[] =  $colors[$i];
+            //         }
+            //     }
+            // }
         }
         catch(\Exception $err){
-
+                dd($err);
         }
         $labels = ($allRows);
         $data_column = ($allColumns);
         $colors_column = ($colors_column);
         $chartType=$this->layoutSettings['type']['value'];
         $options=[];
-       
+
         if( $chartType=='bar horizontal'){
           $chartType='bar';
           $options = ['indexAxis'=>"y"];
-          $settings= ["type"=>$chartType,
+          $settings= [
+
+            "type"=>$chartType,
                       "data"=> [ "labels"=>$labels,"datasets"=> $data_column],
                       "options"=> ['indexAxis'=>"y"]
                      ];
         }
         else{
-         $settings= ["type"=>$chartType,
+         $settings= [
+
+            "type"=>$chartType,
                      "data"=> [ "labels"=>$labels,"datasets"=> $data_column]
                     ];
-        }      
+        }
         $settings= json_encode($settings);
-     
-     
-        
+
+
+
         return [
             'chart'=> [
-                'src'=> 'https://cdn.jsdelivr.net/npm/chart.js',
+                'src'=> 'https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.0/chart.umd.js',
             ],
             'script'=> [
                 'text'=> "
+
                     const ctx = document.getElementById('myChart');
-                    new Chart(ctx, $settings);",
+                    new Chart(ctx, $settings);
+
+                    ",
             ],
 
         ];
