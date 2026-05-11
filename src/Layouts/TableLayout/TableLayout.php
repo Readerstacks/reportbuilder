@@ -412,12 +412,13 @@ class TableLayout extends BaseLayout
                             continue;
                         }
                         $value = $row->render($column->name());
-                        if ($colFormatter != '' && $colFormatterMethod != '') {
-                            $value = $colFormatter::$colFormatterMethod($column->name(), $value, $row);
-                        }
                         if(isset($sumCols[$column->name()])){
                             $sumCols[$column->name()] = $sumCols[$column->name()]+$value;
                         }
+                        if ($colFormatter != '' && $colFormatterMethod != '') {
+                            $value = $colFormatter::$colFormatterMethod($column->name(), $value, $row);
+                        }
+                        
 
                         $table .= '<td data-col="'.$column->name().'" title='.strip_tags($value).'>'.$value.' </td>';
                     }
@@ -430,7 +431,11 @@ class TableLayout extends BaseLayout
                     if (in_array($column->name(), $hide_columns_arr)) {
                         continue;
                     }
-                    $table .= '<td data-col="'.$column->name().'" ><span style="font-weight:bold">'.(isset($sumCols[$column->name()])?$sumCols[$column->name()]:"").'</span> </td>';
+                    $value = isset($sumCols[$column->name()])?$sumCols[$column->name()]:"";
+                    if ($colFormatter != '' && $colFormatterMethod != '') {
+                            $value = $colFormatter::$colFormatterMethod($column->name(), $value, $row);
+                        }
+                    $table .= '<td data-col="'.$column->name().'" ><span style="font-weight:bold">'.($value).'</span> </td>';
                 }
                 $table .= '</tr></tfoot>';
             }
